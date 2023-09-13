@@ -1,3 +1,13 @@
+// {
+//   "extends": ["prettier", "next/core-web-vitals", "airbnb"],
+//   "parserOptions": {
+//     "project": "./jsconfig.json"
+//   },
+//   "rules": {
+//     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+//   }
+// }
+
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals"]
 }
