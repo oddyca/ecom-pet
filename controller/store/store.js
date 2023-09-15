@@ -1,7 +1,8 @@
 import { create } from 'zustand';
-import { createCartSlice } from './slices/cartSlice';
+import createCartSlice from './slices/cartSlice';
 
-export const useStore = create((...a) => ({
+const useStore = create((...a) => ({
   ...createCartSlice(...a),
-}))
+}));
 
+export default useStore;

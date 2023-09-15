@@ -1,15 +1,11 @@
-'use client'
+'use client';
 
 import React from 'react';
-import { useStore } from '../controller/store/store';
+import useStore from '../controller/store/store';
 
 export default function Test() {
-
-  const itemsCount = useStore((state) => state.cart.size)
-  // const addToCart = useStore((state) => state.addBear)
-
-
+  const itemsCount = useStore((state) => state.cart.size);
   return (
     <div>{itemsCount}</div>
-  )
+  );
 }

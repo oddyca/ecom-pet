@@ -1,13 +1,15 @@
-// {
-//   "extends": ["prettier", "next/core-web-vitals", "airbnb"],
-//   "parserOptions": {
-//     "project": "./jsconfig.json"
-//   },
-//   "rules": {
-//     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
-//   }
-// }
-
 {
-  "extends": ["next/core-web-vitals"]
+  "extends": ["prettier", "next/core-web-vitals", "airbnb"],
+  "parserOptions": {
+    "project": "./jsconfig.json"
+  },
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "linebreak-style": "off",
+    "react/prop-types": "off"
+  }
 }
+
+// {
+//   "extends": ["next/core-web-vitals"]
+// }

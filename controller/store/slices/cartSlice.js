@@ -1,4 +1,4 @@
-export const createCartSlice = (set) => ({
+const createCartSlice = (set) => ({
   cart: new Map(),
   addToCart: (item) => set((state) => {
     const cartMap = state.cart;
@@ -11,12 +11,14 @@ export const createCartSlice = (set) => ({
       cartMap.set(`${item.id}`, { ...foundItem, quantity: 1 });
     }
 
-    return ({ cart: cartMap })
+    return ({ cart: cartMap });
   }),
-  
+
   removeFromCart: (itemId) => set((state) => {
     const cartMap = state.cart;
     cartMap.delete(itemId);
     return ({ cart: cartMap });
   }),
-})
+});
+
+export default createCartSlice;
