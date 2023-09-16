@@ -1,11 +1,23 @@
 import React from 'react';
 import Image from 'next/image';
 
+import { getAllCategories } from '../../controller/controller';
+
 export default function Header() {
+  const renderAllCategories = async () => {
+    const fetchedCategories = await getAllCategories();
+
+    const allCategories = fetchedCategories.map((elem, id) => (
+      <a href="#" key={id}>{elem}</a> // on click - fetch request (by creating new pathname and pusing through router hook from next/navigation) and scroll
+    )).reverse();
+
+    return (<>{allCategories}</>);
+  };
+
   return (
-    <header className="flex flex-col items-center h-[175px] w-full py-3">
+    <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
-        className="flex items-center justify-center h-full w-[1440px] px-3"
+        className="flex items-center justify-center h-full w-full max-w-[1440px] px-3"
       >
         <div className="flex-1" />
         <Image
@@ -61,11 +73,8 @@ export default function Header() {
           </ul>
         </div>
       </div>
-      <div className='flex justify-center items-center gap-[200px] h-[44px] w-full border-stroke-blue border-t-2 py-2'>
-        <a href="#" className=''>Men's clothing</a>
-        <a href="#" className=''>Women's clothing</a>
-        <a href="#" className=''>Jewelerly</a>
-        <a href="#" className=''>Electronics</a>
+      <div className="flex justify-center items-center gap-[200px] h-[44px] w-full p-3 border-stroke-blue border-t-2">
+        {renderAllCategories()}
       </div>
     </header>
   );
