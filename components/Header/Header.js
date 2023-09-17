@@ -1,19 +1,9 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 
-import { getAllCategories } from '../../controller/controller';
-
-export default function Header() {
-  const renderAllCategories = async () => {
-    const fetchedCategories = await getAllCategories();
-
-    const allCategories = fetchedCategories.map((elem, id) => (
-      <a href="#" key={id}>{elem}</a> // on click - fetch request (by creating new pathname and pusing through router hook from next/navigation) and scroll
-    )).reverse();
-
-    return (<>{allCategories}</>);
-  };
-
+export default function Header({ categoriesToRender }) {
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
@@ -74,7 +64,7 @@ export default function Header() {
         </div>
       </div>
       <div className="flex justify-center items-center gap-[200px] h-[44px] w-full p-3 border-stroke-blue border-t-2">
-        {renderAllCategories()}
+        { categoriesToRender }
       </div>
     </header>
   );

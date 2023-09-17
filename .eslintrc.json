@@ -6,10 +6,8 @@
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "linebreak-style": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-max-props-per-line": [1, { "maximum": 1 }]
   }
 }
-
-// {
-//   "extends": ["next/core-web-vitals"]
-// }
