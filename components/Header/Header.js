@@ -19,7 +19,10 @@ export default function Header({ categoriesToRender }) {
         <div className="flex-1">
           <ul className="flex items-center justify-end gap-6 w-auto">
             <li>
-              <a href="#" className="w-auto h-auto flex gap-2">
+              <a
+                href="#"
+                className="w-auto h-auto flex gap-2"
+              >
                 <Image
                   src="/cart.svg"
                   alt="cart icon"
@@ -30,7 +33,10 @@ export default function Header({ categoriesToRender }) {
               </a>
             </li>
             <li>
-              <a href="#" className="w-auto h-auto flex gap-2">
+              <a
+                href="#"
+                className="w-auto h-auto flex gap-2"
+              >
                 <Image
                   src="/fav-nav.svg"
                   alt="favorites icon"
@@ -41,7 +47,10 @@ export default function Header({ categoriesToRender }) {
               </a>
             </li>
             <li>
-              <button type="button" className="w-[40px] h-[40px] rounded-full bg-white border-2 border-stroke-blue grid place-content-center">
+              <button
+                type="button"
+                className="w-[40px] h-[40px] rounded-full bg-white border-2 border-stroke-blue grid place-content-center"
+              >
                 <Image
                   src="/bell-icon.svg"
                   alt="notifications icon"
@@ -51,7 +60,10 @@ export default function Header({ categoriesToRender }) {
               </button>
             </li>
             <li>
-              <button type="button" className="w-[40px] h-[40px] rounded-full bg-white border-2 border-stroke-blue grid place-content-center">
+              <button
+                type="button"
+                className="w-[40px] h-[40px] rounded-full bg-white border-2 border-stroke-blue grid place-content-center"
+              >
                 <Image
                   src="/profile-icon.svg"
                   alt="profile icon"
@@ -64,7 +76,7 @@ export default function Header({ categoriesToRender }) {
         </div>
       </div>
       <div className="flex justify-center items-center gap-[200px] h-[44px] w-full p-3 border-stroke-blue border-t-2">
-        { categoriesToRender }
+        {/* { categoriesToRender } */}
       </div>
     </header>
   );

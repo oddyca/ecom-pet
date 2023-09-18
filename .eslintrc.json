@@ -8,6 +8,10 @@
     "linebreak-style": "off",
     "react/prop-types": "off",
     "react/jsx-no-useless-fragment": "off",
-    "react/jsx-max-props-per-line": [1, { "maximum": 1 }]
+    "react/jsx-max-props-per-line": [1, { "maximum": 1 }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {"devDependencies": true}
+    ]
   }
 }
