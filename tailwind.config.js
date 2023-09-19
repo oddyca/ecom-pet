@@ -27,7 +27,22 @@ const Config = {
     },
   },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [nextui({
+    defaultTheme: 'light',
+    themes: {
+      'sort-light': {
+        extend: 'light',
+        colors: {
+          primary: {
+            DEFAULT: '#617A98', // 617A98
+            foreground: '#FFFFFF', // F7F9FF
+            background: '#FFFFFF',
+          },
+          focus: '#FFFFFF',
+        },
+      },
+    },
+  })],
 };
 
 export default Config;

@@ -3,11 +3,14 @@ import React from 'react';
 import Header from '../components/Header/Header';
 import Banners from '../components/Banners/Banners';
 import Search from '../components/Search/Search';
+import Items from '../components/Items/Items';
 
-import { getAllCategories } from '../controller/controller';
+import { getAllProducts, getAllCategories } from '../controller/controller';
 import Sort from '../components/Sort/Sort';
 
-export default async function Home() {
+export default async function Home({ searchParams }) {
+  // console.log(searchParams);
+  const fetchedProducts = await getAllProducts(searchParams);
   const renderAllCategories = async () => {
     const fetchedCategories = await getAllCategories();
 
@@ -33,6 +36,7 @@ export default async function Home() {
         <div className="w-full max-w-[1440px] flex flex-col gap-4">
           <Search />
           <Sort />
+          <Items fetchedProducts={fetchedProducts} />
         </div>
       </main>
     </>

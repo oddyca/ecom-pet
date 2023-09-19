@@ -6,15 +6,14 @@ export const getAllProducts = async () => {
   const params = new URLSearchParams({
     limit: 10,
   });
-
   const queryString = params.toString();
 
   try {
-    const response = await fetch(`${API}${queryString}`);
+    const response = await fetch(`${API}?${queryString}`);
     const data = await response.json();
     return data;
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 

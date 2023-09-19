@@ -15,7 +15,7 @@ export default function Search() {
           />
         </svg>
         <input
-          className="outline-none w-full py-[10px] px-[36px] border-none ring-2 ring-stroke-blue focus:ring-icon-blue rounded-[10px]"
+          className="outline-none w-full py-[10px] px-[36px] border-none bg-white ring-2 ring-stroke-blue focus:ring-icon-blue rounded-[10px]"
           type="text"
           placeholder="Search items"
         />
