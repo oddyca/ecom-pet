@@ -1,25 +1,21 @@
 import React from 'react';
-import Image from 'next/image';
+import ItemCard from '../ItemCard/ItemCard';
 
 export default function Items({ fetchedProducts }) {
   const renderItems = fetchedProducts.map((item, id) => (
-    <div
-      key={id}
-    >
-      <Image
-        src={item.image}
-        width={128}
-        height={64}
-        alt="item image"
-      />
-      <p>{item.price}</p>
-      <h3>{item.title}</h3>
-      <p>{item.category}</p>
-    </div>
+    <ItemCard
+      // eslint-disable-next-line react/no-array-index-key
+      key={`item-${id}`}
+      itemID={item.id}
+      img={item.image}
+      price={item.price}
+      title={item.title}
+      category={item.category}
+    />
   ));
 
   return (
-    <div className="grid gap-4 grid-cols-4">
+    <div className="grid gap-6 grid-cols-4 self-center py-5">
 
       {renderItems}
 
