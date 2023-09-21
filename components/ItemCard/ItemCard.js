@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-
+/* eslint-disable no-nested-ternary */
 export default function ItemCard({
   itemID, img, price, title, category,
 }) {
@@ -12,8 +12,8 @@ export default function ItemCard({
     setIsEnetered((state) => !state);
   };
 
-  const cardHovered = 'relative order-none w-[250px] h-[360px] bg-white rounded-lg';
-  const cardNotHovered = 'relative w-[250px] h-[360px] bg-white rounded-lg border-stroke-light-blue border-[1px]';
+  const cardHovered = 'relative overflow-hidden order-none w-[250px] h-[360px] bg-white rounded-lg';
+  const cardNotHovered = 'relative overflow-hidden w-[250px] h-[360px] bg-white rounded-lg border-stroke-light-blue border-[1px]';
 
   return (
     <div
@@ -33,7 +33,7 @@ export default function ItemCard({
           rounded-lg
         "
       >
-        <div className="group absolute top-3 right-3 z-40 cursor-pointer hover:scale-110">
+        <div className="group absolute top-3 right-3 z-40 cursor-pointer hover:scale-110 transition transition-duration-150">
           <svg
             width="19"
             height="17"
@@ -55,9 +55,33 @@ export default function ItemCard({
             backgroundImage: `url(${img})`, backgroundSize: '75%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
           }}
           className={isEnetered ? cardHovered : cardNotHovered}
-        />
+        >
+          <span className={
+            itemID === 1
+              ? 'block absolute bottom-0 left-0 w-max bg-[#EC4D37] text-white text-xs px-2'
+              : 'block absolute bottom-0 left-0 w-max bg-black text-white text-xs px-2'
+            }
+          >
+            {
+              itemID === 1 ? '-25%' : itemID === 2 ? '-10%' : ''
+            }
 
-        <p className={itemID === 1 || itemID === 2 ? 'line-through text-sm' : 'text-base'}>{`$${price}`}</p>
+          </span>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <p className={itemID === 1 || itemID === 2 ? 'line-through text-sm' : 'text-base'}>{`$${price}`}</p>
+          {
+            (itemID === 1 || itemID === 2)
+            && (
+              <p className={itemID === 1 ? 'font-bold text-[#EC4D37]' : itemID === 2 ? 'font-bold' : ''}>
+                $
+                {
+                  itemID === 1 ? Math.round((price - (price * 0.25)) * 100) / 100 : itemID === 2 ? Math.round((price - (price * 0.1)) * 100) / 100 : ''
+                }
+              </p>
+            )
+          }
+        </div>
         <p className="font-bold truncate">{title}</p>
         <p className="text-sm text-icon-blue">{category}</p>
       </div>
