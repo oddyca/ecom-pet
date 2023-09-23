@@ -2,9 +2,9 @@ const API = 'https://fakestoreapi.com/products';
 
 const CATEGORIES_ENDPOINT = 'https://fakestoreapi.com/products/categories';
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (searchParams) => {
   const params = new URLSearchParams({
-    limit: 10,
+    ...searchParams,
   });
   const queryString = params.toString();
 
@@ -25,7 +25,7 @@ export const getAllCategories = async () => {
   } catch (e) {
     throw new Error(e);
   }
-}
+};
 
 export const sortProducts = async (url, sortBy) => {
   const params = new URLSearchParams({

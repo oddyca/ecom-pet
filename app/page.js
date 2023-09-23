@@ -4,13 +4,16 @@ import Header from '../components/Header/Header';
 import Banners from '../components/Banners/Banners';
 import Search from '../components/Search/Search';
 import Items from '../components/Items/Items';
+import LoadMore from '../components/LoadMore/LoadMore';
 
 import { getAllProducts, getAllCategories } from '../controller/controller';
 import Sort from '../components/Sort/Sort';
 
 export default async function Home({ searchParams }) {
-  // console.log(searchParams);
-  const fetchedProducts = await getAllProducts(searchParams);
+  const fetchedProducts = await getAllProducts({
+    ...searchParams,
+    limit: searchParams.limit || 10,
+  });
   const renderAllCategories = async () => {
     const fetchedCategories = await getAllCategories();
 
@@ -37,6 +40,7 @@ export default async function Home({ searchParams }) {
           <Search />
           <Sort />
           <Items fetchedProducts={fetchedProducts} />
+          <LoadMore limit={searchParams.limit} />
         </div>
       </main>
     </>
