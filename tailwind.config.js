@@ -25,6 +25,9 @@ const Config = {
       'stroke-blue': '#E7EDF6',
       'stroke-light-blue': '#E5EDF6',
     },
+    flex: {
+      embla: '0 0 100%',
+    },
   },
   darkMode: 'class',
   plugins: [nextui({

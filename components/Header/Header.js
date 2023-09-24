@@ -75,7 +75,7 @@ export default function Header({ categoriesToRender }) {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-[200px] h-[44px] w-full p-3 border-stroke-blue border-t-2">
+      <div className="flex justify-center items-center gap-[200px] h-[44px] w-full p-3 bg-[#FFFFFF] border-stroke-blue border-t-2">
         {/* { categoriesToRender } */}
       </div>
     </header>
