@@ -18,6 +18,7 @@ export default function LoadMore() {
   const handleClick = () => {
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.set('limit', 20);
+    setIsFullyLoaded(true);
 
     const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
     router.push(newPathname, { scroll: false });
