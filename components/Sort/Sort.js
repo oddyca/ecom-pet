@@ -19,7 +19,7 @@ export default function Sort() {
   return (
     <div className="sort-light flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
-        label="Sort by price"
+        label="Sort by new"
         className="max-w-xs"
         variant="faded"
         color="primary"
@@ -38,7 +38,7 @@ export default function Sort() {
           )}
           onClick={() => handleUpdateParams('desc')}
         >
-          High to low
+          New first
         </SelectItem>
         <SelectItem
           key="ascending"
@@ -54,7 +54,7 @@ export default function Sort() {
           )}
           onClick={() => handleUpdateParams('asc')}
         >
-          Low to low
+          Old first
         </SelectItem>
       </Select>
     </div>
