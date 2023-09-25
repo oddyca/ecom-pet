@@ -4,19 +4,35 @@ import React from 'react';
 import Image from 'next/image';
 
 export default function Header({ categoriesToRender }) {
+  const renderCategoriers = () => (
+    <ul className="w-max h-max grid grid-cols-4">
+      {categoriesToRender.map((category) => (
+        <li
+          key={category}
+          className="hover:bg-[#F5F5F5] py-2 px-[5rem] cursor-pointer text-center"
+        >
+          { category }
+        </li>
+      ))}
+    </ul>
+
+  );
+
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
-        className="flex items-center justify-center h-full w-full max-w-[1440px] px-3"
+        className="grid grid-cols-3 h-full w-full max-w-[1440px] px-3"
       >
-        <div className="flex-1" />
-        <Image
-          src="/logo.svg"
-          alt="logo image"
-          width={100}
-          height={90}
-        />
-        <div className="flex-1">
+        <div />
+        <div className="grid place-items-center">
+          <Image
+            src="/logo.svg"
+            alt="logo image"
+            width={100}
+            height={90}
+          />
+        </div>
+        <div className="flex justify-end">
           <ul className="flex items-center justify-end gap-6 w-auto">
             <li>
               <a
@@ -75,8 +91,8 @@ export default function Header({ categoriesToRender }) {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-[200px] h-[44px] w-full p-3 bg-[#FFFFFF] border-stroke-blue border-t-2">
-        {/* { categoriesToRender } */}
+      <div className="flex justify-center items-center gap-[200px] h-max w-full bg-[#FFFFFF] border-stroke-blue border-t-2">
+        { renderCategoriers() }
       </div>
     </header>
   );

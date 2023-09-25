@@ -16,15 +16,7 @@ export default async function Home({ searchParams }) {
   });
   const renderAllCategories = async () => {
     const fetchedCategories = await getAllCategories();
-
-    const allCategories = fetchedCategories.map((elem, id) => (
-      <a
-        href="#"
-        key={id}
-      >
-        {elem}
-      </a> // on click - fetch request (by creating new pathname and pushing through router hook from next/navigation) and scroll
-    )).reverse();
+    const allCategories = fetchedCategories.reverse();
 
     return (<>{ allCategories }</>);
   };

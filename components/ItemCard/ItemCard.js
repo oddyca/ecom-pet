@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+import { Image } from '@nextui-org/react';
+import NextImage from 'next/image';
 /* eslint-disable no-nested-ternary */
 export default function ItemCard({
   itemID, img, price, title, category,
@@ -99,6 +100,7 @@ export default function ItemCard({
               className="flex justify-center items-center w-full py-3 px-3 bg-[#2D2D2D] text-white rounded-lg hover:bg-[#555555]"
             >
               <Image
+                as={NextImage}
                 src="/cart-white.svg"
                 width={16}
                 height={16}
