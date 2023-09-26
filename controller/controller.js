@@ -27,15 +27,9 @@ export const getAllCategories = async () => {
   }
 };
 
-export const sortProducts = async (url, sortBy) => {
-  const params = new URLSearchParams({
-    sort: sortBy === 'desc' ? 'desc' : 'asc',
-  });
-
-  const queryString = params.toString();
-
+export const getIntoCategory = async (category) => {
   try {
-    const response = await fetch(`${url}${queryString}`);
+    const response = await fetch(`${API}/category/${category}`);
     const data = await response.json();
     return data;
   } catch (e) {

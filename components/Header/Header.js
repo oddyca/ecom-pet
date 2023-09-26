@@ -1,22 +1,18 @@
-'use client';
-
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import Image from 'next/image';
+import HeaderCategories from '../HeaderCategories/HeaderCategories';
+import { getAllCategories } from '../../controller/controller';
 
-export default function Header({ categoriesToRender }) {
-  const renderCategoriers = () => (
-    <ul className="w-max h-max grid grid-cols-4">
-      {categoriesToRender.map((category) => (
-        <li
-          key={category}
-          className="hover:bg-[#F5F5F5] py-2 px-[5rem] cursor-pointer text-center"
-        >
-          { category }
-        </li>
-      ))}
-    </ul>
+export default async function Header() {
+  const renderAllCategories = async () => {
+    const fetchedCategories = await getAllCategories();
+    const allCategories = fetchedCategories.reverse();
 
-  );
+    return (<>{ allCategories }</>);
+  };
+
+  const categoriesToRender = await renderAllCategories();
 
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
@@ -92,7 +88,7 @@ export default function Header({ categoriesToRender }) {
         </div>
       </div>
       <div className="flex justify-center items-center gap-[200px] h-max w-full bg-[#FFFFFF] border-stroke-blue border-t-2">
-        { renderCategoriers() }
+        <HeaderCategories categoriesToRender={categoriesToRender} />
       </div>
     </header>
   );
