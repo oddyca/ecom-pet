@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Image } from '@nextui-org/react';
 import NextImage from 'next/image';
+import Link from 'next/link';
 /* eslint-disable no-nested-ternary */
 export default function ItemCard({
   itemID, img, price, title, category,
@@ -51,27 +52,28 @@ export default function ItemCard({
             />
           </svg>
         </div>
-        <div
-          style={{
-            backgroundImage: `url(${img})`, backgroundSize: '75%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
-          }}
-          className={isEnetered ? cardHovered : cardNotHovered}
-        >
-          <span className={
+        <Link href={`/item/${itemID}`}>
+          <div
+            style={{
+              backgroundImage: `url(${img})`, backgroundSize: '75%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
+            }}
+            className={isEnetered ? cardHovered : cardNotHovered}
+          >
+            <span className={
             itemID === 1
               ? 'block absolute bottom-0 left-0 w-max bg-[#EC4D37] text-white text-xs px-2'
               : 'block absolute bottom-0 left-0 w-max bg-black text-white text-xs px-2'
             }
-          >
-            {
+            >
+              {
               itemID === 1 ? '-25%' : itemID === 2 ? '-10%' : ''
             }
 
-          </span>
-        </div>
-        <div className="flex items-baseline gap-2">
-          <p className={itemID === 1 || itemID === 2 ? 'line-through text-sm' : 'text-base'}>{`$${price}`}</p>
-          {
+            </span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <p className={itemID === 1 || itemID === 2 ? 'line-through text-sm' : 'text-base'}>{`$${price}`}</p>
+            {
             (itemID === 1 || itemID === 2)
             && (
               <p className={itemID === 1 ? 'font-bold text-[#EC4D37]' : itemID === 2 ? 'font-bold' : ''}>
@@ -82,9 +84,15 @@ export default function ItemCard({
               </p>
             )
           }
-        </div>
-        <p className="font-bold truncate">{title}</p>
-        <p className="text-sm text-icon-blue">{category}</p>
+          </div>
+          <p className="font-bold truncate">{title}</p>
+        </Link>
+        <Link
+          href={`/category/${category}`}
+          className="bg-none outline-none"
+        >
+          <p className="text-sm text-link-blue hover:text-icon-blue">{category}</p>
+        </Link>
       </div>
       <div
         className={

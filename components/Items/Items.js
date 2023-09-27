@@ -1,12 +1,10 @@
-'use client';
-
 import React from 'react';
 import ItemCard from '../ItemCard/ItemCard';
 
 export default function Items({ fetchedProducts }) {
   const renderItems = fetchedProducts.map((item) => (
     <ItemCard
-      key={item.title} // ADD: OnClick to open modal
+      key={item.title}
       itemID={item.id}
       img={item.image}
       price={item.price}
