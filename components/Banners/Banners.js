@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 
@@ -14,8 +15,18 @@ export default function Banners() {
       ref={emblaRef}
     >
       <div className="flex h-full embla__container">
-        <div className="flex-embla min-w-0 w-full h-[402px] bg-[url('/banner-1.png')] bg-center" />
-        <div className="flex-embla min-w-0 w-full h-[402px] bg-[url('/banner-2.png')] bg-center" />
+        <Link
+          href="/item/1"
+          className="block w-full h-full flex-embla min-w-0"
+        >
+          <div className="w-full h-[402px] bg-[url('/banner-1.png')] bg-center" />
+        </Link>
+        <Link
+          href="/item/2"
+          className="block w-full h-full flex-embla min-w-0"
+        >
+          <div className="w-full h-[402px] bg-[url('/banner-2.png')] bg-center" />
+        </Link>
       </div>
     </div>
   );

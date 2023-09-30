@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
 import { getAllCategories } from '../../controller/controller';
 
@@ -21,12 +22,14 @@ export default async function Header() {
       >
         <div />
         <div className="grid place-items-center">
-          <Image
-            src="/logo.svg"
-            alt="logo image"
-            width={100}
-            height={90}
-          />
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              alt="logo image"
+              width={100}
+              height={90}
+            />
+          </Link>
         </div>
         <div className="flex justify-end">
           <ul className="flex items-center justify-end gap-6 w-auto">
