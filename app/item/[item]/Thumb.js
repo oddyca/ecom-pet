@@ -7,18 +7,16 @@ export default function Thumb(props) {
 
   return (
     <div
-      className={'h-[120px] w-[256px]'.concat(
-        selected ? ' embla-thumbs__slide--selected' : '',
+      className={'relative h-[120px] w-[256px] bg-white overflow-hidden '.concat(
+        selected ? ' outline outline-2 outline-stroke-light-blue' : ' opacity-50',
       )}
     >
       <button
         onClick={onClick}
-        className="embla-thumbs__slide__button"
+        className="h-full w-full"
         type="button"
       >
-        <div className="h-[120px] w-[256px] ">
-          {img}
-        </div>
+        {img}
       </button>
     </div>
   );

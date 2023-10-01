@@ -51,7 +51,7 @@ export default function PicturesCarousel({ fetchedImage }) {
   }, [emblaMainApi, onSelect]);
 
   return (
-    <div className="flex flex-col items-center flex-1 w-full h-full max-h-[666px]">
+    <div className="flex flex-col gap-2 items-center flex-1 w-full h-full max-h-[666px]">
       <div
         className="flex w-full h-full relative overflow-hidden bg-white border-2 border-icon-blue"
         ref={emblaMainRef}
@@ -60,12 +60,11 @@ export default function PicturesCarousel({ fetchedImage }) {
           {slides}
         </div>
       </div>
-
       <div
         className="flex"
         ref={emblaThumbsRef}
       >
-        <div className="flex THUMB">
+        <div className="flex gap-2">
           {slides.map((img, index) => (
             <Thumb
               onClick={() => onThumbClick(index)}
