@@ -15,7 +15,7 @@ export default async function page({ params }) {
     return (sizes.map((size) => (
       <div
         key={size}
-        className="grid place-items-center py-1 px-2 bg-white rounded-sm border-stroke-light-blue"
+        className="grid place-items-center py-1 px-3 bg-white rounded-sm border-2 border-stroke-light-blue"
       >
         {size}
       </div>
@@ -24,25 +24,28 @@ export default async function page({ params }) {
 
   return (
     <main className="flex gap-2 min-h-max w-full relative justify-center">
-      <div className="w-full max-w-[1440px] flex justify-center">
+      <div className="w-full max-w-[1440px] min-h-[666px] flex justify-center gap-4">
         <PicturesCarousel fetchedImage={fetchedInfo.image} />
-        <div className="flex flex-1 flex-col gap-4 w-full">
-          <div className="flex flex-col gap-3">
+        <div className="flex flex-1 flex-col gap-4 justify-between w-full">
+          <div className="flex flex-col gap-7 w-[60%]">
             <div className="flex flex-col gap-1">
-              <h1>{fetchedInfo.title}</h1>
+              <h1 className="text-xl font-bold">{fetchedInfo.title}</h1>
               <p>{fetchedInfo.rating.rate}</p>
             </div>
-            <h1>{`$${fetchedInfo.price}`}</h1>
-            <div>
-              {
+            <h1 className="text-2xl font-bold">{`$${fetchedInfo.price}`}</h1>
+            <div className="flex flex-col gap-1">
+              <p className="text-gray-400 text-sm">Pick size</p>
+              <div className="flex items-center gap-2">
+                {
               (fetchedInfo.category === "men's clothing" || fetchedInfo.category === "women's clothing")
               && (
                 <>
-                  <p className="text-grey">Pick size</p>
                   {renderAdditionalInfo()}
                 </>
               )
             }
+              </div>
+
             </div>
             <AccordionComponent />
             <ShareProduct />

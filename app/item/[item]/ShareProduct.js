@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 export default function ShareProduct() {
   return (
-    <div className="flex gap-3">
-      <p className="text-grey">Share this prodct</p>
-      <div>
+    <div className="flex gap-6 items-center">
+      <p className="text-gray-400 text-sm">Share this prodct</p>
+      <div className='flex gap-3'>
         <Link
           href="https://facebook.com/"
           target="_blank"
