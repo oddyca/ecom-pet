@@ -8,7 +8,7 @@ export default function Thumb(props) {
   return (
     <div
       className={'relative h-[120px] w-[256px] bg-white overflow-hidden '.concat(
-        selected ? ' outline outline-2 outline-stroke-light-blue' : ' opacity-50',
+        selected ? ' outline rounded-lg outline-2 outline-stroke-light-blue' : ' opacity-50',
       )}
     >
       <button
