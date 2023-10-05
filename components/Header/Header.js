@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
+import ItemsInCart from './ItemsInCart';
 import { getAllCategories } from '../../controller/controller';
 
 export default async function Header() {
@@ -33,9 +35,9 @@ export default async function Header() {
         </div>
         <div className="flex justify-end">
           <ul className="flex items-center justify-end gap-6 w-auto">
-            <li>
-              <a
-                href="#"
+            <li className="relative">
+              <Link
+                href="/cart"
                 className="w-auto h-auto flex gap-2"
               >
                 <Image
@@ -45,11 +47,12 @@ export default async function Header() {
                   height={16}
                 />
                 <span className="text-icon-blue">Cart</span>
-              </a>
+              </Link>
+              <ItemsInCart />
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                href="/favorites"
                 className="w-auto h-auto flex gap-2"
               >
                 <Image
@@ -59,7 +62,7 @@ export default async function Header() {
                   height={16}
                 />
                 <span className="text-icon-blue">Favorites</span>
-              </a>
+              </Link>
             </li>
             <li>
               <button

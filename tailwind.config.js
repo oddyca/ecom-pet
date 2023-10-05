@@ -21,6 +21,7 @@ const Config = {
     },
     colors: {
       ...colors,
+      black: '#2D2D2D',
       'icon-blue': '#617A98',
       'stroke-blue': '#E7EDF6',
       'stroke-light-blue': '#E5EDF6',

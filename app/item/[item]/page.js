@@ -19,7 +19,7 @@ export default async function page({ params }) {
         itemName={fetchedInfo.title}
         itemId={fetchedInfo.id}
       />
-      <main className="flex gap-2 min-h-max w-full relative justify-center">
+      <main className="flex gap-2 min-h-max w-full relative justify-center mt-6">
         <div className="w-full max-w-[1440px] min-h-[666px] flex justify-center gap-4">
           <PicturesCarousel fetchedImage={fetchedInfo.image} />
           <div className="flex flex-1 flex-col gap-4 justify-between w-full">
@@ -55,7 +55,7 @@ export default async function page({ params }) {
                 </div>
               </div>
               <div className="flex gap-3 items-center max-w-[390px]">
-                <AddToCart />
+                <AddToCart id={fetchedInfo.id} />
                 <div className="flex-1 rounded-lg border-2 border-[#2D2D2D] group">
                   <AddToFavorite />
                 </div>

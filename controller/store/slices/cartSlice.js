@@ -1,22 +1,22 @@
 const createCartSlice = (set) => ({
   cart: new Map(),
-  addToCart: (item) => set((state) => {
+  addToCart: (id) => set((state) => {
     const cartMap = state.cart;
-    const isFoundInCart = cartMap.has(item.id);
-    const foundItem = cartMap.get(item.id);
+    const isFoundInCart = cartMap.has(id);
+    const foundItem = cartMap.get(id);
 
     if (isFoundInCart) {
       foundItem.quantity += 1;
     } else {
-      cartMap.set(`${item.id}`, { ...foundItem, quantity: 1 });
+      cartMap.set(`${id}`, { ...foundItem, quantity: 1 });
     }
 
     return ({ cart: cartMap });
   }),
 
-  removeFromCart: (itemId) => set((state) => {
+  removeFromCart: (id) => set((state) => {
     const cartMap = state.cart;
-    cartMap.delete(itemId);
+    cartMap.delete(id);
     return ({ cart: cartMap });
   }),
 });

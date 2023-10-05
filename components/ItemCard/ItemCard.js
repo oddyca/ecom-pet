@@ -89,7 +89,7 @@ export default function ItemCard({
       >
         {isEnetered && (
           <div className="flex flex-col justify-end h-full p-2">
-            <AddToCart />
+            <AddToCart id={itemID} />
           </div>
         )}
       </div>
