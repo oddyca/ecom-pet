@@ -10,21 +10,27 @@ export default function Breadcrumbs({ itemCategory, itemName, itemId }) {
       >
         Home
       </Link>
-      <span>/</span>
-      <Link
-        href={`/category/${itemCategory}`}
-        className="hover:text-icon-blue"
-      >
-        {itemCategory}
-      </Link>
-      <span>/</span>
+      {itemCategory && (
+        <>
+          <span>/</span>
+          <Link
+            href={`/category/${itemCategory}`}
+            className="hover:text-icon-blue"
+          >
+            {itemCategory}
+          </Link>
+        </>
+      )}
       {itemId && (
-        <Link
-          href={`/item/${itemId}`}
-          className="hover:text-icon-blue"
-        >
-          {itemName}
-        </Link>
+        <>
+          <span>/</span>
+          <Link
+            href={`/item/${itemId}`}
+            className="hover:text-icon-blue"
+          >
+            {itemName}
+          </Link>
+        </>
       )}
     </div>
   );
