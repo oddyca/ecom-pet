@@ -42,8 +42,6 @@ export default function Descritption({ reviews, description }) {
             )
         }
       </div>
-
     </div>
-
   );
 }

@@ -26,7 +26,7 @@ export default function Breadcrumbs({ itemCategory, itemName, itemId }) {
           <span>/</span>
           <Link
             href={`/item/${itemId}`}
-            className="hover:text-icon-blue"
+            className="text-red"
           >
             {itemName}
           </Link>

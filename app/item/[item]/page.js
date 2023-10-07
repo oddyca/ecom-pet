@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { getItemInfo } from '../../../controller/controller';
+import { getItemInfo, getAllProducts } from '../../../controller/controller';
 import AccordionComponent from './AccordionComponent';
 import ShareProduct from './ShareProduct';
 import PicturesCarousel from './PicturesCarousel';
@@ -10,9 +10,11 @@ import AddToFavorite from '../../../components/AddToFavorite/AddToFavorite';
 import PickSize from './PickSize';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import Descritption from './Descritption';
+import Recommendations from '../../../components/Recommendations/Recommendations';
 
 export default async function page({ params }) {
   const fetchedInfo = await getItemInfo(params.item);
+  const itemsForRecom = await getAllProducts({ limit: 4 });
 
   return (
     <>
@@ -80,6 +82,7 @@ export default async function page({ params }) {
               width={40}
               height={10}
             />
+            <Recommendations itemsForRecom={itemsForRecom} />
           </div>
         </div>
       </main>
