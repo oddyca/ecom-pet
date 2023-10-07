@@ -53,7 +53,7 @@ export default function PicturesCarousel({ fetchedImage }) {
   return (
     <div className="flex flex-col gap-2 items-center flex-1 max-w-[666px] h-full max-h-[666px]">
       <div
-        className="flex w-full h-full relative overflow-hidden bg-white border-2 border-stroke-light-blue rounded-lg"
+        className="flex w-full h-[400px] relative overflow-hidden bg-white border-2 border-stroke-light-blue rounded-lg"
         ref={emblaMainRef}
       >
         <div className="flex w-full h-full">
@@ -71,7 +71,7 @@ export default function PicturesCarousel({ fetchedImage }) {
               selected={index === selectedIndex}
               index={index}
               img={img}
-              key={index}
+              key={slidesAngles[index]}
             />
           ))}
         </div>

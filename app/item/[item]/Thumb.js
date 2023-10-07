@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Thumb(props) {
   const {
-    selected, img, index, onClick,
+    selected, img, onClick,
   } = props;
 
   return (
