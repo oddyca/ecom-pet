@@ -4,7 +4,6 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import Providers from './providers';
 import Header from '../components/Header/Header';
-// import Banners from '../components/Banners/Banners';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,9 +18,7 @@ export default async function RootLayout({ children }) {
       <body className={`${inter.className}`}>
         <Providers>
           <Header />
-          {/* <Banners /> */}
           {children}
-          {/* <Footer /> */}
         </Providers>
       </body>
     </html>

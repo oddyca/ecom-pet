@@ -21,7 +21,8 @@ export default function AccordionComponent() {
         title="Delivery"
       >
         Delivery is $5.
-        Free delivery starting from $40 order.
+        <br />
+        Free delivery from a $40 order.
       </AccordionItem>
       <AccordionItem
         className="text-xs"
@@ -30,6 +31,7 @@ export default function AccordionComponent() {
         title="Payment options"
       >
         Pay with bank cards: Mastercard, Visa, American Express, UnionPay, JCB, Maestro.
+        <br />
         Pay using an eWallet: PayPal, Amazon Pay, Google Pay, Apple Pay, Yandex, Qiwi, Skrill.
       </AccordionItem>
     </Accordion>
