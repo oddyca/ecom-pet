@@ -2,14 +2,12 @@ import React from 'react';
 import Image from 'next/image';
 
 import { getItemInfo, getAllProducts } from '../../../controller/controller';
-import AccordionComponent from './AccordionComponent';
-import ShareProduct from './ShareProduct';
-import PicturesCarousel from './PicturesCarousel';
-import AddToCart from '../../../components/AddToCart/AddToCart';
-import AddToFavorite from '../../../components/AddToFavorite/AddToFavorite';
-import PickSize from './PickSize';
+import AccordionComponent from './components/AccordionComponent/AccordionComponent';
+import ShareProduct from './components/ShareProduct/ShareProduct';
+import PicturesCarousel from './components/PicturesCarousel/PicturesCarousel';
+import Form from './components/Form/Form';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
-import Descritption from './Descritption';
+import Descritption from './components/Description/Descritption';
 import Recommendations from '../../../components/Recommendations/Recommendations';
 
 export default async function page({ params }) {
@@ -33,37 +31,21 @@ export default async function page({ params }) {
                 <p>{fetchedInfo.rating.rate}</p>
               </div>
               <div className="flex items-baseline gap-2">
-                <h1 className={fetchedInfo.id === 1 || fetchedInfo.id === 2 ? 'line-through text-sm' : 'text-base'}>{`$${fetchedInfo.price}`}</h1>
-                <h1 className="text-2xl font-bold">
-                  {
-                (fetchedInfo.id === 1 || fetchedInfo.id === 2)
-                && (
-                  <p className={fetchedInfo.id === 1 ? 'font-bold text-[#EC4D37]' : fetchedInfo.id === 2 ? 'font-bold' : ''}>
+                <h1 className={fetchedInfo.id === 1 || fetchedInfo.id === 2 ? 'line-through text-sm' : 'text-2xl font-bold'}>{`$${fetchedInfo.price}`}</h1>
+                {
+                  (fetchedInfo.id === 1 || fetchedInfo.id === 2)
+                  && (
+                  <h1 className={fetchedInfo.id === 1 ? 'font-bold text-[#EC4D37] text-2xl' : fetchedInfo.id === 2 ? 'font-bold text-2xl' : ''}>
                     $
-                    {
+                      {
                       fetchedInfo.id === 1 ? Math.round((fetchedInfo.price - (fetchedInfo.price * 0.25)) * 100) / 100 : fetchedInfo.id === 2 ? Math.round((fetchedInfo.price - (fetchedInfo.price * 0.1)) * 100) / 100 : ''
                     }
-                  </p>
-                )
-              }
 
-                </h1>
+                  </h1>
+                  )
+                }
               </div>
-              <div className="flex flex-col gap-1">
-                <p className="text-gray-400 text-sm">Pick size</p>
-                <div className="flex items-center gap-2">
-                  {
-                    (fetchedInfo.category === "men's clothing" || fetchedInfo.category === "women's clothing")
-                    && <PickSize />
-                  }
-                </div>
-              </div>
-              <div className="flex gap-3 items-center max-w-[390px]">
-                <AddToCart id={fetchedInfo.id} />
-                <div className="flex-1 rounded-lg border-2 border-[#2D2D2D] group">
-                  <AddToFavorite />
-                </div>
-              </div>
+              <Form fetchedInfo={fetchedInfo} />
               <AccordionComponent />
               <ShareProduct />
             </div>

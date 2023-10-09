@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
-import Thumb from './Thumb';
+import Thumb from '../Thumb/Thumb';
 
 export default function PicturesCarousel({ fetchedImage }) {
   const slidesAngles = [0, 90, 180, 270];

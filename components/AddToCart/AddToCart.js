@@ -12,7 +12,7 @@ export default function AddToCart({ id }) {
   return (
     <>
       <button
-        type="button"
+        type="submit"
         className="flex justify-center items-center w-full py-3.5 px-3 bg-[#2D2D2D] text-white rounded-lg hover:bg-[#555555]"
         onClick={() => addToCart(id)}
       >
