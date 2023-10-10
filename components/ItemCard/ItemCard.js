@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import AddToCart from '../AddToCart/AddToCart';
 import AddToFavorite from '../AddToFavorite/AddToFavorite';
+import useStore from '../../controller/store/store';
 
 /* eslint-disable no-nested-ternary */
 export default function ItemCard({
   itemID, img, price, title, category,
 }) {
+  const { addToCart } = useStore();
   const [isEnetered, setIsEnetered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -88,9 +90,12 @@ export default function ItemCard({
         }
       >
         {isEnetered && (
-          <div className="flex flex-col justify-end h-full p-2">
-            <AddToCart id={itemID} />
-          </div>
+          <form
+            className="flex flex-col justify-end h-full p-2"
+            onSubmit={() => addToCart(itemID)}
+          >
+            <AddToCart />
+          </form>
         )}
       </div>
     </div>
