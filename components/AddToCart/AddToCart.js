@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import NextImage from 'next/image';
 
-export default function AddToCart({ id }) {
+export default function AddToCart() {
   return (
     <>
       <button

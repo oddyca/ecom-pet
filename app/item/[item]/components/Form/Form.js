@@ -18,7 +18,7 @@ export default function Form({ fetchedInfo }) {
 
   const handleFormSubmit = (data, event) => {
     event.preventDefault();
-    // TODO: submit logic
+    addToCart(fetchedInfo.id, data.size);
   };
 
   return (
@@ -64,7 +64,7 @@ export default function Form({ fetchedInfo }) {
           )}
       </div>
       <div className="flex gap-3 items-center max-w-[390px]">
-        <AddToCart id={fetchedInfo.id} />
+        <AddToCart />
         <div className="flex-1 rounded-lg border-2 border-black group">
           <AddToFavorite />
         </div>

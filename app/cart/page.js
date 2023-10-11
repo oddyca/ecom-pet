@@ -13,7 +13,14 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const itemInfo = cartItemsIds.map(async (id) => getItemInfo(id));
+      const itemInfo = cartItemsIds.map(async (id) => {
+        const trimmedID = id.slice(0, id.length - 1);
+        const itemSize = id.at(-1);
+        const info = await getItemInfo(trimmedID);
+        const newInfo = { ...info, size: itemSize };
+
+        return newInfo;
+      });
 
       const DATA = await Promise.all(itemInfo);
       setData(DATA);
@@ -35,7 +42,7 @@ export default function Cart() {
           ) : (
             <ul>
               {data.map((item) => (
-                <li key={item.title}>{item.title}</li>
+                <li key={item.title}>{`${item.title}, ${item.size}`}</li>
               ))}
             </ul>
           )}

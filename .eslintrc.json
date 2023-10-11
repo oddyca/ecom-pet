@@ -3,6 +3,13 @@
   "parserOptions": {
     "project": "./jsconfig.json"
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["./"]
+      }
+    }
+  },
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "linebreak-style": "off",
