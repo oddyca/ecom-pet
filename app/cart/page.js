@@ -25,7 +25,7 @@ export default function Cart() {
           ...info,
           size: itemSize,
           quantity: itemQuantity,
-          sale: trimmedID === 1 ? '25%' : trimmedID === 2 ? '10%' : '',
+          sale: trimmedID === '1' ? '25' : trimmedID === '2' ? '10' : '',
         };
         return newInfo;
       });
