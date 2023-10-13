@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import CartCard from './CartCard/CartCard';
+import Order from './Order/Order';
 
 import useStore from '../../controller/store/store';
 import { getItemInfo } from '../../controller/controller';
@@ -20,7 +21,12 @@ export default function Cart() {
         const itemSize = id.at(-1);
         const itemQuantity = cart.get(id).quantity;
         const info = await getItemInfo(trimmedID);
-        const newInfo = { ...info, size: itemSize, quantity: itemQuantity };
+        const newInfo = {
+          ...info,
+          size: itemSize,
+          quantity: itemQuantity,
+          sale: trimmedID === 1 ? '25%' : trimmedID === 2 ? '10%' : '',
+        };
         return newInfo;
       });
 
@@ -37,9 +43,9 @@ export default function Cart() {
       <Breadcrumbs
         itemCategory="Cart"
       />
-      <main className="flex gap-2 min-h-max w-full relative justify-center mt-6">
-        <div className="w-full max-w-[1440px] min-h-[666px] flex justify-start gap-4">
-          <div className="flex flex-col gap-5 w-full">
+      <main className="flex justify-center min-h-max w-full relative mt-6">
+        <div className="w-full max-w-[1440px] min-h-[666px] grid grid-cols-3 gap-5">
+          <div className="flex flex-col col-span-2 gap-5 w-full">
             <h1 className="text-2xl font-bold">
               {' '}
               My cart
@@ -61,6 +67,10 @@ export default function Cart() {
                 />
               ))}
             </ul>
+          </div>
+          <div className="flex flex-col gap-5">
+            <h1 className="text-2xl font-bold">Total order</h1>
+            <Order items={data} />
           </div>
         </div>
       </main>

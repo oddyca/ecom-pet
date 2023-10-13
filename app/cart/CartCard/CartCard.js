@@ -11,7 +11,7 @@ export default function CartCard({
           style={{
             backgroundImage: `url(${img})`, backgroundSize: '75%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
           }}
-          className="w-[180px] h-[220px] bg-white rounded-lg"
+          className="w-[150px] h-[180px] bg-white rounded-lg"
         />
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">
