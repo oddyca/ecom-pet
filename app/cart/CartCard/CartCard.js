@@ -2,7 +2,7 @@ import React from 'react';
 import DeleteItem from '../DeleteItem/DeleteItem';
 
 export default function CartCard({
-  img, title, size, price, quantity, id,
+  img, title, size, price, quantity, id, discount
 }) {
   return (
     <div className="flex justify-between border border-2 bg-white border-stroke-light-blue rounded-lg p-3">
@@ -19,7 +19,7 @@ export default function CartCard({
             <p className="text-sm text-icon-blue">{size}</p>
           </div>
           <div>
-            <h1 className="font-medium text-2xl">{`$${price}`}</h1>
+            <h1 className="font-medium text-2xl">{`$${discount ? price - (price * (Number(discount) / 100)) : price}`}</h1>
           </div>
           <div>{quantity}</div>
         </div>

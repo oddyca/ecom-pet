@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 import AddToCart from '../../../../../components/AddToCart/AddToCart';
 import AddToFavorite from '../../../../../components/AddToFavorite/AddToFavorite';
 import useStore from '../../../../../controller/store/store';
-
-const sizes = ['S', 'M', 'L', 'XL'];
+import { SIZES } from '../../../../../lib/lib';
 
 export default function Form({ fetchedInfo }) {
   const { addToCart } = useStore();
@@ -33,7 +32,7 @@ export default function Form({ fetchedInfo }) {
               <p className="text-sm font-gray">Pick size</p>
               <div className="flex items-center gap-2 relative w-fit">
                 {
-                  sizes.map((size) => (
+                  SIZES.map((size) => (
                     <div>
                       <input
                         id={`radio-${size}`}

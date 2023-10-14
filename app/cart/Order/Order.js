@@ -1,16 +1,49 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '@nextui-org/react';
+import { PROMO_CODES } from '../../../lib/lib';
 
 export default function Order({ items }) {
+  const [typedPromo, setTypedPromo] = useState('');
+  const [isCorrect, seIsCorrect] = useState(true);
+  const [currentDiscount, setCurrentDiscount] = useState(null);
+
   const calcItemsPrice = () => {
     const calcOfTotalItemPrice = items.reduce((sum, current) => (
-      current.sale
-        ? sum + (current.price - (current.price * (Number(current.sale) / 100)))
+      current.discount
+        ? sum + (current.price - (current.price * (Number(current.discount) / 100)))
         : sum + current.price
     ), 0);
     return calcOfTotalItemPrice;
+  };
+
+  const checkPromo = () => {
+    const PROMOS = Object.keys(PROMO_CODES);
+    if (PROMOS.includes(typedPromo)) {
+      setCurrentDiscount(PROMO_CODES[typedPromo]);
+      seIsCorrect(true);
+      return;
+    }
+    seIsCorrect(false);
+  };
+
+  const renderTotalSum = () => {
+    const allItemsPrice = calcItemsPrice();
+    const finalSum = allItemsPrice >= 40 ? allItemsPrice : allItemsPrice + 5;
+
+    if (currentDiscount) {
+      const finalSumWithDisc = finalSum - (finalSum * currentDiscount);
+      return (
+        <h3>
+          <span className="line-through text-sm font-normal">{`$${finalSum}`}</span>
+          {' $'}
+          {finalSumWithDisc.toFixed(2)}
+        </h3>
+      );
+    }
+
+    return (<h3>{finalSum}</h3>);
   };
 
   return (
@@ -30,13 +63,15 @@ export default function Order({ items }) {
                   <p>{calcItemsPrice() >= 40 ? '-' : '$5.00'}</p>
                 </div>
               </div>
-              <div className="w-full flex flex-col gap-1">
+              <div className="w-full flex flex-col gap-1 overflow-hidden">
                 <Input
                   type="text"
                   label="Promo code"
                   labelPlacement="outside"
                   size="lg"
                   variant="bordered"
+                  value={typedPromo}
+                  onChange={(e) => setTypedPromo(e.target.value)}
                   startContent={(
                     <svg
                       width="20"
@@ -52,10 +87,34 @@ export default function Order({ items }) {
                     </svg>
                   )}
                 />
+                {
+                  !isCorrect && <p className="self-start text-sm text-red">Wrong promocode</p>
+                }
+                {
+                  typedPromo && (
+                  <button
+                    type="button"
+                    className="w-fit py-2 px-4 rounded-lg bg-black text-white self-end animate-slideup"
+                    onClick={() => checkPromo()}
+                  >
+                    SUBMIT
+                  </button>
+                  )
+                }
               </div>
-              <div className="flex justify-between w-full text-lg font-bold">
-                <h1>TOTAL</h1>
-                <h1>{`$${calcItemsPrice() >= 40 ? calcItemsPrice() : calcItemsPrice() + 5}`}</h1>
+              <div className="flex flex-col w-full text-lg font-bold">
+                <div className="flex justify-between">
+                  <h1>TOTAL</h1>
+                  { renderTotalSum() }
+                </div>
+                {
+                  currentDiscount && (
+                    <div className="flex justify-between font-normal">
+                      <p className="text-sm text-red">Discount</p>
+                      <p className="text-sm text-red">{`${currentDiscount * 100}%`}</p>
+                    </div>
+                  )
+                }
               </div>
               <button
                 type="button"
