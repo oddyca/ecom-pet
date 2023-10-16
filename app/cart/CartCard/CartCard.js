@@ -1,8 +1,9 @@
 import React from 'react';
 import DeleteItem from '../DeleteItem/DeleteItem';
+import ChangeQuantity from '../ChangeQuantity/ChangeQuantity';
 
 export default function CartCard({
-  img, title, size, price, quantity, id, discount
+  img, title, size, price, quantity, id, discount,
 }) {
   return (
     <div className="flex justify-between border border-2 bg-white border-stroke-light-blue rounded-lg p-3">
@@ -21,7 +22,11 @@ export default function CartCard({
           <div>
             <h1 className="font-medium text-2xl">{`$${discount ? price - (price * (Number(discount) / 100)) : price}`}</h1>
           </div>
-          <div>{quantity}</div>
+          <ChangeQuantity
+            id={id}
+            quantity={quantity}
+            size={size}
+          />
         </div>
       </div>
       <div>

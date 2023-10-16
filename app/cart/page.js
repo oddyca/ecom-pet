@@ -10,7 +10,6 @@ import { getItemInfo } from '../../controller/controller';
 
 export default function Cart() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const { cart } = useStore();
   const cartItemsIds = [...cart.keys()];
 
@@ -32,11 +31,10 @@ export default function Cart() {
 
       const DATA = await Promise.all(itemInfo);
       setData(DATA);
-      setLoading(!loading);
     };
 
     fetchData();
-  }, [cart.size]);
+  }, [cart]);
 
   return (
     <>

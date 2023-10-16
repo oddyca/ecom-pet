@@ -7,7 +7,7 @@ export default function AddToCart() {
     <>
       <button
         type="submit"
-        className="flex justify-center items-center w-full py-3.5 px-3 bg-[#2D2D2D] text-white rounded-lg hover:bg-[#555555]"
+        className="flex justify-center items-center w-full py-3.5 px-3 bg-black text-white rounded-lg hover:bg-[#555555]"
       >
         <Image
           as={NextImage}

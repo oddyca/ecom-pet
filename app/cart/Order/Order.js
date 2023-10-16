@@ -10,12 +10,16 @@ export default function Order({ items }) {
   const [currentDiscount, setCurrentDiscount] = useState(null);
 
   const calcItemsPrice = () => {
-    const calcOfTotalItemPrice = items.reduce((sum, current) => (
-      current.discount
-        ? sum + (current.price - (current.price * (Number(current.discount) / 100)))
-        : sum + current.price
-    ), 0);
-    return calcOfTotalItemPrice;
+    const calcOfTotalItemPrice = items.reduce((sum, current) => {
+      const discountedPrice = current.discount
+        ? current.price - (current.price * (Number(current.discount) / 100))
+        : current.price;
+
+      const itemTotalPrice = discountedPrice * current.quantity;
+      return sum + itemTotalPrice;
+    }, 0);
+
+    return Number(calcOfTotalItemPrice.toFixed(2));
   };
 
   const checkPromo = () => {
@@ -30,20 +34,25 @@ export default function Order({ items }) {
 
   const renderTotalSum = () => {
     const allItemsPrice = calcItemsPrice();
-    const finalSum = allItemsPrice >= 40 ? allItemsPrice : allItemsPrice + 5;
+    const shouldApplyDeliveryFee = allItemsPrice < 40;
 
-    if (currentDiscount) {
-      const finalSumWithDisc = finalSum - (finalSum * currentDiscount);
-      return (
-        <h3>
-          <span className="line-through text-sm font-normal">{`$${finalSum}`}</span>
-          {' $'}
-          {finalSumWithDisc.toFixed(2)}
-        </h3>
-      );
+    let finalSum = allItemsPrice;
+
+    if (shouldApplyDeliveryFee) {
+      finalSum += 5;
     }
 
-    return (<h3>{finalSum}</h3>);
+    if (currentDiscount) {
+      finalSum *= (1 - currentDiscount);
+    }
+
+    return (
+      <h3>
+        <span className="line-through text-sm font-normal">{`$${allItemsPrice.toFixed(2)}`}</span>
+        {' $'}
+        {finalSum.toFixed(2)}
+      </h3>
+    );
   };
 
   return (
@@ -94,7 +103,7 @@ export default function Order({ items }) {
                   typedPromo && (
                   <button
                     type="button"
-                    className="w-fit py-2 px-4 rounded-lg bg-black text-white self-end animate-slideup"
+                    className="w-fit py-2 px-4 rounded-lg bg-black text-white self-end animate-slideup hover:bg-[#555555]"
                     onClick={() => checkPromo()}
                   >
                     SUBMIT
@@ -118,7 +127,7 @@ export default function Order({ items }) {
               </div>
               <button
                 type="button"
-                className="w-full py-2 rounded-lg bg-black text-white flex flex-col items-center"
+                className="w-full py-2 rounded-lg bg-black text-white flex flex-col items-center hover:bg-[#555555]"
               >
                 ORDER
                 {' '}
