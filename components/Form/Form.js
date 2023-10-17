@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import AddToCart from '../../../../../components/AddToCart/AddToCart';
-import AddToFavorite from '../../../../../components/AddToFavorite/AddToFavorite';
-import useStore from '../../../../../controller/store/store';
-import { SIZES } from '../../../../../lib/lib';
+import AddToCart from '../AddToCart/AddToCart';
+import AddToFavorite from '../AddToFavorite/AddToFavorite';
+import useStore from '../../controller/store/store';
+import { SIZES } from '../../lib/lib';
 
 export default function Form({ fetchedInfo }) {
   const { addToCart } = useStore();

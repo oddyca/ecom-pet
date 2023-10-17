@@ -5,7 +5,7 @@ import { getItemInfo, getAllProducts } from '../../../controller/controller';
 import AccordionComponent from './components/AccordionComponent/AccordionComponent';
 import ShareProduct from './components/ShareProduct/ShareProduct';
 import PicturesCarousel from './components/PicturesCarousel/PicturesCarousel';
-import Form from './components/Form/Form';
+import Form from '../../../components/Form/Form';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import Descritption from './components/Description/Descritption';
 import Recommendations from '../../../components/Recommendations/Recommendations';

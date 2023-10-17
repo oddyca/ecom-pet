@@ -5,7 +5,7 @@ export default function Items({ fetchedProducts }) {
   const renderItems = fetchedProducts.map((item) => (
     <ItemCard
       key={item.title}
-      itemID={item.id}
+      id={item.id}
       img={item.image}
       price={item.price}
       title={item.title}
