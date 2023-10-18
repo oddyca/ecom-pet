@@ -7,7 +7,7 @@ import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import useStore from '../../controller/store/store';
 import { SIZES } from '../../lib/lib';
 
-export default function Form({ fetchedInfo }) {
+export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
   const { addToCart } = useStore();
   const {
     register,
@@ -18,6 +18,8 @@ export default function Form({ fetchedInfo }) {
   const handleFormSubmit = (data, event) => {
     event.preventDefault();
     addToCart(fetchedInfo.id, data.size);
+    if (setIsEnetered) setIsEnetered(false);
+    if (onClose) onClose();
   };
 
   return (

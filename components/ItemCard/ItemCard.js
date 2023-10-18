@@ -86,7 +86,7 @@ export default function ItemCard(props) {
           : 'absolute top-0 h-full w-full hidden'
         }
       >
-        {isEnetered && (category === "men's clothing" || category === "women's clothing")
+        {(category === "men's clothing" || category === "women's clothing")
           ? (
             <>
               <Button
@@ -104,14 +104,17 @@ export default function ItemCard(props) {
               <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                isDismissable={false}
               >
                 <ModalContent>
                   {(onClose) => (
                     <>
                       <ModalHeader className="flex flex-col gap-1">Pick size</ModalHeader>
                       <ModalBody>
-                        <Form fetchedInfo={props} />
+                        <Form
+                          fetchedInfo={props}
+                          setIsEnetered={setIsEnetered}
+                          onClose={onClose}
+                        />
                       </ModalBody>
                       <ModalFooter>
                         <Button
@@ -129,7 +132,7 @@ export default function ItemCard(props) {
             </>
           ) : (
             <form
-              className="flex flex-col justify-end h-full w-full p-2"
+              className="flex flex-col justify-end h-full w-full"
               onSubmit={(e) => {
                 e.preventDefault();
                 addToCart(id);
