@@ -22,7 +22,7 @@ export default function Cart() {
         const info = await getItemInfo(trimmedID);
         const newInfo = {
           ...info,
-          size: itemSize,
+          size: itemSize === '-' ? '-' : itemSize,
           quantity: itemQuantity,
           discount: trimmedID === '1' ? '25' : trimmedID === '2' ? '10' : '',
         };

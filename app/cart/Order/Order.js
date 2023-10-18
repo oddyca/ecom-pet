@@ -48,7 +48,7 @@ export default function Order({ items }) {
 
     return (
       <h3>
-        <span className="line-through text-sm font-normal">{`$${allItemsPrice.toFixed(2)}`}</span>
+        {currentDiscount ? <span className="line-through text-sm font-normal">{`$${allItemsPrice.toFixed(2)}`}</span> : ''}
         {' $'}
         {finalSum.toFixed(2)}
       </h3>

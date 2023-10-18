@@ -10,6 +10,7 @@ import NextImage from 'next/image';
 import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import Form from '../Form/Form';
 import useStore from '../../controller/store/store';
+import AddToCart from '../AddToCart/AddToCart';
 
 /* eslint-disable no-nested-ternary */
 export default function ItemCard(props) {
@@ -85,47 +86,58 @@ export default function ItemCard(props) {
           : 'absolute top-0 h-full w-full hidden'
         }
       >
-        {isEnetered && (
-          <>
-            <Button
-              onPress={onOpen}
-              className="flex justify-center self-end items-center w-full py-3.5 px-3 bg-black text-white rounded-lg hover:bg-[#555555]"
+        {isEnetered && (category === "men's clothing" || category === "women's clothing")
+          ? (
+            <>
+              <Button
+                onPress={onOpen}
+                className="flex justify-center self-end items-center w-full py-3.5 px-3 bg-black text-white rounded-lg hover:bg-[#555555]"
+              >
+                <Image
+                  as={NextImage}
+                  src="/cart-white.svg"
+                  width={16}
+                  height={16}
+                  alt="cart icon"
+                />
+              </Button>
+              <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                isDismissable={false}
+              >
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className="flex flex-col gap-1">Pick size</ModalHeader>
+                      <ModalBody>
+                        <Form fetchedInfo={props} />
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          variant="light"
+                          onPress={onClose}
+                        >
+                          Close
+                        </Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
+            </>
+          ) : (
+            <form
+              className="flex flex-col justify-end h-full w-full p-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                addToCart(id);
+              }}
             >
-              <Image
-                as={NextImage}
-                src="/cart-white.svg"
-                width={16}
-                height={16}
-                alt="cart icon"
-              />
-            </Button>
-            <Modal
-              isOpen={isOpen}
-              onOpenChange={onOpenChange}
-              isDismissable={false}
-            >
-              <ModalContent>
-                {(onClose) => (
-                  <>
-                    <ModalHeader className="flex flex-col gap-1">Pick size</ModalHeader>
-                    <ModalBody>
-                      <Form fetchedInfo={props} />
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button
-                        color="danger"
-                        variant="light"
-                        onPress={onClose}
-                      >
-                        Close
-                      </Button>
-                    </ModalFooter>
-                  </>
-                )}
-              </ModalContent>
-            </Modal>
-          </>
-        )}
+              <AddToCart />
+            </form>
+          )}
       </div>
     </div>
   );

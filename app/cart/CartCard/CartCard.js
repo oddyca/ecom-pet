@@ -17,7 +17,7 @@ export default function CartCard({
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">
             <h3 className="font-bold">{title}</h3>
-            <p className="text-sm text-icon-blue">{size}</p>
+            {size === '-' ? '' : <p className="text-sm text-icon-blue">{size}</p>}
           </div>
           <div>
             <h1 className="font-medium text-2xl">{`$${discount ? price - (price * (Number(discount) / 100)) : price}`}</h1>
