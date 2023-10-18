@@ -6,9 +6,6 @@ const createCartSlice = (set) => ({
     const isFoundInCart = cartMap.has(key);
     const foundItem = cartMap.get(key);
 
-    console.log('____KEY', key);
-    console.log('____foundItem', foundItem);
-
     if (isFoundInCart) {
       foundItem.quantity += 1;
     } else {

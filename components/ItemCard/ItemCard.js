@@ -36,7 +36,7 @@ export default function ItemCard(props) {
     >
       <div className="relative p-top-1 z-10 flex flex-col gap-1 w-[250px] rounded-lg">
         <div className="group absolute top-3 right-3 z-40 cursor-pointer hover:scale-110 transition transition-duration-150">
-          <AddToFavorite />
+          <AddToFavorite id={id} />
         </div>
         <Link href={`/item/${id}`}>
           <div

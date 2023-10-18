@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
 import ItemsInCart from './ItemsInCart';
+import ItemsInFav from './ItemsInFav';
 import { getAllCategories } from '../../controller/controller';
 
 export default async function Header() {
@@ -50,7 +51,7 @@ export default async function Header() {
               </Link>
               <ItemsInCart />
             </li>
-            <li>
+            <li className="relative">
               <Link
                 href="/favorites"
                 className="w-auto h-auto flex gap-2"
@@ -63,6 +64,7 @@ export default async function Header() {
                 />
                 <span className="text-icon-blue">Favorites</span>
               </Link>
+              <ItemsInFav />
             </li>
             <li>
               <button
