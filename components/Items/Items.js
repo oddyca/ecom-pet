@@ -14,7 +14,7 @@ export default function Items({ fetchedProducts }) {
   ));
 
   return (
-    <div className="grid gap-10 grid-cols-4 self-center py-5">
+    <div className="w-full grid gap-10 grid-cols-4 self-center py-5">
       {renderItems}
     </div>
   );
