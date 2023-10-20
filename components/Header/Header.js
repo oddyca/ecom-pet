@@ -6,6 +6,7 @@ import Link from 'next/link';
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
 import ItemsInCart from './ItemsInCart';
 import ItemsInFav from './ItemsInFav';
+import Notifications from './Notifications';
 import { getAllCategories } from '../../controller/controller';
 
 export default async function Header() {
@@ -66,18 +67,8 @@ export default async function Header() {
               </Link>
               <ItemsInFav />
             </li>
-            <li>
-              <button
-                type="button"
-                className="w-[40px] h-[40px] rounded-full bg-white border-2 border-stroke-blue grid place-content-center"
-              >
-                <Image
-                  src="/bell-icon.svg"
-                  alt="notifications icon"
-                  width={16}
-                  height={16}
-                />
-              </button>
+            <li className="relative">
+              <Notifications />
             </li>
             <li>
               <button
