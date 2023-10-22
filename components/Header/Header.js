@@ -5,6 +5,7 @@ import HeaderCategories from '../HeaderCategories/HeaderCategories';
 import ItemsInCart from './ItemsInCart';
 import ItemsInFav from './ItemsInFav';
 import Notifications from './Notifications';
+import ProfilePopover from './ProfilePopover';
 import { getAllCategories } from '../../controller/controller';
 
 export default async function Header() {
@@ -69,17 +70,7 @@ export default async function Header() {
               <Notifications />
             </li>
             <li>
-              <button
-                type="button"
-                className="w-[40px] h-[40px] rounded-full bg-white border-2 border-stroke-blue grid place-content-center"
-              >
-                <Image
-                  src="/profile-icon.svg"
-                  alt="profile icon"
-                  width={16}
-                  height={16}
-                />
-              </button>
+              <ProfilePopover />
             </li>
           </ul>
         </div>

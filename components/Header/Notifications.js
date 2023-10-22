@@ -32,14 +32,14 @@ export default function Notifications() {
         </PopoverTrigger>
         <PopoverContent>
           <div className="px-1 py-2 divide-y-1">
-            <div className="py-1 border-bottom">
+            <div className="py-1">
               <div className="text-tiny text-icon-blue">
                 New Promocode
                 (10% off)
               </div>
               <div className="font-bold text-lg">QUICK10</div>
             </div>
-            <div className="py-1 border-bottom">
+            <div className="py-1">
               <div className="text-tiny text-icon-blue">
                 New Promocode
                 (5% off)
