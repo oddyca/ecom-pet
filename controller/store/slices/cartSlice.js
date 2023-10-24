@@ -12,7 +12,7 @@ const createCartSlice = (set) => ({
       cartMap.set(key, { ...foundItem, quantity: 1 });
     }
 
-    localStorage.setItem(key, `${foundItem.quantity}`);
+    localStorage.setItem(key, `${cartMap.get(key).quantity}`);
     return ({ cart: cartMap });
   }),
 
@@ -25,12 +25,13 @@ const createCartSlice = (set) => ({
     if (isFoundInCart) {
       if (foundItem.quantity > 1) {
         foundItem.quantity -= 1;
+        localStorage.setItem(key, `${cartMap.get(key).quantity}`);
       } else {
         cartMap.delete(key);
+        localStorage.removeItem(key);
       }
     }
 
-    localStorage.setItem(key, `${foundItem.quantity}`);
     return ({ cart: cartMap });
   }),
 

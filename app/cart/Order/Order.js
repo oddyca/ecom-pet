@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Input } from '@nextui-org/react';
 import { PROMO_CODES } from '../../../lib/lib';
+import OrderModal from './OrderModal';
 
 export default function Order({ items }) {
   const [typedPromo, setTypedPromo] = useState('');
@@ -125,18 +126,7 @@ export default function Order({ items }) {
                   )
                 }
               </div>
-              <button
-                type="button"
-                className="w-full py-2 rounded-lg bg-black text-white flex flex-col items-center hover:bg-[#555555]"
-              >
-                ORDER
-                {' '}
-                <span className="text-sm">
-                  {items.length}
-                  {' '}
-                  items
-                </span>
-              </button>
+              <OrderModal items={items} />
             </>
           )
       }
