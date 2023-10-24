@@ -21,18 +21,14 @@ export default function ItemCard(props) {
   const [isEnetered, setIsEnetered] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const handleMouseEnter = () => {
-    setIsEnetered((state) => !state);
-  };
-
   const cardHovered = 'relative overflow-hidden order-none w-[250px] h-[360px] bg-white rounded-lg';
   const cardNotHovered = 'relative overflow-hidden w-[250px] h-[360px] bg-white rounded-lg border-stroke-light-blue border-[1px]';
 
   return (
     <div
       className={isEnetered ? 'relative z-30 w-[270px] pt-1 h-min-[524px] grid justify-center items-start' : 'relative z-3 w-[270px] h-min-[524px] grid justify-center items-start pt-1'}
-      onMouseEnter={() => handleMouseEnter()}
-      onMouseLeave={() => handleMouseEnter()}
+      onMouseEnter={() => setIsEnetered(true)}
+      onMouseLeave={() => setIsEnetered(false)}
     >
       <div className="relative p-top-1 z-10 flex flex-col gap-1 w-[250px] rounded-lg">
         <div className="group absolute top-3 right-3 z-40 cursor-pointer hover:scale-110 transition transition-duration-150">
@@ -103,7 +99,10 @@ export default function ItemCard(props) {
               </Button>
               <Modal
                 isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                onOpenChange={() => {
+                  onOpenChange();
+                  setIsEnetered(false);
+                }}
               >
                 <ModalContent>
                   {(onClose) => (

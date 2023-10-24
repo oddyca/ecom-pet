@@ -6,8 +6,10 @@ const createFavSlice = (set) => ({
 
     if (!isFoundInfavorites) {
       favSet.add(id);
+      localStorage.setItem(`${id}`, 'inFavs');
     } else {
       favSet.delete(id);
+      localStorage.removeItem(`${id}`);
     }
 
     return ({ favorites: favSet });

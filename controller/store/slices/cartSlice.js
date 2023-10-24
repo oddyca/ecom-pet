@@ -12,6 +12,7 @@ const createCartSlice = (set) => ({
       cartMap.set(key, { ...foundItem, quantity: 1 });
     }
 
+    localStorage.setItem(key, `${foundItem.quantity}`);
     return ({ cart: cartMap });
   }),
 
@@ -29,6 +30,7 @@ const createCartSlice = (set) => ({
       }
     }
 
+    localStorage.setItem(key, `${foundItem.quantity}`);
     return ({ cart: cartMap });
   }),
 
@@ -36,8 +38,12 @@ const createCartSlice = (set) => ({
     const key = `${id}${size}`;
     const cartMap = new Map(state.cart);
     cartMap.delete(key);
+
+    localStorage.removeItem(key);
     return ({ cart: cartMap });
   }),
+
+  reset: () => set(new Map()),
 });
 
 export default createCartSlice;
