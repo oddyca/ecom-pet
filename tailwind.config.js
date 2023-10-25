@@ -27,6 +27,8 @@ const Config = {
       'stroke-blue': '#E7EDF6',
       'stroke-light-blue': '#E5EDF6',
       'link-blue': '#70A3E1',
+      grey: '#F8F8F8',
+      'grey-stroke': '#F0F0F0',
     },
     flex: {
       embla: '0 0 100%',
