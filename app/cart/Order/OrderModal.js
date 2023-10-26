@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import {
+  Image,
   Modal,
   ModalContent,
   ModalHeader,
@@ -14,9 +15,10 @@ import {
   Tabs,
   Tab,
 } from '@nextui-org/react';
+
 import { useForm } from 'react-hook-form';
 
-export default function OrderModal({ items }) {
+export default function OrderModal({ items, totalOrderSum = 0 }) {
   const [formCity, setFormCity] = useState('');
   const [formAddress, setFormAddress] = useState('');
   const [selected, setSelected] = React.useState('address');
@@ -109,7 +111,23 @@ export default function OrderModal({ items }) {
                         />
                         {errors.address && <p className="absolute px-2 bottom-[-1.25rem] w-fit h-fit text-sm text-red">{errors.address.message}</p>}
                       </div>
-                      <div className="flex py-2 px-1 justify-end">
+                      <div className="flex py-2 px-1 justify-between">
+                        <p className="text-[#C9C9C9] text-sm flex items-center gap-2">
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                          >
+                            <path
+                              d="M6 5.44444V8.22222M6 11C3.23858 11 1 8.76142 1 6C1 3.23858 3.23858 1 6 1C8.76142 1 11 3.23858 11 6C11 8.76142 8.76142 11 6 11ZM6.02767 3.77778V3.83333L5.97233 3.83344V3.77778H6.02767Z"
+                              stroke="#C9C9C9"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          To save address information, please sign up
+                        </p>
                         <Link
                           className="text-link-blue"
                           href="/info"
@@ -122,12 +140,58 @@ export default function OrderModal({ items }) {
                     <Tab
                       key="confirmation"
                       title="Confirmation"
+                      className="flex flex-col gap-4"
                     >
-                      <div className="bg-grey rounded border border-2 border-grey-stroke flex flex-col gap-2">
-                        <h3>City</h3>
-                        <p>{formCity}</p>
-                        <h3>Address</h3>
-                        <p>{formAddress}</p>
+                      <p className="text-sm text-black">Delivery address</p>
+                      <div className="flex gap-4">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex justify-between items-center gap-8 border border-2 border-grey-selected bg-grey p-3 rounded-lg">
+                            <div className="flex flex-col gap-2">
+                              <h2 className="text-xl font-bold">
+                                {formCity}
+                                ,
+                                {' '}
+                                {formAddress.slice(0, formAddress.indexOf(','))}
+                              </h2>
+                              <p>
+                                {formCity}
+                                ・
+                                {formAddress}
+                              </p>
+                            </div>
+                            <Image
+                              src="/check.svg"
+                              width={20}
+                              height={14}
+                              alt="checkmark icon"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div className="flex flex-col gap-5 self-center bg-grey max-w-[60%] p-5">
+                        <h2 className="self-center font-bold text-lg">Your order</h2>
+                        <div className="flex flex-col gap-2">
+                          {items.map((item) => (
+                            <div className="flex items-end gap-1">
+                              <p className="font-medium">{item.title}</p>
+                              <div className="border-b-3 border-dotted w-full" />
+                              <p>
+                                $
+                                {item.price}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-b-2 border-dashed w-full border-black" />
+                        <div className="flex items-end gap-1">
+                          <p className="text-lg font-medium">TOTAL</p>
+                          <div className="border-b-3 border-dotted w-full" />
+                          <p className="text-lg font-medium">
+                            $
+                            {totalOrderSum}
+                          </p>
+                        </div>
                       </div>
                     </Tab>
                   </Tabs>
