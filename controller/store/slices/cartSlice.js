@@ -44,7 +44,7 @@ const createCartSlice = (set) => ({
     return ({ cart: cartMap });
   }),
 
-  reset: () => set(new Map()),
+  resetCart: () => set(new Map()),
 });
 
 export default createCartSlice;

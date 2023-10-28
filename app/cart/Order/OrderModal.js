@@ -14,9 +14,31 @@ import {
   Link,
   Tabs,
   Tab,
+  RadioGroup,
+  Radio,
+  cn,
 } from '@nextui-org/react';
-
 import { useForm } from 'react-hook-form';
+import useStore from '../../../controller/store/store';
+
+export function CustomRadio(props) {
+  const { children, ...otherProps } = props;
+
+  return (
+    <Radio
+      {...otherProps}
+      classNames={{
+        base: cn(
+          'inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between',
+          'flex-row-reverse max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent',
+          'data-[selected=true]:border-grey-selected',
+        ),
+      }}
+    >
+      {children}
+    </Radio>
+  );
+}
 
 export default function OrderModal({ items, totalOrderSum = 0 }) {
   const [formCity, setFormCity] = useState('');
@@ -29,18 +51,54 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
+  const { resetCart } = useStore();
+
+  const handleNext = () => {
+    setSelected('confirmation');
+    if (localStorage.getItem('isLogged')) {
+      localStorage.setItem('address', `${formCity}-${formAddress}`);
+    } else {
+      sessionStorage.setItem('address', `${formCity}-${formAddress}`);
+    }
+  };
+
+  const renderAddressCards = () => {
+    const city = sessionStorage.getItem('address')?.slice(0, sessionStorage.getItem('address').indexOf('-')) || formCity;
+    const address = sessionStorage.getItem('address')?.slice(sessionStorage.getItem('address').indexOf('-') + 1) || formAddress;
+
+    return (
+      <RadioGroup className="flex flex-col gap-2">
+        <CustomRadio
+          className="flex justify-between items-center gap-8 border border-2 border-grey-selected bg-grey p-3 rounded-lg"
+          description={`${city}・${address}`}
+        >
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl font-bold">
+              {city}
+              ,
+              {' '}
+              {address.slice(0, address.indexOf(','))}
+            </h2>
+          </div>
+          <Image
+            src="/check.svg"
+            width={20}
+            height={14}
+            alt="checkmark icon"
+          />
+        </CustomRadio>
+      </RadioGroup>
+    );
+  };
+
   const handleFormSubmit = (data, event) => {
     event.preventDefault();
-    if (localStorage.getItem('isLogged')) {
-      localStorage.setItem('address', `${data.city}-${data.address}`);
-    } else {
-      sessionStorage.setItem('address', `${data.city}-${data.address}`);
-    }
+
+    resetCart();
   };
 
   return (
     <>
-
       <Button
         type="button"
         onPress={onOpen}
@@ -58,7 +116,11 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">Checkout</ModalHeader>
-              <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <form onSubmit={() => {
+                handleSubmit(handleFormSubmit);
+                onClose();
+              }}
+              >
                 <ModalBody className="gap-6">
                   <Tabs
                     fullWidth
@@ -144,29 +206,7 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                     >
                       <p className="text-sm text-black">Delivery address</p>
                       <div className="flex gap-4">
-                        <div className="flex flex-col gap-2">
-                          <div className="flex justify-between items-center gap-8 border border-2 border-grey-selected bg-grey p-3 rounded-lg">
-                            <div className="flex flex-col gap-2">
-                              <h2 className="text-xl font-bold">
-                                {formCity}
-                                ,
-                                {' '}
-                                {formAddress.slice(0, formAddress.indexOf(','))}
-                              </h2>
-                              <p>
-                                {formCity}
-                                ・
-                                {formAddress}
-                              </p>
-                            </div>
-                            <Image
-                              src="/check.svg"
-                              width={20}
-                              height={14}
-                              alt="checkmark icon"
-                            />
-                          </div>
-                        </div>
+                        {renderAddressCards()}
                       </div>
                       <hr />
                       <div className="flex flex-col gap-5 self-center bg-grey max-w-[60%] p-5">
@@ -211,7 +251,7 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                         <Link
                           size="sm"
                           className="cursor-pointer"
-                          onPress={() => setSelected('confirmation')}
+                          onPress={() => handleNext()}
                           isDisabled={
                             !((formCity && formAddress) && !(errors.city || errors.address))
                           }
