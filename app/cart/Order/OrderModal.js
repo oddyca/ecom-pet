@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import {
-  Image,
   Modal,
   ModalContent,
   ModalHeader,
@@ -30,9 +29,11 @@ export function CustomRadio(props) {
       classNames={{
         base: cn(
           'inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between',
-          'flex-row-reverse max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent',
+          'flex-row-reverse max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-grey-stroke',
           'data-[selected=true]:border-grey-selected',
         ),
+        wrapper: 'group-data-[selected=true]:border-grey-selected',
+        control: 'bg-grey-selected',
       }}
     >
       {children}
@@ -52,10 +53,11 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
   } = useForm({ mode: 'onChange' });
 
   const { resetCart } = useStore();
+  const IS_LOGGED = localStorage.getItem('isLogged');
 
   const handleNext = () => {
     setSelected('confirmation');
-    if (localStorage.getItem('isLogged')) {
+    if (IS_LOGGED) {
       localStorage.setItem('address', `${formCity}-${formAddress}`);
     } else {
       sessionStorage.setItem('address', `${formCity}-${formAddress}`);
@@ -63,30 +65,38 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
   };
 
   const renderAddressCards = () => {
-    const city = sessionStorage.getItem('address')?.slice(0, sessionStorage.getItem('address').indexOf('-')) || formCity;
-    const address = sessionStorage.getItem('address')?.slice(sessionStorage.getItem('address').indexOf('-') + 1) || formAddress;
+    let filteredKeys;
+
+    if (IS_LOGGED) {
+      filteredKeys = Object.keys(localStorage).filter((key) => key.includes('address'));
+    } else {
+      filteredKeys = Object.keys(sessionStorage).filter((key) => key.includes('address'));
+    }
 
     return (
-      <RadioGroup className="flex flex-col gap-2">
-        <CustomRadio
-          className="flex justify-between items-center gap-8 border border-2 border-grey-selected bg-grey p-3 rounded-lg"
-          description={`${city}・${address}`}
-        >
-          <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-bold">
-              {city}
-              ,
-              {' '}
-              {address.slice(0, address.indexOf(','))}
-            </h2>
-          </div>
-          <Image
-            src="/check.svg"
-            width={20}
-            height={14}
-            alt="checkmark icon"
-          />
-        </CustomRadio>
+      <RadioGroup
+        className="flex flex-col gap-2"
+        isRequired
+        orientation="horizontal"
+      >
+        {filteredKeys.map((key) => {
+          const city = IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')) || formCity;
+          const address = IS_LOGGED ? localStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1) || formAddress;
+          return (
+            <CustomRadio
+              key={key}
+              className="flex justify-between items-center gap-8 border border-2 bg-grey p-3 rounded-lg"
+              description={`${city}・${address}`}
+              value={`${address}`}
+            >
+              <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-bold">
+                  {city}
+                </h2>
+              </div>
+            </CustomRadio>
+          );
+        })}
       </RadioGroup>
     );
   };
@@ -214,7 +224,11 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                         <div className="flex flex-col gap-2">
                           {items.map((item) => (
                             <div className="flex items-end gap-1">
-                              <p className="font-medium">{item.title}</p>
+                              <p className="font-medium">
+                                {item.title}
+                                {' x'}
+                                {item.quantity}
+                              </p>
                               <div className="border-b-3 border-dotted w-full" />
                               <p>
                                 $
