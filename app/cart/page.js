@@ -16,8 +16,8 @@ export default function Cart() {
   useEffect(() => {
     const fetchData = async () => {
       const itemInfo = cartItemsIds.map(async (id) => {
-        const trimmedID = id.slice(0, id.length - 1);
-        const itemSize = id.at(-1);
+        const trimmedID = id.match(/\d+/)[0];
+        const itemSize = id.match(/\D+/)[0];
         const itemQuantity = cart.get(id).quantity;
         const info = await getItemInfo(trimmedID);
         const newInfo = {

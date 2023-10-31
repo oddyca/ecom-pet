@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import Loading from './loading';
 
-export default async function Layout({ children }) {
+export default function Layout({ children }) {
   return (
     <>
       <Suspense fallback={<Loading />}>

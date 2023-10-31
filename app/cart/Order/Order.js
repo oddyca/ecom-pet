@@ -82,7 +82,7 @@ export default function Order({ items }) {
                 className="w-fit py-2 px-4 rounded-lg bg-black text-white self-end animate-slideup hover:bg-[#555555]"
                 onClick={handlePromoCodeCheck}
               >
-                SUBMIT
+                APPLY
               </button>
             )}
           </div>
@@ -93,6 +93,7 @@ export default function Order({ items }) {
                 <span>
                   <span className="line-through text-sm font-normal">{`$${totalOrderSum.toFixed(2)}`}</span>
                   {' $'}
+                  {`${(totalOrderSum / (1 + currentDiscount)).toFixed(2)}`}
                 </span>
               ) : (
                 `$${totalOrderSum.toFixed(2)}`
@@ -108,6 +109,7 @@ export default function Order({ items }) {
           <OrderModal
             items={items}
             totalOrderSum={totalOrderSum}
+            currentDiscount={currentDiscount * 100}
           />
         </>
       )}

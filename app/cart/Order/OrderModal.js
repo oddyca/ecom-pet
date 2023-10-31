@@ -41,10 +41,12 @@ export function CustomRadio(props) {
   );
 }
 
-export default function OrderModal({ items, totalOrderSum = 0 }) {
+export default function OrderModal({ items, totalOrderSum = 0, currentDiscount = '' }) {
   const [formCity, setFormCity] = useState('');
   const [formAddress, setFormAddress] = useState('');
-  const [selected, setSelected] = React.useState('address');
+  const [selected, setSelected] = useState('address');
+  const [radioExists, setRadioExists] = useState(false);
+  const [radioChecked, setRadioChecked] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     register,
@@ -59,7 +61,7 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
     setSelected('confirmation');
     if (IS_LOGGED) {
       localStorage.setItem('address', `${formCity}-${formAddress}`);
-    } else {
+    } else if (!radioExists) {
       sessionStorage.setItem('address', `${formCity}-${formAddress}`);
     }
   };
@@ -73,15 +75,18 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
       filteredKeys = Object.keys(sessionStorage).filter((key) => key.includes('address'));
     }
 
+    setRadioExists(true);
+
     return (
       <RadioGroup
         className="flex flex-col gap-2"
         isRequired
         orientation="horizontal"
+        onChange={() => setRadioChecked(true)}
       >
         {filteredKeys.map((key) => {
           const city = IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')) || formCity;
-          const address = IS_LOGGED ? localStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1) || formAddress;
+          const address = IS_LOGGED ? localStorage.getItem(key).slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1) || formAddress;
           return (
             <CustomRadio
               key={key}
@@ -146,13 +151,22 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                       title="Address Information"
                       className="flex flex-col gap-6"
                     >
+                      {
+                        (sessionStorage.getItem('address') || IS_LOGGED) && (
+                          <>
+                            <p>Autofill the adress</p>
+                            {renderAddressCards()}
+                          </>
+
+                        )
+                      }
                       <div className="relative flex flex-col">
                         <Input
                           autoFocus
                           label="City"
                           placeholder="Enter your city name"
                           variant="bordered"
-                          isRequired
+                          isRequired={sessionStorage.getItem('address') || IS_LOGGED ? 'false' : 'true'}
                           {...register('city', {
                             onChange: (e) => setFormCity(e.target.value),
                             required: 'This field is required',
@@ -170,7 +184,7 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                           label="Address"
                           placeholder="Street, House №, Apartment № (optional)"
                           variant="bordered"
-                          isRequired
+                          isRequired={sessionStorage.getItem('address') || IS_LOGGED ? 'false' : 'true'}
                           {...register('address', {
                             onChange: (e) => setFormAddress(e.target.value),
                             required: 'This field is required',
@@ -237,6 +251,17 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                             </div>
                           ))}
                         </div>
+                        {currentDiscount
+                          && (
+                          <div className="flex items-end gap-1">
+                            <p className="font-medium">Discount</p>
+                            <div className="border-b-3 border-dotted w-full" />
+                            <p className="font-medium">
+                              {currentDiscount}
+                              %
+                            </p>
+                          </div>
+                          )}
                         <div className="border-b-2 border-dashed w-full border-black" />
                         <div className="flex items-end gap-1">
                           <p className="text-lg font-medium">TOTAL</p>
@@ -254,7 +279,10 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                   <Button
                     color="danger"
                     variant="flat"
-                    onPress={onClose}
+                    onPress={() => {
+                      onClose();
+                      // localStorage.clear();
+                    }}
                   >
                     Close
                   </Button>
@@ -266,9 +294,8 @@ export default function OrderModal({ items, totalOrderSum = 0 }) {
                           size="sm"
                           className="cursor-pointer"
                           onPress={() => handleNext()}
-                          isDisabled={
-                            !((formCity && formAddress) && !(errors.city || errors.address))
-                          }
+                          // eslint-disable-next-line max-len
+                          isDisabled={!((formCity && formAddress) && !(errors.city || errors.address)) && (!radioExists || !radioChecked)}
                         >
                           Next
                         </Link>

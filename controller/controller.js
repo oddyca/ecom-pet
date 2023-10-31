@@ -13,7 +13,7 @@ export const getAllProducts = async (searchParams) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -23,7 +23,7 @@ export const getAllCategories = async () => {
     const data = await response.json();
     return data;
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -33,7 +33,7 @@ export const getIntoCategory = async (category) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -43,6 +43,6 @@ export const getItemInfo = async (id) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
