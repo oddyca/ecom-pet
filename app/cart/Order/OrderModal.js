@@ -51,6 +51,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
@@ -59,6 +60,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   const handleNext = () => {
     setSelected('confirmation');
+
     if (IS_LOGGED) {
       localStorage.setItem('address', `${formCity}-${formAddress}`);
     } else if (!radioExists) {
@@ -66,7 +68,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
     }
   };
 
-  const renderAddressCards = () => {
+  const renderAddressCards = (isWhere = '') => {
     let filteredKeys;
 
     if (IS_LOGGED) {
@@ -75,7 +77,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
       filteredKeys = Object.keys(sessionStorage).filter((key) => key.includes('address'));
     }
 
-    setRadioExists(true);
+    if (!isWhere) setRadioExists(true);
 
     return (
       <RadioGroup
@@ -106,9 +108,8 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
     );
   };
 
-  const handleFormSubmit = (data, event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-
     resetCart();
   };
 
@@ -131,8 +132,8 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">Checkout</ModalHeader>
-              <form onSubmit={() => {
-                handleSubmit(handleFormSubmit);
+              <form onSubmit={(event) => {
+                handleSubmit(handleFormSubmit(event));
                 onClose();
               }}
               >
@@ -144,7 +145,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                     variant="underlined"
                     selectedKey={selected}
                     onSelectionChange={setSelected}
-                    disabledKeys={(!errors.city && !errors.address) ? [''] : ['confirmation']}
+                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) && (!radioExists || !radioChecked) ? [''] : ['confirmation']}
                   >
                     <Tab
                       key="address"
@@ -230,7 +231,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                     >
                       <p className="text-sm text-black">Delivery address</p>
                       <div className="flex gap-4">
-                        {renderAddressCards()}
+                        {renderAddressCards('confirmation')}
                       </div>
                       <hr />
                       <div className="flex flex-col gap-5 self-center bg-grey max-w-[60%] p-5">
@@ -280,8 +281,11 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                     color="danger"
                     variant="flat"
                     onPress={() => {
+                      setFormAddress('');
+                      setFormCity('');
+                      reset();
+                      setSelected('address');
                       onClose();
-                      // localStorage.clear();
                     }}
                   >
                     Close
