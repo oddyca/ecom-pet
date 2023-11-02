@@ -52,6 +52,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
@@ -87,14 +88,20 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
         onChange={() => setRadioChecked(true)}
       >
         {filteredKeys.map((key) => {
-          const city = IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')) || formCity;
-          const address = IS_LOGGED ? localStorage.getItem(key).slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1) || formAddress;
+          const city = formCity || (IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')));
+          const address = formAddress || (IS_LOGGED ? localStorage.getItem(key).slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1));
           return (
             <CustomRadio
               key={key}
               className="flex justify-between items-center gap-8 border border-2 bg-grey p-3 rounded-lg"
               description={`${city}・${address}`}
               value={`${address}`}
+              onClick={() => {
+                setFormCity(city);
+                setFormAddress(address);
+                setValue('city', city);
+                setValue('address', address);
+              }}
             >
               <div className="flex flex-col gap-2">
                 <h2 className="text-xl font-bold">
