@@ -6,8 +6,12 @@ import Link from 'next/link';
 import {
   Popover, PopoverTrigger, PopoverContent,
 } from '@nextui-org/react';
+import useStore from '../../controller/store/store';
 
 export default function ProfilePopover() {
+  const IS_LOGGED = localStorage.getItem('isLogged');
+  const { resetCart } = useStore();
+
   return (
     <Popover
       placement="bottom"
@@ -30,7 +34,7 @@ export default function ProfilePopover() {
       <PopoverContent>
         <div className="divide-y-1">
           <Link
-            href="/profile"
+            href={IS_LOGGED ? '/profile' : 'signin'}
             className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
           >
             <Image
@@ -55,19 +59,22 @@ export default function ProfilePopover() {
             />
             Settings
           </Link>
-          <Link
-            href="/"
-            className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
-          >
-            <Image
-              src="/signout.svg"
-              alt="signout icon"
-              width={14}
-              height={14}
-              className="stroke-black"
-            />
-            Sign out
-          </Link>
+          {IS_LOGGED && (
+            <Link
+              href="/"
+              className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
+              onClick={() => resetCart()}
+            >
+              <Image
+                src="/signout.svg"
+                alt="signout icon"
+                width={14}
+                height={14}
+                className="stroke-black"
+              />
+              Sign out
+            </Link>
+          )}
           <Link
             href="/info"
             className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0] text-link-blue"
