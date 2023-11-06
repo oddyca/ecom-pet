@@ -1,19 +1,49 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader,
 } from '@nextui-org/react';
+import { userLogin } from '../../controller/controller';
 
 export default function Page() {
+  const IS_LOGGED = useRef(null);
+
+  useEffect(() => {
+    IS_LOGGED.current = localStorage.getItem('isLogged');
+  }, []);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
+
   const [selected, setSelected] = React.useState('login');
+  const [loginError, setLoginError] = useState('');
+
+  const sendToServer = async (username, password) => {
+    const response = await userLogin(username, password);
+
+    if (response.ok) {
+      const responseData = await response.json();
+      localStorage.setItem('loginToken', responseData.token);
+      localStorage.setItem('isLogged', 'true');
+    } else {
+      setLoginError(await response.text());
+    }
+    reset();
+  };
+
+  const handleFormSubmit = (data, event) => {
+    event.preventDefault();
+
+    sendToServer(data.username, data.password);
+  };
 
   return (
     <main className="flex min-h-[666px] w-full relative flex-col items-center justify-center p-3">
@@ -30,36 +60,62 @@ export default function Page() {
               key="login"
               title="Login"
             >
-              <form className="flex flex-col gap-4">
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit(handleFormSubmit)}
+              >
                 <Input
                   isRequired
-                  label="Email"
-                  placeholder="Enter your email"
-                  type="email"
+                  label="Username"
+                  placeholder="Enter username"
+                  type="text"
+                  {...register('username', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /^[A-Za-z0-9_]+$/,
+                      message:
+                        'Invalid username (only letters and underscores are allowed)',
+                    },
+                  })}
                 />
+                {errors.username && (<p className="text-red">{errors.username.message}</p>)}
                 <Input
                   isRequired
                   label="Password"
                   placeholder="Enter your password"
                   type="password"
+                  {...register('password', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /.{4,}/,
+                      message:
+                        'Password is too short (at least 4 characters)',
+                    },
+                  })}
                 />
+                {errors.password && (<p className="text-red">{errors.password.message}</p>)}
                 <p className="text-center text-small">
                   Need to create an account?
                   {' '}
                   <Link
                     size="sm"
                     onPress={() => setSelected('sign-up')}
+                    className="cursor-pointer"
                   >
                     Sign up
                   </Link>
                 </p>
-                <div className="flex gap-2 justify-end">
+                <div className="flex flex-col gap-2 items-end">
                   <Button
                     fullWidth
-                    color="primary"
+                    type="submit"
+                    className="bg-red text-white hover:bg-red-hover"
                   >
                     Login
                   </Button>
+                  {loginError && (
+                    <p className="text-red">{loginError}</p>
+                  )}
                 </div>
               </form>
             </Tab>
@@ -99,7 +155,8 @@ export default function Page() {
                 <div className="flex gap-2 justify-end">
                   <Button
                     fullWidth
-                    color="primary"
+                    type="submit"
+                    className="bg-red text-white hover:bg-red-hover"
                   >
                     Sign up
                   </Button>

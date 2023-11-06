@@ -46,3 +46,21 @@ export const getItemInfo = async (id) => {
     console.log(e);
   }
 };
+
+export const userLogin = async (username, password) => {
+  try {
+    const response = await fetch('https://fakestoreapi.com/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: `${username}`,
+        password: `${password}`,
+      }),
+    });
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};

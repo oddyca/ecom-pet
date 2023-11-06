@@ -23,6 +23,7 @@ const Config = {
       ...colors,
       black: '#2D2D2D',
       red: '#EC4D37',
+      'red-hover': '#FF725F',
       'icon-blue': '#617A98',
       'stroke-blue': '#E7EDF6',
       'stroke-light-blue': '#E5EDF6',
