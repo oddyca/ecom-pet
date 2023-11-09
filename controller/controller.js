@@ -64,3 +64,22 @@ export const userLogin = async (username, password) => {
     console.error(e);
   }
 };
+
+export const userSignUp = async (email, username, password) => {
+  try {
+    const response = await fetch('https://fakestoreapi.com/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: `${email}`,
+        username: `${username}`,
+        password: `${password}`,
+      }),
+    });
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};

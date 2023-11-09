@@ -15,7 +15,13 @@ export default function ProfilePopover() {
     IS_LOGGED.current = localStorage.getItem('isLogged');
   }, []);
 
-  const { resetCart } = useStore();
+  const { resetCart, isLogged, resetIsLogged } = useStore();
+
+  const logOut = () => {
+    resetCart();
+    resetIsLogged(false);
+    localStorage.removeItem('isLogged');
+  };
 
   return (
     <Popover
@@ -39,7 +45,7 @@ export default function ProfilePopover() {
       <PopoverContent>
         <div className="divide-y-1">
           <Link
-            href={IS_LOGGED.current ? '/profile' : 'signin'}
+            href={IS_LOGGED.current ? '/profile' : '/signin'}
             className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
           >
             <Image
@@ -64,11 +70,11 @@ export default function ProfilePopover() {
             />
             Settings
           </Link>
-          {IS_LOGGED.current && (
+          {(IS_LOGGED.current || isLogged) && (
             <Link
               href="/"
               className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
-              onClick={() => resetCart()}
+              onClick={() => logOut()}
             >
               <Image
                 src="/signout.svg"
