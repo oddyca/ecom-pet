@@ -7,11 +7,11 @@ import { useForm } from 'react-hook-form';
 import {
   Tabs, Tab, Input, Link, Button,
 } from '@nextui-org/react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { userLogin, userSignUp } from '../../controller/controller';
 import useStore from '../../controller/store/store';
 
-export function Spinner() {
+function Spinner() {
   return (
     <svg
       className="animate-spin h-5 w-5 text-current"
@@ -36,27 +36,47 @@ export function Spinner() {
 }
 
 export default function Page() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({ mode: 'onSubmit' });
+  } = useForm({ mode: 'onChange' });
+
+  const {
+    register: registerSignup,
+    handleSubmit: handleSubmitSignup,
+    reset: resetSignup,
+    formState: { errors: errorsSignup },
+  } = useForm({ mode: 'onChange' });
 
   const [selected, setSelected] = React.useState('login');
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { isLogged, setIsLogged } = useStore();
+  const { setIsLogged } = useStore();
 
-  const formSignIn = async (username, password) => {
+  const handleSignInSubmit = async (data, event) => {
+    event.preventDefault();
+
     setServerError('');
     setIsLoading(true);
-    const isNewSignUp = localStorage.getItem(`signup-${username}`);
-    if (isNewSignUp) {
-      setIsLoading(false);
-      localStorage.setItem('isLogged', 'true');
-      // localStorage.setItem('loginToken', `token-${username}`);
-      setIsLogged(true);
+
+    const username = data.signinUsername;
+    const password = data.signinPassword;
+
+    const newSignUpVal = localStorage.getItem(`signup-${username}`);
+    if (newSignUpVal) {
+      if (password === newSignUpVal) {
+        setIsLoading(false);
+        localStorage.setItem('isLogged', 'true');
+        // localStorage.setItem('loginToken', `token-${username}`);
+        setIsLogged();
+        router.push('/profile');
+      } else {
+        setIsLoading(false);
+        setServerError('Wrong password');
+      }
     } else {
       const response = await userLogin(username, password);
       setIsLoading(false);
@@ -65,17 +85,21 @@ export default function Page() {
         const responseData = await response.json();
         localStorage.setItem('loginToken', responseData.token);
         localStorage.setItem('isLogged', 'true');
-        setIsLogged(true);
-        redirect('/profile');
+        setIsLogged();
       } else {
         setServerError(await response.text());
       }
     }
-
     reset();
   };
 
-  const formSignUp = async (email, username, password) => {
+  const handleSignUpSubmit = async (data, event) => {
+    event.preventDefault();
+
+    const email = data.signupEmail;
+    const username = data.signupUsername;
+    const password = data.signupPassword;
+
     setIsLoading(true);
     const response = await userSignUp(email, username, password);
     setIsLoading(false);
@@ -87,174 +111,161 @@ export default function Page() {
       setServerError(await response.text());
     }
 
-    reset();
-  };
-
-  const handleFormSubmit = (data, event) => {
-    event.preventDefault();
-
-    if (selected === 'login') {
-      formSignIn(data.username, data.password);
-    } else {
-      formSignUp(data.email, data.newUsername, data.password);
-    }
+    resetSignup();
   };
 
   return (
     <main className="flex min-h-[666px] w-full relative flex-col items-center justify-center p-3">
       <div className="w-full max-w-[1440px] flex justify-center items-center gap-4">
         <div className="flex flex-col items-center bg-white aspect-video min-h-[500px] rounded-lg p-3 border border-2 border-grey-stroke">
-          {
-            !isLogged
-              && (
-                <Tabs
-                  fullWidth
-                  size="md"
-                  aria-label="Tabs form"
-                  selectedKey={selected}
-                  onSelectionChange={setSelected}
-                >
-                  <Tab
-                    className="w-full"
-                    key="login"
-                    title="Login"
+          <Tabs
+            fullWidth
+            size="md"
+            aria-label="Tabs form"
+            selectedKey={selected}
+            onSelectionChange={setSelected}
+          >
+            <Tab
+              className="w-full"
+              key="login"
+              title="Login"
+            >
+              <form
+                key="formSignin"
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit(handleSignInSubmit)}
+              >
+                <Input
+                  isRequired
+                  label="Username"
+                  placeholder="Enter username"
+                  type="text"
+                  {...register('signinUsername', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /^[A-Za-z0-9_]+$/, // TODO: min 3 ?
+                      message: 'Invalid username (only letters and underscores are allowed)',
+                    },
+                  })}
+                />
+                {errors.signinUsername && (<p className="text-red">{errors.signinUsername.message}</p>)}
+                <Input
+                  isRequired
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="password"
+                  {...register('signinPassword', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /.{4,}/,
+                      message: 'Password is too short (at least 4 characters)',
+                    },
+                  })}
+                />
+                {errors.signinPassword && (<p className="text-red">{errors.signinPassword.message}</p>)}
+                <p className="text-center text-small">
+                  Need to create an account?
+                  {' '}
+                  <Link
+                    size="sm"
+                    onPress={() => setSelected('sign-up')}
+                    className="cursor-pointer"
                   >
-                    <form
-                      className="flex flex-col gap-4"
-                      onSubmit={handleSubmit(handleFormSubmit)}
-                    >
-                      <Input
-                        isRequired
-                        label="Username"
-                        placeholder="Enter username"
-                        type="text"
-                        {...register('username', {
-                          required: 'This field is required',
-                          pattern: {
-                            value: /^[A-Za-z0-9_]+$/,
-                            message: 'Invalid username (only letters and underscores are allowed)',
-                          },
-                        })}
-                      />
-                      {errors.username && (<p className="text-red">{errors.username.message}</p>)}
-                      <Input
-                        isRequired
-                        label="Password"
-                        placeholder="Enter your password"
-                        type="password"
-                        {...register('password', {
-                          required: 'This field is required',
-                          pattern: {
-                            value: /.{4,}/,
-                            message: 'Password is too short (at least 4 characters)',
-                          },
-                        })}
-                      />
-                      {errors.password && (<p className="text-red">{errors.password.message}</p>)}
-                      <p className="text-center text-small">
-                        Need to create an account?
-                        {' '}
-                        <Link
-                          size="sm"
-                          onPress={() => setSelected('sign-up')}
-                          className="cursor-pointer"
-                        >
-                          Sign up
-                        </Link>
-                      </p>
-                      <div className="flex flex-col gap-2 items-end">
-                        <Button
-                          type="submit"
-                          className="bg-red text-white hover:bg-red-hover px-8 self-center"
-                          isLoading={isLoading}
-                          spinner={<Spinner />}
-                        >
-                          Login
-                        </Button>
-                        {serverError && (
-                        <p className="text-red">{serverError}</p>
-                        )}
-                      </div>
-                    </form>
-                  </Tab>
-                  <Tab
-                    className="w-full"
-                    key="sign-up"
-                    title="Sign up"
+                    Sign up
+                  </Link>
+                </p>
+                <div className="flex flex-col gap-2 items-end">
+                  <Button
+                    type="submit"
+                    className="bg-red text-white hover:bg-red-hover px-8 self-center"
+                    isLoading={isLoading}
+                    spinner={<Spinner />}
                   >
-                    <form
-                      className="flex flex-col gap-4 h-[300px]"
-                      onSubmit={handleSubmit(handleFormSubmit)}
-                    >
-                      <Input
-                        isRequired
-                        label="Name"
-                        placeholder="Enter your name"
-                        type="text"
-                        {...register('newUsername', {
-                          required: 'This field is required',
-                          pattern: {
-                            value: /.{4,}/,
-                            message: 'Invalid username (only letters and underscores are allowed)',
-                          },
-                        })}
-                      />
-                      {errors.newUsername && (<p className="text-red">{errors.newUsername.message}</p>)}
-                      <Input
-                        isRequired
-                        label="Email"
-                        placeholder="Enter your email"
-                        type="email"
-                        {...register('email', {
-                          required: 'This field is required',
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Invalid email',
-                          },
-                        })}
-                      />
-                      {errors.email && (<p className="text-red">{errors.email.message}</p>)}
-                      <Input
-                        isRequired
-                        label="Password"
-                        placeholder="Enter your password"
-                        type="password"
-                        {...register('password', {
-                          required: 'This field is required',
-                          pattern: {
-                            value: /.{4,}/,
-                            message: 'Password is too short (at least 4 characters)',
-                          },
-                        })}
-                      />
-                      {errors.password && (<p className="text-red">{errors.password.message}</p>)}
-                      <p className="text-center text-small">
-                        Already have an account?
-                        {' '}
-                        <Link
-                          size="sm"
-                          onPress={() => setSelected('login')}
-                        >
-                          Login
-                        </Link>
-                      </p>
-                      <div className="flex flex-col gap-2 items-end">
-                        <Button
-                          type="submit"
-                          className="bg-red text-white hover:bg-red-hover px-8 self-center"
-                          spinner={<Spinner />}
-                        >
-                          Sign up
-                        </Button>
-                        {serverError && (
-                          <p className="text-red">{serverError}</p>
-                        )}
-                      </div>
-                    </form>
-                  </Tab>
-                </Tabs>
-              )
-          }
+                    Login
+                  </Button>
+                  {serverError && (
+                    <p className="text-red self-center">{serverError}</p>
+                  )}
+                </div>
+              </form>
+            </Tab>
+            <Tab
+              className="w-full"
+              key="sign-up"
+              title="Sign up"
+            >
+              <form
+                key="formSignup"
+                className="flex flex-col gap-4 h-[300px]"
+                onSubmit={handleSubmitSignup(handleSignUpSubmit)}
+              >
+                <Input
+                  isRequired
+                  label="Name"
+                  placeholder="Enter your name"
+                  type="text"
+                  {...registerSignup('signupUsername', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /.{4,}/,
+                      message: 'Invalid username (only letters and underscores are allowed)',
+                    },
+                  })}
+                />
+                {errorsSignup.signupUsername && (<p className="text-red">{errorsSignup.signupUsername.message}</p>)}
+                <Input
+                  isRequired
+                  label="Email"
+                  placeholder="Enter your email"
+                  type="email"
+                  {...registerSignup('signupEmail', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email',
+                    },
+                  })}
+                />
+                {errorsSignup.signupEmail && (<p className="text-red">{errorsSignup.signupEmail.message}</p>)}
+                <Input
+                  isRequired
+                  label="Password"
+                  placeholder="Enter your password"
+                  type="oassword"
+                  {...registerSignup('signupPassword', {
+                    required: 'This field is required',
+                    pattern: {
+                      value: /.{4,}/,
+                      message: 'Password is too short (at least 4 characters)',
+                    },
+                  })}
+                />
+                {errorsSignup.signupPassword && (<p className="text-red">{errorsSignup.signupPassword.message}</p>)}
+                <p className="text-center text-small">
+                  Already have an account?
+                  {' '}
+                  <Link
+                    size="sm"
+                    onPress={() => setSelected('login')}
+                  >
+                    Login
+                  </Link>
+                </p>
+                <div className="flex flex-col gap-2 items-end">
+                  <Button
+                    type="submit"
+                    className="bg-red text-white hover:bg-red-hover px-8 self-center"
+                    spinner={<Spinner />}
+                  >
+                    Sign up
+                  </Button>
+                  {serverError && (
+                    <p className="text-red">{serverError}</p>
+                  )}
+                </div>
+              </form>
+            </Tab>
+          </Tabs>
         </div>
       </div>
     </main>
