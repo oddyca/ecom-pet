@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -9,17 +9,18 @@ import {
 import useStore from '../../controller/store/store';
 
 export default function ProfilePopover() {
-  const IS_LOGGED = useRef(null);
+  const [isLoggedLS, setISLoggedLS] = useState('');
 
   useEffect(() => {
-    IS_LOGGED.current = localStorage.getItem('isLogged');
+    const isLogged = localStorage.getItem('isLogged');
+    setISLoggedLS(isLogged);
   }, []);
 
   const { resetCart, isLogged, resetIsLogged } = useStore();
 
   const logOut = () => {
     resetCart();
-    resetIsLogged(false);
+    resetIsLogged();
     localStorage.removeItem('isLogged');
   };
 
@@ -45,7 +46,7 @@ export default function ProfilePopover() {
       <PopoverContent>
         <div className="divide-y-1">
           <Link
-            href={IS_LOGGED.current ? '/profile' : '/signin'}
+            href={isLoggedLS || isLogged ? '/profile' : '/signin'}
             className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
           >
             <Image
@@ -70,7 +71,7 @@ export default function ProfilePopover() {
             />
             Settings
           </Link>
-          {(IS_LOGGED.current || isLogged) && (
+          {(isLoggedLS || isLogged) && (
             <Link
               href="/"
               className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"

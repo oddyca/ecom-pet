@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Tabs, Tab, Input, Link, Button,
@@ -10,6 +10,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { userLogin, userSignUp } from '../../controller/controller';
 import useStore from '../../controller/store/store';
+
+import LoadingPage from '../../components/LoadingPage/LoadingPage';
 
 function Spinner() {
   return (
@@ -37,6 +39,18 @@ function Spinner() {
 
 export default function Page() {
   const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState(true);
+
+  useEffect(() => {
+    const isLogged = localStorage.getItem('isLogged');
+    if (isLogged) {
+      router.push('/profile');
+    } else {
+      setPageLoading(false);
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -114,6 +128,10 @@ export default function Page() {
     resetSignup();
   };
 
+  if (pageLoading) {
+    return <LoadingPage />;
+  }
+
   return (
     <main className="flex min-h-[666px] w-full relative flex-col items-center justify-center p-3">
       <div className="w-full max-w-[1440px] flex justify-center items-center gap-4">
@@ -143,7 +161,7 @@ export default function Page() {
                   {...register('signinUsername', {
                     required: 'This field is required',
                     pattern: {
-                      value: /^[A-Za-z0-9_]+$/, // TODO: min 3 ?
+                      value: /^[A-Za-z0-9_]{3,}$/,
                       message: 'Invalid username (only letters and underscores are allowed)',
                     },
                   })}
