@@ -83,7 +83,7 @@ export default function Page() {
     if (newSignUpVal) {
       if (password === newSignUpVal) {
         setIsLoading(false);
-        localStorage.setItem('isLogged', 'true');
+        localStorage.setItem('isLogged', `signup-${username}`);
         // localStorage.setItem('loginToken', `token-${username}`);
         setIsLogged();
         router.push('/profile');
@@ -98,7 +98,7 @@ export default function Page() {
       if (response.ok) {
         const responseData = await response.json();
         localStorage.setItem('loginToken', responseData.token);
-        localStorage.setItem('isLogged', 'true');
+        localStorage.setItem('isLogged', username);
         setIsLogged();
       } else {
         setServerError(await response.text());

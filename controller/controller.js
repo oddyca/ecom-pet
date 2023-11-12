@@ -83,3 +83,23 @@ export const userSignUp = async (email, username, password) => {
     console.error(e);
   }
 };
+
+export const getUserData = async (id) => {
+  try {
+    const response = await fetch(`https://fakestoreapi.com/users/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const response = await fetch('https://fakestoreapi.com/users');
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
