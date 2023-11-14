@@ -1,35 +1,22 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
-import { getUserData, getAllUsers } from '../../controller/controller';
-
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
 export default function Profile() {
   const [loggedUser, setLoggedUser] = useState('');
-  const allUsersData = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
-    async function fetchAllUsers() {
-      const fetchedData = await getAllUsers();
-      allUsersData.current = fetchedData;
+    const loggedUsername = localStorage.getItem('isLogged');
+    if (!loggedUsername) {
+      router.push('/signin');
+      return;
     }
+    const wasSignedUp = loggedUsername.includes('signup-') ? loggedUsername.slice(7) : loggedUsername;
 
-    async function fetchData() {
-      await fetchAllUsers();
-
-      const signUpIDs = Object.keys(localStorage).filter((key) => key.includes('signup'));
-      const loggedUsername = localStorage.getItem('isLogged');
-      const signedUpIndex = loggedUsername.includes('signup-') ? signUpIDs.indexOf(`signup-${loggedUsername}`) : -1;
-
-      if (signedUpIndex !== -1) {
-        setLoggedUser(loggedUsername.slice(7));
-      } else {
-        setLoggedUser(loggedUsername);
-      }
-    }
-
-    fetchData();
+    setLoggedUser(wasSignedUp);
   }, []);
 
   return (

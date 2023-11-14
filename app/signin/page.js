@@ -79,12 +79,12 @@ export default function Page() {
     const username = data.signinUsername;
     const password = data.signinPassword;
 
-    const newSignUpVal = localStorage.getItem(`signup-${username}`);
-    if (newSignUpVal) {
-      if (password === newSignUpVal) {
+    const wasSignedUp = localStorage.getItem(`signup-${username}`);
+    if (wasSignedUp) {
+      const signedUpData = JSON.parse(wasSignedUp);
+      if (password === signedUpData.password) {
         setIsLoading(false);
         localStorage.setItem('isLogged', `signup-${username}`);
-        // localStorage.setItem('loginToken', `token-${username}`);
         setIsLogged();
         router.push('/profile');
       } else {
@@ -96,9 +96,16 @@ export default function Page() {
       setIsLoading(false);
 
       if (response.ok) {
-        const responseData = await response.json();
-        localStorage.setItem('loginToken', responseData.token);
         localStorage.setItem('isLogged', username);
+        const userLSData = localStorage.getItem(username);
+        if (!userLSData) {
+          localStorage.setItem(username, JSON.stringify({
+            name: `signup-${username}`,
+            favorites: [],
+            cart: [],
+            addresses: {},
+          }));
+        }
         setIsLogged();
       } else {
         setServerError(await response.text());
@@ -114,13 +121,25 @@ export default function Page() {
     const username = data.signupUsername;
     const password = data.signupPassword;
 
+    if (localStorage.getItem(`signup-${username}`)) {
+      setServerError('This username is already taken');
+      return;
+    }
+
     setIsLoading(true);
     const response = await userSignUp(email, username, password);
     setIsLoading(false);
 
     if (response.ok) {
       setSelected('login');
-      localStorage.setItem(`signup-${username}`, `${password}`);
+      localStorage.setItem(`signup-${username}`, JSON.stringify({
+        name: `signup-${username}`,
+        email,
+        password,
+        favorites: [],
+        cart: [],
+        addresses: {},
+      }));
     } else {
       setServerError(await response.text());
     }
@@ -273,6 +292,7 @@ export default function Page() {
                   <Button
                     type="submit"
                     className="bg-red text-white hover:bg-red-hover px-8 self-center"
+                    isLoading={isLoading}
                     spinner={<Spinner />}
                   >
                     Sign up

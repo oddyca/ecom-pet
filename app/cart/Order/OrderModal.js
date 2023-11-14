@@ -1,6 +1,8 @@
+/* eslint-disable max-len */
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   ModalContent,
@@ -44,9 +46,11 @@ export function CustomRadio(props) {
 export default function OrderModal({ items, totalOrderSum = 0, currentDiscount = '' }) {
   const [formCity, setFormCity] = useState('');
   const [formAddress, setFormAddress] = useState('');
+  const [lsAddresses, setLSAddresses] = useState({});
   const [selected, setSelected] = useState('address');
   const [radioExists, setRadioExists] = useState(false);
   const [radioChecked, setRadioChecked] = useState(false);
+  const [radioAddressID, setRadioAddressID] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     register,
@@ -57,26 +61,52 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
   } = useForm({ mode: 'onChange' });
 
   const { resetCart } = useStore();
-  const IS_LOGGED = localStorage.getItem('isLogged');
+
+  useEffect(() => {
+    const IS_LOGGED = localStorage.getItem('isLogged');
+    const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+    setLSAddresses(parsedLoggedData.addresses);
+  }, []);
+
+  const updateLocalStorageAddresses = () => {
+    const current = JSON.parse(localStorage.getItem('isLogged'));
+    const newAddresses = { ...current.addresses, ...lsAddresses };
+    const updated = { ...current, addresses: { ...newAddresses } };
+    localStorage.setItem('isLogged', JSON.stringify(updated));
+  };
+
+  const handleCityUpdate = () => {
+    setLSAddresses((prevAddresses) => {
+      if (radioAddressID) {
+        return { ...prevAddresses, [radioAddressID]: { ...prevAddresses[radioAddressID], city: formCity } };
+      }
+      return { ...prevAddresses, address4: { ...prevAddresses.address4, city: formCity } };
+    });
+    updateLocalStorageAddresses();
+    console.log('handleCityUpdate parsedAddresses', lsAddresses);
+  };
+
+  const handleAddressUpdate = () => {
+    setLSAddresses((prevAddresses) => {
+      if (radioAddressID) {
+        return { ...prevAddresses, [radioAddressID]: { ...prevAddresses[radioAddressID], address: formAddress } };
+      }
+      return { ...prevAddresses, address4: { ...prevAddresses.address4, address: formAddress } };
+    });
+    updateLocalStorageAddresses();
+    console.log('handleCityUpdate parsedAddresses', lsAddresses);
+  };
 
   const handleNext = () => {
     setSelected('confirmation');
-
-    if (IS_LOGGED) {
-      localStorage.setItem('address', `${formCity}-${formAddress}`);
-    } else if (!radioExists) {
-      sessionStorage.setItem('address', `${formCity}-${formAddress}`);
-    }
+    handleCityUpdate();
+    handleAddressUpdate();
+    console.log('parsedAddresses in handleNext', lsAddresses);
   };
 
   const renderAddressCards = (isWhere = '') => {
-    let filteredKeys;
-
-    if (IS_LOGGED) {
-      filteredKeys = Object.keys(localStorage).filter((key) => key.includes('address'));
-    } else {
-      filteredKeys = Object.keys(sessionStorage).filter((key) => key.includes('address'));
-    }
+    const filteredKeys = Object.keys(lsAddresses);
+    console.log('filteredKeys in renderAddress', filteredKeys);
 
     if (!isWhere) setRadioExists(true);
 
@@ -87,12 +117,14 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
         orientation="horizontal"
         onChange={() => setRadioChecked(true)}
       >
-        {filteredKeys.map((key) => {
-          const city = formCity || (IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')));
-          const address = formAddress || (IS_LOGGED ? localStorage.getItem(key).slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1));
+        {filteredKeys.map((elem) => {
+          // const city = formCity || (IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')));
+          // const address = formAddress || (IS_LOGGED ? localStorage.getItem(key).slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1));
+          const { city } = lsAddresses[elem];
+          const { address } = lsAddresses[elem];
           return (
             <CustomRadio
-              key={key}
+              key={elem}
               className="flex justify-between items-center gap-8 border border-2 bg-grey p-3 rounded-lg"
               description={`${city}・${address}`}
               value={`${address}`}
@@ -101,6 +133,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                 setFormAddress(address);
                 setValue('city', city);
                 setValue('address', address);
+                setRadioAddressID(elem);
               }}
             >
               <div className="flex flex-col gap-2">
@@ -160,7 +193,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                       className="flex flex-col gap-6"
                     >
                       {
-                        (sessionStorage.getItem('address') || IS_LOGGED) && (
+                        lsAddresses && (
                           <>
                             <p>Autofill the adress</p>
                             {renderAddressCards()}
@@ -174,7 +207,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                           label="City"
                           placeholder="Enter your city name"
                           variant="bordered"
-                          isRequired={sessionStorage.getItem('address') || IS_LOGGED ? 'false' : 'true'}
+                          isRequired={sessionStorage.getItem('address') || lsAddresses ? 'false' : 'true'}
                           {...register('city', {
                             onChange: (e) => setFormCity(e.target.value),
                             required: 'This field is required',
@@ -192,7 +225,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                           label="Address"
                           placeholder="Street, House №, Apartment № (optional)"
                           variant="bordered"
-                          isRequired={sessionStorage.getItem('address') || IS_LOGGED ? 'false' : 'true'}
+                          isRequired={sessionStorage.getItem('address') || lsAddresses ? 'false' : 'true'}
                           {...register('address', {
                             onChange: (e) => setFormAddress(e.target.value),
                             required: 'This field is required',
@@ -305,7 +338,6 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                           size="sm"
                           className="cursor-pointer"
                           onPress={() => handleNext()}
-                          // eslint-disable-next-line max-len
                           isDisabled={!((formCity && formAddress) && !(errors.city || errors.address)) && (!radioExists || !radioChecked)}
                         >
                           Next

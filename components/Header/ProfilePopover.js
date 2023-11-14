@@ -21,6 +21,7 @@ export default function ProfilePopover() {
   const logOut = () => {
     resetCart();
     resetIsLogged();
+    setISLoggedLS('');
     localStorage.removeItem('isLogged');
   };
 
