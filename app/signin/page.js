@@ -268,7 +268,7 @@ export default function Page() {
                   isRequired
                   label="Password"
                   placeholder="Enter your password"
-                  type="oassword"
+                  type="password"
                   {...registerSignup('signupPassword', {
                     required: 'This field is required',
                     pattern: {

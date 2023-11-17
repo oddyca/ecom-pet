@@ -68,44 +68,28 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
     setLSAddresses(parsedLoggedData.addresses);
   }, []);
 
-  const updateLocalStorageAddresses = () => {
-    const current = JSON.parse(localStorage.getItem('isLogged'));
-    const newAddresses = { ...current.addresses, ...lsAddresses };
-    const updated = { ...current, addresses: { ...newAddresses } };
-    localStorage.setItem('isLogged', JSON.stringify(updated));
-  };
-
-  const handleCityUpdate = () => {
-    setLSAddresses((prevAddresses) => {
-      if (radioAddressID) {
-        return { ...prevAddresses, [radioAddressID]: { ...prevAddresses[radioAddressID], city: formCity } };
-      }
-      return { ...prevAddresses, address4: { ...prevAddresses.address4, city: formCity } };
-    });
-    updateLocalStorageAddresses();
-    console.log('handleCityUpdate parsedAddresses', lsAddresses);
-  };
-
-  const handleAddressUpdate = () => {
-    setLSAddresses((prevAddresses) => {
-      if (radioAddressID) {
-        return { ...prevAddresses, [radioAddressID]: { ...prevAddresses[radioAddressID], address: formAddress } };
-      }
-      return { ...prevAddresses, address4: { ...prevAddresses.address4, address: formAddress } };
-    });
-    updateLocalStorageAddresses();
-    console.log('handleCityUpdate parsedAddresses', lsAddresses);
-  };
 
   const handleNext = () => {
     setSelected('confirmation');
-    handleCityUpdate();
-    handleAddressUpdate();
-    console.log('parsedAddresses in handleNext', lsAddresses);
+    const IS_LOGGED = localStorage.getItem('isLogged');
+    const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+    let updatedAddress = {}
+
+    if (radioAddressID) {
+      updatedAddress = { [radioAddressID]: { city: formCity, address: formAddress } };
+    } else {
+      updatedAddress = { address4: { city: formCity, address: formAddress } };
+    }
+
+    const toSetAsNewAddresses = { ...parsedLoggedData, addresses: { ...parsedLoggedData.addresses, ...updatedAddress  } };
+    localStorage.setItem(IS_LOGGED, JSON.stringify(toSetAsNewAddresses));
   };
 
   const renderAddressCards = (isWhere = '') => {
-    const filteredKeys = Object.keys(lsAddresses);
+    const IS_LOGGED = localStorage.getItem('isLogged');
+    const addressInfo = JSON.parse(localStorage.getItem(IS_LOGGED)).addresses
+    const filteredKeys = Object.keys(addressInfo);
+    
     console.log('filteredKeys in renderAddress', filteredKeys);
 
     if (!isWhere) setRadioExists(true);
@@ -118,10 +102,8 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
         onChange={() => setRadioChecked(true)}
       >
         {filteredKeys.map((elem) => {
-          // const city = formCity || (IS_LOGGED ? localStorage.getItem(key).slice(0, localStorage.getItem(key).indexOf('-')) : sessionStorage.getItem(key)?.slice(0, sessionStorage.getItem(key).indexOf('-')));
-          // const address = formAddress || (IS_LOGGED ? localStorage.getItem(key).slice(sessionStorage.getItem(key).indexOf('-') + 1) : sessionStorage.getItem(key)?.slice(sessionStorage.getItem(key).indexOf('-') + 1));
-          const { city } = lsAddresses[elem];
-          const { address } = lsAddresses[elem];
+          const { city } = addressInfo[elem];
+          const { address } = addressInfo[elem];
           return (
             <CustomRadio
               key={elem}
@@ -193,7 +175,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                       className="flex flex-col gap-6"
                     >
                       {
-                        lsAddresses && (
+                        Object.keys(lsAddresses).length !== 0 && lsAddresses.constructor === Object && (
                           <>
                             <p>Autofill the adress</p>
                             {renderAddressCards()}
