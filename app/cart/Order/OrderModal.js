@@ -64,33 +64,36 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   useEffect(() => {
     const IS_LOGGED = localStorage.getItem('isLogged');
-    const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
-    setLSAddresses(parsedLoggedData.addresses);
+    if (IS_LOGGED) {
+      const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+      setLSAddresses(parsedLoggedData.addresses);
+    }
   }, []);
-
 
   const handleNext = () => {
     setSelected('confirmation');
     const IS_LOGGED = localStorage.getItem('isLogged');
-    const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
-    let updatedAddress = {}
+    if (IS_LOGGED) {
+      const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+      let updatedAddress = {};
 
-    if (radioAddressID) {
-      updatedAddress = { [radioAddressID]: { city: formCity, address: formAddress } };
-    } else {
-      updatedAddress = { address4: { city: formCity, address: formAddress } };
+      if (radioAddressID) {
+        updatedAddress = { [radioAddressID]: { city: formCity, address: formAddress } };
+      } else {
+        updatedAddress = { address4: { city: formCity, address: formAddress } };
+      }
+
+      const toSetAsNewAddresses = { ...parsedLoggedData, addresses: { ...parsedLoggedData.addresses, ...updatedAddress } };
+      localStorage.setItem(IS_LOGGED, JSON.stringify(toSetAsNewAddresses));
+      setLSAddresses(updatedAddress);
     }
-
-    const toSetAsNewAddresses = { ...parsedLoggedData, addresses: { ...parsedLoggedData.addresses, ...updatedAddress  } };
-    localStorage.setItem(IS_LOGGED, JSON.stringify(toSetAsNewAddresses));
+    setLSAddresses({ address4: { city: formCity, address: formAddress } });
   };
 
   const renderAddressCards = (isWhere = '') => {
     const IS_LOGGED = localStorage.getItem('isLogged');
-    const addressInfo = JSON.parse(localStorage.getItem(IS_LOGGED)).addresses
-    const filteredKeys = Object.keys(addressInfo);
-    
-    console.log('filteredKeys in renderAddress', filteredKeys);
+    const addressInfo = IS_LOGGED ? JSON.parse(localStorage.getItem(IS_LOGGED)).addresses : lsAddresses;
+    const addressInfoKeys = Object.keys(addressInfo);
 
     if (!isWhere) setRadioExists(true);
 
@@ -101,7 +104,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
         orientation="horizontal"
         onChange={() => setRadioChecked(true)}
       >
-        {filteredKeys.map((elem) => {
+        {addressInfoKeys.map((elem) => {
           const { city } = addressInfo[elem];
           const { address } = addressInfo[elem];
           return (
@@ -180,7 +183,6 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                             <p>Autofill the adress</p>
                             {renderAddressCards()}
                           </>
-
                         )
                       }
                       <div className="relative flex flex-col">

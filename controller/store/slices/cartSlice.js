@@ -44,13 +44,13 @@ const createCartSlice = (set) => ({
     return ({ cart: cartMap });
   }),
 
-  resetCart: () => {
+  resetCart: () => set(() => {
     const lsCartItems = Object.keys(localStorage);
     lsCartItems.forEach((key) => {
       if (key.length <= 3) localStorage.removeItem(key);
     });
-    set(new Map());
-  },
+    return ({ cart: new Map() });
+  }),
 });
 
 export default createCartSlice;
