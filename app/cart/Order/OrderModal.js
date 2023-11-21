@@ -21,6 +21,7 @@ import {
 } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import useStore from '../../../controller/store/store';
+import { orderModalHandleNext } from '../../../controller/controller';
 
 export function CustomRadio(props) {
   const { children, ...otherProps } = props;
@@ -72,21 +73,8 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   const handleNext = () => {
     setSelected('confirmation');
-    const IS_LOGGED = localStorage.getItem('isLogged');
-    if (IS_LOGGED) {
-      const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
-      let updatedAddress = {};
-
-      if (radioAddressID) {
-        updatedAddress = { [radioAddressID]: { city: formCity, address: formAddress } };
-      } else {
-        updatedAddress = { address4: { city: formCity, address: formAddress } };
-      }
-
-      const toSetAsNewAddresses = { ...parsedLoggedData, addresses: { ...parsedLoggedData.addresses, ...updatedAddress } };
-      localStorage.setItem(IS_LOGGED, JSON.stringify(toSetAsNewAddresses));
-      setLSAddresses(updatedAddress);
-    }
+    const updatedAddress = orderModalHandleNext(formAddress, formCity, radioAddressID);
+    setLSAddresses(updatedAddress);
     setLSAddresses({ address4: { city: formCity, address: formAddress } });
   };
 

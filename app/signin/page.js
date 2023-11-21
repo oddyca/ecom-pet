@@ -102,7 +102,7 @@ export default function Page() {
           localStorage.setItem(username, JSON.stringify({
             name: `signup-${username}`,
             favorites: [],
-            cart: [],
+            cart: {},
             addresses: {},
           }));
         }
@@ -137,7 +137,7 @@ export default function Page() {
         email,
         password,
         favorites: [],
-        cart: [],
+        cart: {},
         addresses: {},
       }));
     } else {

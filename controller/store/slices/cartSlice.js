@@ -12,7 +12,11 @@ const createCartSlice = (set) => ({
       cartMap.set(key, { ...foundItem, quantity: 1 });
     }
 
-    localStorage.setItem(key, `${cartMap.get(key).quantity}`);
+    const cartJSON = JSON.stringify({
+      [key]: cartMap.get(key).quantity,
+    });
+
+    localStorage.setItem('cartMap', cartJSON);
     return ({ cart: cartMap });
   }),
 

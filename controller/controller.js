@@ -103,3 +103,24 @@ export const getAllUsers = async () => {
     console.error(e);
   }
 };
+
+export const orderModalHandleNext = (formAddress, formCity, radioAddressID) => {
+  const IS_LOGGED = localStorage.getItem('isLogged');
+  if (IS_LOGGED) {
+    const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+    let updatedAddress = {};
+
+    if (radioAddressID) {
+      updatedAddress = { [radioAddressID]: { city: formCity, address: formAddress } };
+    } else {
+      updatedAddress = { address4: { city: formCity, address: formAddress } };
+    }
+
+    const toSetAsNewAddresses = {
+      ...parsedLoggedData, addresses: { ...parsedLoggedData.addresses, ...updatedAddress },
+    };
+    localStorage.setItem(IS_LOGGED, JSON.stringify(toSetAsNewAddresses));
+
+    return updatedAddress;
+  }
+};
