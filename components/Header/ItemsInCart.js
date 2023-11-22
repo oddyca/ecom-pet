@@ -9,23 +9,23 @@ export default function ItemsInCart() {
 
   useEffect(() => {
     const IS_LOGGED = localStorage.getItem('isLogged');
-    let cartMap = {};
+    let cartMap = new Map();
 
     if (IS_LOGGED) {
       cartMap = JSON.parse(localStorage.getItem(IS_LOGGED))[cart];
     } else {
-      const isCartMap = JSON.parse(localStorage.getItem('cartMap'));
-      cartMap = isCartMap || {};
+      const isCartMap = new Map(JSON.parse(localStorage.getItem(IS_LOGGED)['cart']));
+      cartMap = isCartMap.size > 0 ? isCartMap : cartMap;
     }
 
-    const cartValues = Object.keys(cartMap);
-    const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap[current], 0);
+    const cartValues = cartMap.keys();
+    const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap.get(current), 0);
     setCartSize(calcCartSize);
   }, []);
 
   useEffect(() => {
-    const values = [...cart.values()];
-    const liveCartSize = values.reduce((sum, current) => (sum + current.quantity), 0);
+    const values = cart.keys();
+    const liveCartSize = values.reduce((sum, current) => sum + cart.get(current), 0);
     setCartSize(liveCartSize);
   }, [cart]);
 
