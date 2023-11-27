@@ -1,21 +1,20 @@
 const createCartSlice = (set) => ({
   cart: new Map(),
-  addToCart: (id, size = '-') => set((state) => {
+  addToCart: (id, isLogged, size = '-') => set(() => {
     const key = `${id}${size}`;
-
     let cartMap;
-    const IS_LOGGED = localStorage.getItem('isLogged');
-    const isCartMap = localStorage.getItem('cartMap');
 
-    if (IS_LOGGED) {
-      const loggedCart = JSON.parse(localStorage.getItem(IS_LOGGED))['cart'];
+    if (isLogged) {
+      const loggedCart = JSON.parse(localStorage.getItem(isLogged)).cart;
       cartMap = new Map(Object.entries(loggedCart));
-    } else if (!IS_LOGGED && isCartMap) {
-      const lsCartMap = JSON.parse(localStorage.getItem('cartMap'));
-      cartMap = new Map(Object.entries(lsCartMap));
-    } else (!IS_LOGGED && !isCartMap) {
-      localStorage.setItem('cartMap', '{}')
-      cartMap = new Map();
+    } else if (!isLogged) {
+      const isCartMap = localStorage.getItem('cartMap');
+      if (isCartMap) {
+        const lsCartMap = JSON.parse(isCartMap);
+        cartMap = new Map(Object.entries(lsCartMap));
+      } else {
+        cartMap = new Map();
+      }
     }
 
     const isFoundInCart = cartMap.has(key);
@@ -28,15 +27,16 @@ const createCartSlice = (set) => ({
     }
 
     const cartJSON = {
-      [key]: cartMap.get(key).quantity,
+      ...Object.fromEntries(cartMap),
+      [key]: { quantity: cartMap.get(key).quantity },
     };
-    
-    if (isCartMap) {
-      loggedCart.setItem('cartMap', JSON.stringify(cartJSON))
+
+    if (!isLogged) {
+      localStorage.setItem('cartMap', JSON.stringify(cartJSON));
     } else {
-      const loggedUser = JSON.parse(localStorage.getItem(IS_LOGGED));
-      localStorage.setItem(IS_LOGGED, JSON.stringify({...loggedUser, cart: {...cartJSON}}))
-    };
+      const loggedUser = JSON.parse(localStorage.getItem(isLogged)); // isLogged
+      localStorage.setItem(isLogged, JSON.stringify({ ...loggedUser, cart: { ...cartJSON } }));
+    }
     return ({ cart: cartMap });
   }),
 
@@ -69,12 +69,10 @@ const createCartSlice = (set) => ({
     return ({ cart: cartMap });
   }),
 
-  resetCart: () => set(() => {
-    const lsCartItems = Object.keys(localStorage);
-    lsCartItems.forEach((key) => {
-      if (key.length <= 3) localStorage.removeItem(key);
-    });
-    return ({ cart: new Map() });
+  resetCart: () => set(() => ({ cart: new Map() })),
+  replaceCart: (newCart) => set(() => {
+    const newCartMap = new Map(Object.entries(newCart));
+    return ({ cart: newCartMap });
   }),
 });
 

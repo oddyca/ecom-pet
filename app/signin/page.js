@@ -68,7 +68,7 @@ export default function Page() {
   const [selected, setSelected] = React.useState('login');
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setIsLogged } = useStore();
+  const { setIsLogged, replaceCart } = useStore();
 
   const handleSignInSubmit = async (data, event) => {
     event.preventDefault();
@@ -85,6 +85,8 @@ export default function Page() {
       if (password === signedUpData.password) {
         setIsLoading(false);
         localStorage.setItem('isLogged', `signup-${username}`);
+        const loggedCart = signedUpData.cart;
+        replaceCart(loggedCart);
         setIsLogged();
         router.push('/profile');
       } else {
@@ -105,6 +107,9 @@ export default function Page() {
             cart: {},
             addresses: {},
           }));
+        } else {
+          const loggedCart = JSON.parse(userLSData).cart;
+          replaceCart(loggedCart);
         }
         setIsLogged();
       } else {

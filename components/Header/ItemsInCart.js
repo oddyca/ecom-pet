@@ -8,25 +8,25 @@ export default function ItemsInCart() {
   const [cartSize, setCartSize] = useState(0);
 
   useEffect(() => {
-    const IS_LOGGED = localStorage.getItem('isLogged');
-    let cartMap = new Map();
+    const values = Object.keys(Object.fromEntries(cart));
+    if (values.length === 0) {
+      const IS_LOGGED = localStorage.getItem('isLogged');
+      const isCartMap = localStorage.getItem('cartMap');
+      let cartMap = {};
 
-    if (IS_LOGGED) {
-      cartMap = JSON.parse(localStorage.getItem(IS_LOGGED))[cart];
+      if (IS_LOGGED) {
+        cartMap = JSON.parse(localStorage.getItem(IS_LOGGED)).cart;
+      } else if (isCartMap) {
+        cartMap = JSON.parse(isCartMap);
+      }
+
+      const cartValues = Object.keys(cartMap);
+      const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
+      setCartSize(calcCartSize);
     } else {
-      const isCartMap = new Map(JSON.parse(localStorage.getItem(IS_LOGGED)['cart']));
-      cartMap = isCartMap.size > 0 ? isCartMap : cartMap;
+      const liveCartSize = values.reduce((sum, current) => sum + cart.get(current).quantity, 0);
+      setCartSize(liveCartSize);
     }
-
-    const cartValues = cartMap.keys();
-    const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap.get(current), 0);
-    setCartSize(calcCartSize);
-  }, []);
-
-  useEffect(() => {
-    const values = cart.keys();
-    const liveCartSize = values.reduce((sum, current) => sum + cart.get(current), 0);
-    setCartSize(liveCartSize);
   }, [cart]);
 
   return (

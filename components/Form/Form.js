@@ -17,7 +17,8 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
 
   const handleFormSubmit = (data, event) => {
     event.preventDefault();
-    addToCart(fetchedInfo.id, data.size);
+    const IS_LOGGED = localStorage.getItem('isLogged');
+    addToCart(fetchedInfo.id, IS_LOGGED, data.size);
     if (setIsEnetered) setIsEnetered(false);
     if (onClose) onClose();
   };
