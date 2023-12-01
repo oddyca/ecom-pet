@@ -124,3 +124,17 @@ export const orderModalHandleNext = (formAddress, formCity, radioAddressID) => {
     return updatedAddress;
   }
 };
+
+export const getCartMap = () => {
+  let cartMap = {};
+  const IS_LOGGED = localStorage.getItem('isLogged');
+  const isCartMap = localStorage.getItem('cartMap');
+
+  if (IS_LOGGED) {
+    cartMap = JSON.parse(localStorage.getItem(IS_LOGGED)).cart;
+  } else if (isCartMap) {
+    cartMap = JSON.parse(isCartMap);
+  }
+
+  return cartMap;
+};

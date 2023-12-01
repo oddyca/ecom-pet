@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import useStore from '../../controller/store/store';
+import { getCartMap } from '../../controller/controller';
 
 export default function ItemsInCart() {
   const { cart } = useStore();
@@ -9,17 +10,9 @@ export default function ItemsInCart() {
 
   useEffect(() => {
     const values = Object.keys(Object.fromEntries(cart));
+    let cartMap = {};
     if (values.length === 0) {
-      const IS_LOGGED = localStorage.getItem('isLogged');
-      const isCartMap = localStorage.getItem('cartMap');
-      let cartMap = {};
-
-      if (IS_LOGGED) {
-        cartMap = JSON.parse(localStorage.getItem(IS_LOGGED)).cart;
-      } else if (isCartMap) {
-        cartMap = JSON.parse(isCartMap);
-      }
-
+      cartMap = getCartMap();
       const cartValues = Object.keys(cartMap);
       const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
       setCartSize(calcCartSize);

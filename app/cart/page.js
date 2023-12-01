@@ -6,19 +6,23 @@ import CartCard from './CartCard/CartCard';
 import Order from './Order/Order';
 
 import useStore from '../../controller/store/store';
-import { getItemInfo } from '../../controller/controller';
+import { getItemInfo, getCartMap } from '../../controller/controller';
 
 export default function Cart() {
   const [data, setData] = useState([]);
-  const { cart } = useStore();
-  const cartItemsIds = [...cart.keys()];
+  const { cart, replaceCart } = useStore();
+  const [cartItemsIds, setCartItemsIds] = useState([]);
+  const [cartSize, setCartSize] = useState(0);
 
   useEffect(() => {
+    const keys = Object.keys(Object.fromEntries(cart));
+    let cartMap = {};
+
     const fetchData = async () => {
       const itemInfo = cartItemsIds.map(async (id) => {
         const trimmedID = id.match(/\d+/)[0];
         const itemSize = id.match(/\D+/)[0];
-        const itemQuantity = cart.get(id).quantity;
+        const itemQuantity = cartMap[id].quantity;
         const info = await getItemInfo(trimmedID);
         const newInfo = {
           ...info,
@@ -33,8 +37,23 @@ export default function Cart() {
       setData(DATA);
     };
 
-    fetchData();
-  }, [cart]);
+    if (keys.length === 0 && cartItemsIds.length === 0) {
+      cartMap = getCartMap();
+      const cartKeys = Object.keys(cartMap);
+
+      if (cartKeys.length > 0) {
+        replaceCart(cartMap);
+        setCartItemsIds(cartKeys);
+        fetchData();
+      }
+    } else {
+      cartMap = Object.fromEntries(cart);
+      fetchData();
+    }
+    const cartValues = Object.keys(cartMap);
+    const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
+    setCartSize(calcCartSize);
+  }, [cart, cartItemsIds]);
 
   return (
     <>
@@ -49,7 +68,7 @@ export default function Cart() {
               My cart
               {' '}
               <span className="text-sm text-icon-blue font-normal">
-                {`${cart.size} ${cart.size !== 1 ? 'items' : 'item'}`}
+                {`${cartSize} ${cartSize !== 1 ? 'items' : 'item'}`}
               </span>
             </h1>
             <ul className="w-full flex flex-col gap-3">
