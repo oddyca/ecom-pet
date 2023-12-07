@@ -13,47 +13,54 @@ export default function Cart() {
   const { cart, replaceCart } = useStore();
   const [cartItemsIds, setCartItemsIds] = useState([]);
   const [cartSize, setCartSize] = useState(0);
+  const [cartMap, setCartMap] = useState({});
+
+  const fetchData = async () => {
+    const itemInfo = cartItemsIds.map(async (id) => {
+      const trimmedID = id.match(/\d+/)[0];
+      const itemSize = id.match(/\D+/)[0];
+      const itemQuantity = cartMap[id].quantity;
+      const info = await getItemInfo(trimmedID);
+      const newInfo = {
+        ...info,
+        size: itemSize === '-' ? '-' : itemSize,
+        quantity: itemQuantity,
+        discount: trimmedID === '1' ? '25' : trimmedID === '2' ? '10' : '',
+      };
+
+      return newInfo;
+    });
+
+    const fetchedData = await Promise.all(itemInfo);
+    setData(fetchedData);
+  };
 
   useEffect(() => {
     const keys = Object.keys(Object.fromEntries(cart));
-    let cartMap = {};
-
-    const fetchData = async () => {
-      const itemInfo = cartItemsIds.map(async (id) => {
-        const trimmedID = id.match(/\d+/)[0];
-        const itemSize = id.match(/\D+/)[0];
-        const itemQuantity = cartMap[id].quantity;
-        const info = await getItemInfo(trimmedID);
-        const newInfo = {
-          ...info,
-          size: itemSize === '-' ? '-' : itemSize,
-          quantity: itemQuantity,
-          discount: trimmedID === '1' ? '25' : trimmedID === '2' ? '10' : '',
-        };
-        return newInfo;
-      });
-
-      const DATA = await Promise.all(itemInfo);
-      setData(DATA);
-    };
+    let innerCartMap = {};
 
     if (keys.length === 0 && cartItemsIds.length === 0) {
-      cartMap = getCartMap();
-      const cartKeys = Object.keys(cartMap);
+      innerCartMap = getCartMap();
+      setCartMap(innerCartMap);
+      const cartKeys = Object.keys(innerCartMap);
 
       if (cartKeys.length > 0) {
-        replaceCart(cartMap);
+        replaceCart(innerCartMap);
         setCartItemsIds(cartKeys);
-        fetchData();
       }
     } else {
-      cartMap = Object.fromEntries(cart);
-      fetchData();
+      innerCartMap = Object.fromEntries(cart);
+      setCartMap(Object.fromEntries(cart));
+      const cartKeys = Object.keys(innerCartMap);
+      setCartItemsIds(cartKeys);
     }
-    const cartValues = Object.keys(cartMap);
-    const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
+  }, [cart]);
+
+  useEffect(() => {
+    const calcCartSize = cartItemsIds?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
     setCartSize(calcCartSize);
-  }, [cart, cartItemsIds]);
+    fetchData();
+  }, [cartMap, cartItemsIds]);
 
   return (
     <>
