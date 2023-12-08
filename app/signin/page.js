@@ -102,7 +102,7 @@ export default function Page() {
         const userLSData = localStorage.getItem(username);
         if (!userLSData) {
           localStorage.setItem(username, JSON.stringify({
-            name: `signup-${username}`,
+            name: `${username}`,
             favorites: [],
             cart: {},
             addresses: {},
@@ -112,6 +112,7 @@ export default function Page() {
           replaceCart(loggedCart);
         }
         setIsLogged();
+        router.push('/profile');
       } else {
         setServerError(await response.text());
       }

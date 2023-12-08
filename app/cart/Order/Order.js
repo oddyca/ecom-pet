@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@nextui-org/react';
 import { PROMO_CODES } from '../../../lib/lib';
 import OrderModal from './OrderModal';
@@ -9,6 +9,8 @@ export default function Order({ items }) {
   const [typedPromo, setTypedPromo] = useState('');
   const [isCorrect, seIsCorrect] = useState(true);
   const [currentDiscount, setCurrentDiscount] = useState(null);
+  const [priceOfItems, setPriceOfItems] = useState(0);
+  const [totalOrderSum, setTotalOrderSum] = useState(0);
 
   const calculateTotalPrice = () => {
     const initialPrice = items.reduce((sum, current) => {
@@ -18,6 +20,7 @@ export default function Order({ items }) {
       return sum + discountedPrice * current.quantity;
     }, 0);
 
+    setPriceOfItems(initialPrice);
     const deliveryFee = initialPrice < 40 ? 5 : 0;
     return initialPrice + deliveryFee;
   };
@@ -31,7 +34,9 @@ export default function Order({ items }) {
     }
   };
 
-  const totalOrderSum = calculateTotalPrice();
+  useEffect(() => {
+    setTotalOrderSum(calculateTotalPrice());
+  }, [items, typedPromo, currentDiscount]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-3 w-full rounded-md p-4 bg-white shadow-lg">
@@ -42,11 +47,11 @@ export default function Order({ items }) {
           <div className="w-full flex flex-col gap-3 border-b-2 border-b-stroke-light-blue pb-2">
             <div className="flex justify-between">
               <p>Cart total</p>
-              <p>{`$${totalOrderSum.toFixed(2)}`}</p>
+              <p>{`$${priceOfItems.toFixed(2)}`}</p>
             </div>
             <div className="flex justify-between">
               <p>Delivery fee</p>
-              <p>{totalOrderSum >= 40 ? '-' : '$5.00'}</p>
+              <p>{priceOfItems >= 40 ? '-' : '$5.00'}</p>
             </div>
           </div>
           <div className="w-full flex flex-col gap-1 overflow-hidden">
