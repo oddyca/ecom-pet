@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const API = 'https://fakestoreapi.com/products';
 
 const CATEGORIES_ENDPOINT = 'https://fakestoreapi.com/products/categories';
@@ -125,16 +126,37 @@ export const orderModalHandleNext = (formAddress, formCity, radioAddressID) => {
   }
 };
 
-export const getCartMap = () => {
+export const getCartFav = () => {
   let cartMap = {};
-  const IS_LOGGED = localStorage.getItem('isLogged');
+  let favSet = {};
+  const isLogged = localStorage.getItem('isLogged');
   const isCartMap = localStorage.getItem('cartMap');
+  const isFavSet = localStorage.getItem('favSet');
 
-  if (IS_LOGGED) {
-    cartMap = JSON.parse(localStorage.getItem(IS_LOGGED)).cart;
+  if (isLogged) {
+    cartMap = JSON.parse(localStorage.getItem(isLogged)).cart;
+    favSet = JSON.parse(localStorage.getItem(isLogged)).favorites;
   } else if (isCartMap) {
     cartMap = JSON.parse(isCartMap);
   }
 
-  return cartMap;
+  if (isFavSet) {
+    favSet = JSON.parse(isFavSet);
+  }
+
+  return [cartMap, favSet];
+};
+
+export const replaceInLocalStorage = (cart) => {
+  const isLogged = localStorage.getItem('isLogged');
+  const mapToObj = Object.fromEntries(cart.entries());
+
+  if (isLogged) {
+    const loggedUser = JSON.parse(localStorage.getItem(isLogged));
+    const updatedLoggedUser = { ...loggedUser, cart: { ...mapToObj } };
+
+    localStorage.setItem(isLogged, JSON.stringify(updatedLoggedUser));
+  } else {
+    localStorage.setItem('cartMap', JSON.stringify(mapToObj));
+  }
 };

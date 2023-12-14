@@ -16,12 +16,15 @@ export default function ProfilePopover() {
     setISLoggedLS(isLogged);
   }, []);
 
-  const { resetCart, isLogged, resetIsLogged } = useStore();
+  const {
+    resetCart, isLogged, resetIsLogged, resetFavs,
+  } = useStore();
 
   const logOut = () => {
     resetCart();
     resetIsLogged();
     setISLoggedLS('');
+    resetFavs();
     localStorage.removeItem('isLogged');
   };
 

@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -6,20 +8,18 @@ import CartCard from './CartCard/CartCard';
 import Order from './Order/Order';
 
 import useStore from '../../controller/store/store';
-import { getItemInfo, getCartMap } from '../../controller/controller';
+import { getItemInfo, replaceInLocalStorage } from '../../controller/controller';
 
 export default function Cart() {
   const [data, setData] = useState([]);
-  const { cart, replaceCart } = useStore();
-  const [cartItemsIds, setCartItemsIds] = useState([]);
+  const { cart } = useStore();
   const [cartSize, setCartSize] = useState(0);
-  const [cartMap, setCartMap] = useState({});
 
-  const fetchData = async () => {
+  const fetchData = async (cartItemsIds) => {
     const itemInfo = cartItemsIds.map(async (id) => {
       const trimmedID = id.match(/\d+/)[0];
       const itemSize = id.match(/\D+/)[0];
-      const itemQuantity = cartMap[id].quantity;
+      const itemQuantity = cart.get(id).quantity;
       const info = await getItemInfo(trimmedID);
       const newInfo = {
         ...info,
@@ -35,32 +35,17 @@ export default function Cart() {
     setData(fetchedData);
   };
 
-  useEffect(() => {
-    const keys = Object.keys(Object.fromEntries(cart));
-    let innerCartMap = {};
-
-    if (keys.length === 0 && cartItemsIds.length === 0) {
-      innerCartMap = getCartMap();
-      setCartMap(innerCartMap);
-      const cartKeys = Object.keys(innerCartMap);
-
-      if (cartKeys.length > 0) {
-        replaceCart(innerCartMap);
-        setCartItemsIds(cartKeys);
-      }
-    } else {
-      innerCartMap = Object.fromEntries(cart);
-      setCartMap(Object.fromEntries(cart));
-      const cartKeys = Object.keys(innerCartMap);
-      setCartItemsIds(cartKeys);
-    }
-  }, [cart]);
+  useEffect(() => () => {
+    const proxyCart = cart;
+    replaceInLocalStorage(proxyCart);
+  }, []);
 
   useEffect(() => {
-    const calcCartSize = cartItemsIds?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
+    const cartItemsIds = [...cart.keys()];
+    const calcCartSize = cartItemsIds?.reduce((sum, current) => sum + cart.get(current).quantity, 0);
     setCartSize(calcCartSize);
-    fetchData();
-  }, [cartMap, cartItemsIds]);
+    fetchData(cartItemsIds);
+  }, [cart]);
 
   return (
     <>

@@ -2,22 +2,23 @@
 
 import React, { useEffect, useState } from 'react';
 import useStore from '../../controller/store/store';
-import { getCartMap } from '../../controller/controller';
+import { getCartFav } from '../../controller/controller';
 
 export default function ItemsInCart() {
   const { cart } = useStore();
   const [cartSize, setCartSize] = useState(0);
 
   useEffect(() => {
-    const values = Object.keys(Object.fromEntries(cart));
+    const storeCartKeys = Object.keys(Object.fromEntries(cart));
     let cartMap = {};
-    if (values.length === 0) {
-      cartMap = getCartMap();
+    if (storeCartKeys.length === 0) {
+      [cartMap] = getCartFav();
       const cartValues = Object.keys(cartMap);
       const calcCartSize = cartValues?.reduce((sum, current) => sum + cartMap[current].quantity, 0);
       setCartSize(calcCartSize);
     } else {
-      const liveCartSize = values.reduce((sum, current) => sum + cart.get(current).quantity, 0);
+      // eslint-disable-next-line max-len
+      const liveCartSize = storeCartKeys.reduce((sum, current) => sum + cart.get(current).quantity, 0);
       setCartSize(liveCartSize);
     }
   }, [cart]);
