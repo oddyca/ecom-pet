@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 
 const API = 'https://fakestoreapi.com/products';
-
 const CATEGORIES_ENDPOINT = 'https://fakestoreapi.com/products/categories';
 
 export const getAllProducts = async (searchParams) => {
