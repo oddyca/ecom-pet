@@ -24,6 +24,7 @@ export default function Profile() {
     resetIsLogged();
     resetFavs();
     localStorage.removeItem('isLogged');
+    localStorage.removeItem('cartMap');
   };
 
   useEffect(() => {

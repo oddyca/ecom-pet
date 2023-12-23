@@ -105,22 +105,30 @@ export const getAllUsers = async () => {
   }
 };
 
-export const orderModalHandleNext = (formAddress, formCity, radioAddressID) => {
-  const IS_LOGGED = localStorage.getItem('isLogged');
-  if (IS_LOGGED) {
-    const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+export const orderModalHandleNext = (formAddress, formCity, radioAddressID, isLogged) => {
+  if (isLogged) {
+    const parsedLoggedData = JSON.parse(localStorage.getItem(isLogged));
+    const storedAddresses = parsedLoggedData.addresses;
+    const storedAddressesKeys = Object.keys(storedAddresses);
+    const storedLength = storedAddressesKeys.length;
     let updatedAddress = {};
 
     if (radioAddressID) {
-      updatedAddress = { [radioAddressID]: { city: formCity, address: formAddress } };
+      updatedAddress = {
+        ...storedAddresses, [radioAddressID]: { city: formCity, address: formAddress }
+      };
+    } else if (storedLength < 3 && !radioAddressID) {
+      updatedAddress = {
+        ...storedAddresses, [`address${storedLength + 1}`]: { city: formCity, address: formAddress },
+      };
     } else {
       updatedAddress = { address4: { city: formCity, address: formAddress } };
     }
 
     const toSetAsNewAddresses = {
-      ...parsedLoggedData, addresses: { ...parsedLoggedData.addresses, ...updatedAddress },
+      ...parsedLoggedData, addresses: { ...storedAddresses, ...updatedAddress },
     };
-    localStorage.setItem(IS_LOGGED, JSON.stringify(toSetAsNewAddresses));
+    localStorage.setItem(isLogged, JSON.stringify(toSetAsNewAddresses));
 
     return updatedAddress;
   }
@@ -159,4 +167,22 @@ export const replaceInLocalStorage = (cart) => {
   } else {
     localStorage.setItem('cartMap', JSON.stringify(mapToObj));
   }
+};
+
+export const addToPurchaseHistory = (imgs) => {
+  const purchaseDate = new Date();
+  const isLogged = localStorage.getItem('isLogged');
+  const loggedUser = JSON.parse(localStorage.getItem(isLogged));
+
+  const purchaseObj = imgs.map((img, id) => (
+    {
+      [id]: {
+        image: img,
+        date: purchaseDate,
+      },
+    }
+  ));
+
+  loggedUser.purchaseHistory = purchaseObj;
+  localStorage.setItem(isLogged, JSON.stringify(loggedUser));
 };

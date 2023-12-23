@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Modal,
   ModalContent,
@@ -62,26 +62,25 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
   } = useForm({ mode: 'onChange' });
 
   const { resetCart } = useStore();
+  const isLogged = useRef(null);
 
   useEffect(() => {
-    const IS_LOGGED = localStorage.getItem('isLogged');
-    if (IS_LOGGED) {
-      const parsedLoggedData = JSON.parse(localStorage.getItem(IS_LOGGED));
+    const isLoggedLS = localStorage.getItem('isLogged');
+    isLogged.current = isLoggedLS;
+    if (isLoggedLS) {
+      const parsedLoggedData = JSON.parse(localStorage.getItem(isLoggedLS));
       setLSAddresses(parsedLoggedData.addresses);
     }
   }, []);
 
   const handleNext = () => {
     setSelected('confirmation');
-    const updatedAddress = orderModalHandleNext(formAddress, formCity, radioAddressID);
+    const updatedAddress = orderModalHandleNext(formAddress, formCity, radioAddressID, isLogged.current);
     setLSAddresses(updatedAddress);
-    setLSAddresses({ address4: { city: formCity, address: formAddress } });
   };
 
   const renderAddressCards = (isWhere = '') => {
-    const IS_LOGGED = localStorage.getItem('isLogged');
-    const addressInfo = IS_LOGGED ? JSON.parse(localStorage.getItem(IS_LOGGED)).addresses : lsAddresses;
-    const addressInfoKeys = Object.keys(addressInfo);
+    const addressInfoKeys = Object.keys(lsAddresses);
 
     if (!isWhere) setRadioExists(true);
 
@@ -93,8 +92,8 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
         onChange={() => setRadioChecked(true)}
       >
         {addressInfoKeys.map((elem) => {
-          const { city } = addressInfo[elem];
-          const { address } = addressInfo[elem];
+          const { city } = lsAddresses[elem];
+          const { address } = lsAddresses[elem];
           return (
             <CustomRadio
               key={elem}
@@ -184,7 +183,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                             onChange: (e) => setFormCity(e.target.value),
                             required: 'This field is required',
                             pattern: {
-                              value: /^[A-Za-z\s\-]+$/,
+                              value: /^[A-Za-z\s-]+$/,
                               message:
                                 'Invalid city name (only letters, spaces, and hyphens are allowed)',
                             },

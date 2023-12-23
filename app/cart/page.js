@@ -36,8 +36,7 @@ export default function Cart() {
   };
 
   useEffect(() => () => {
-    const proxyCart = cart;
-    replaceInLocalStorage(proxyCart);
+    replaceInLocalStorage(cart);
   }, []);
 
   useEffect(() => {
