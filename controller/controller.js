@@ -115,7 +115,7 @@ export const orderModalHandleNext = (formAddress, formCity, radioAddressID, isLo
 
     if (radioAddressID) {
       updatedAddress = {
-        ...storedAddresses, [radioAddressID]: { city: formCity, address: formAddress }
+        ...storedAddresses, [radioAddressID]: { city: formCity, address: formAddress },
       };
     } else if (storedLength < 3 && !radioAddressID) {
       updatedAddress = {
@@ -157,14 +157,15 @@ export const getCartFav = () => {
 
 export const replaceInLocalStorage = (cart) => {
   const isLogged = localStorage.getItem('isLogged');
+  const isLoggedOut = localStorage.getItem('cartMap');
   const mapToObj = Object.fromEntries(cart.entries());
 
-  if (isLogged) {
+  if (isLogged || !isLoggedOut) {
     const loggedUser = JSON.parse(localStorage.getItem(isLogged));
     const updatedLoggedUser = { ...loggedUser, cart: { ...mapToObj } };
 
     localStorage.setItem(isLogged, JSON.stringify(updatedLoggedUser));
-  } else {
+  } else if (isLoggedOut) {
     localStorage.setItem('cartMap', JSON.stringify(mapToObj));
   }
 };

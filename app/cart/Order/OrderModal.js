@@ -157,7 +157,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                     variant="underlined"
                     selectedKey={selected}
                     onSelectionChange={setSelected}
-                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) && (!radioExists || !radioChecked) ? [''] : ['confirmation']}
+                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) && radioChecked ? [''] : ['confirmation']}
                   >
                     <Tab
                       key="address"
