@@ -21,7 +21,7 @@ import {
 } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import useStore from '../../../controller/store/store';
-import { orderModalHandleNext } from '../../../controller/controller';
+import { orderModalHandleNext, addToPurchaseHistory } from '../../../controller/controller';
 
 export function CustomRadio(props) {
   const { children, ...otherProps } = props;
@@ -63,6 +63,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   const { resetCart } = useStore();
   const isLogged = useRef(null);
+  const itemsImgs = useRef(new Set());
 
   useEffect(() => {
     const isLoggedLS = localStorage.getItem('isLogged');
@@ -122,6 +123,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    addToPurchaseHistory(itemsImgs.current);
     resetCart();
   };
 
@@ -248,20 +250,23 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                       <div className="flex flex-col gap-5 self-center bg-grey max-w-[60%] p-5">
                         <h2 className="self-center font-bold text-lg">Your order</h2>
                         <div className="flex flex-col gap-2">
-                          {items.map((item) => (
-                            <div className="flex items-end gap-1">
-                              <p className="font-medium">
-                                {item.title}
-                                {' x'}
-                                {item.quantity}
-                              </p>
-                              <div className="border-b-3 border-dotted w-full" />
-                              <p>
-                                $
-                                {item.price}
-                              </p>
-                            </div>
-                          ))}
+                          {selected !== 'address' && items.map((item) => {
+                            itemsImgs.current.add(item.image);
+                            return (
+                              <div className="flex items-end gap-1">
+                                <p className="font-medium">
+                                  {item.title}
+                                  {' x'}
+                                  {item.quantity}
+                                </p>
+                                <div className="border-b-3 border-dotted w-full" />
+                                <p>
+                                  $
+                                  {item.price}
+                                </p>
+                              </div>
+                            );
+                          })}
                         </div>
                         {currentDiscount
                           && (

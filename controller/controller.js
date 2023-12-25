@@ -160,7 +160,7 @@ export const replaceInLocalStorage = (cart) => {
   const isLoggedOut = localStorage.getItem('cartMap');
   const mapToObj = Object.fromEntries(cart.entries());
 
-  if (isLogged || !isLoggedOut) {
+  if (isLogged && !isLoggedOut) {
     const loggedUser = JSON.parse(localStorage.getItem(isLogged));
     const updatedLoggedUser = { ...loggedUser, cart: { ...mapToObj } };
 
@@ -175,15 +175,11 @@ export const addToPurchaseHistory = (imgs) => {
   const isLogged = localStorage.getItem('isLogged');
   const loggedUser = JSON.parse(localStorage.getItem(isLogged));
 
-  const purchaseObj = imgs.map((img, id) => (
-    {
-      [id]: {
-        image: img,
-        date: purchaseDate,
-      },
-    }
-  ));
+  const imgsToArray = Array.from(imgs);
+  const purchaseObj = {
+    [purchaseDate]: [...imgsToArray],
+  };
 
-  loggedUser.purchaseHistory = purchaseObj;
+  loggedUser.purchaseHistory = { ...purchaseObj };
   localStorage.setItem(isLogged, JSON.stringify(loggedUser));
 };
