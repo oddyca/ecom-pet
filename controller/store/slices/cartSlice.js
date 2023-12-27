@@ -47,7 +47,7 @@ const createCartSlice = (set) => {
       const isFoundInCart = cartMap.has(key);
 
       if (isFoundInCart) cartMap.delete(key);
-      return ({ cart: cartMap });
+      return { cart: cartMap };
     }),
 
     resetCart: () => set(() => ({ cart: new Map() })),

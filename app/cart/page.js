@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import CartCard from './CartCard/CartCard';
 import Order from './Order/Order';
@@ -14,6 +14,7 @@ export default function Cart() {
   const [data, setData] = useState([]);
   const { cart } = useStore();
   const [cartSize, setCartSize] = useState(0);
+  const cartRef = useRef(cart);
 
   const fetchData = async (cartItemsIds) => {
     const itemInfo = cartItemsIds.map(async (id) => {
@@ -36,7 +37,7 @@ export default function Cart() {
   };
 
   useEffect(() => () => {
-    replaceInLocalStorage(cart);
+    replaceInLocalStorage(cartRef.current);
   }, []);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function Cart() {
     const calcCartSize = cartItemsIds?.reduce((sum, current) => sum + cart.get(current).quantity, 0);
     setCartSize(calcCartSize);
     fetchData(cartItemsIds);
+    cartRef.current = cart;
   }, [cart]);
 
   return (
