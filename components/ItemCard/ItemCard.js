@@ -6,7 +6,6 @@ import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure,
 } from '@nextui-org/react';
 import Image from 'next/image';
-import NextImage from 'next/image';
 import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import Form from '../Form/Form';
 import useStore from '../../controller/store/store';
@@ -90,7 +89,6 @@ export default function ItemCard(props) {
                 className="flex justify-center self-end items-center w-full py-3.5 px-3 bg-black text-white rounded-lg hover:bg-[#555555]"
               >
                 <Image
-                  as={NextImage}
                   src="/cart-white.svg"
                   width={16}
                   height={16}

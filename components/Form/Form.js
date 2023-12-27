@@ -1,14 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import AddToCart from '../AddToCart/AddToCart';
 import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import useStore from '../../controller/store/store';
+import { replaceInLocalStorage } from '../../controller/controller';
 import { SIZES } from '../../lib/lib';
 
 export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
-  const { addToCart } = useStore();
+  const { addToCart, cart } = useStore();
+  const cartRef = useRef(cart);
+
   const {
     register,
     handleSubmit,
@@ -21,6 +24,14 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
     if (setIsEnetered) setIsEnetered(false);
     if (onClose) onClose();
   };
+
+  useEffect(() => () => {
+    replaceInLocalStorage(cartRef.current);
+  }, []);
+
+  useEffect(() => {
+    cartRef.current = cart;
+  }, [cart]);
 
   return (
     <form

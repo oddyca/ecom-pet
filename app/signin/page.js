@@ -87,6 +87,7 @@ export default function Page() {
         localStorage.setItem('isLogged', `signup-${username}`);
         const loggedCart = signedUpData.cart;
         replaceCart(loggedCart);
+        localStorage.removeItem('cartMap');
         setIsLogged();
         router.push('/profile');
       } else {
@@ -112,6 +113,7 @@ export default function Page() {
           replaceCart(loggedCart);
         }
         setIsLogged();
+        localStorage.removeItem('cartMap');
         router.push('/profile');
       } else {
         setServerError(await response.text());

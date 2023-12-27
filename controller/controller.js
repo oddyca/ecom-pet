@@ -165,8 +165,8 @@ export const replaceInLocalStorage = (cart) => {
     const updatedLoggedUser = { ...loggedUser, cart: { ...mapToObj } };
 
     localStorage.setItem(isLogged, JSON.stringify(updatedLoggedUser));
-  } else if (isLoggedOut) {
-    localStorage.setItem('cartMap', JSON.stringify(mapToObj));
+  } else if (isLoggedOut || (!isLogged && !isLoggedOut)) {
+    localStorage.setItem('cartMap', JSON.stringify({ ...mapToObj }));
   }
 };
 
