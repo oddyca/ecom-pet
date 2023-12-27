@@ -180,6 +180,6 @@ export const addToPurchaseHistory = (imgs) => {
     [purchaseDate]: [...imgsToArray],
   };
 
-  loggedUser.purchaseHistory = { ...purchaseObj };
+  loggedUser.purchaseHistory = { ...loggedUser.purchaseHistory, ...purchaseObj };
   localStorage.setItem(isLogged, JSON.stringify(loggedUser));
 };

@@ -8,10 +8,18 @@ export default function PurchaseHistoryCards() {
   useEffect(() => {
     const isLogged = localStorage.getItem('isLogged');
     const { purchaseHistory } = JSON.parse(localStorage.getItem(isLogged));
-    if (purchaseHistory) setPurchasedItems(Object.entries(purchaseHistory));
+    if (purchaseHistory) {
+      const reversedHistory = Object.entries(purchaseHistory).reverse();
+      setPurchasedItems(reversedHistory);
+    }
   }, []);
 
   const imageThumbnailClass = 'w-[72px] h-[96px] py-4 px-2 bg-white rounded border border-stroke-blue';
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`;
+  };
 
   const renderPurchasedHistoryCards = () => purchasedItems.map((item, id) => (
     <div
@@ -20,22 +28,16 @@ export default function PurchaseHistoryCards() {
     >
       <p className="absolute top-2 right-2 text-[#D1D1D1]">
         #
-        {id + 2}
+        {(purchasedItems.length - id) + 1}
       </p>
       <div className="flex gap-2">
         <p className="text-green text-sm">Delivered</p>
         <p className="text-icon-blue text-sm">
-          {new Date(item[0]).getDate()}
-          {' '}
-          {new Date(item[0]).toLocaleString('default', { month: 'short' })}
-          {', '}
-          {new Date(item[0]).getFullYear()}
+          {formatDate(item[0])}
         </p>
       </div>
       <p>
-        {item[1].length}
-        {' '}
-        items
+        {`${item[1].length} ${item[1].length !== 1 ? 'items' : 'item'}`}
       </p>
       <div className="flex gap-2 h-auto">
         {item[1].map((img) => (
@@ -53,6 +55,7 @@ export default function PurchaseHistoryCards() {
 
   return (
     <div className="flex flex-col gap-6 w-full">
+      {renderPurchasedHistoryCards()}
       <div className="w-full p-3 flex flex-col gap-2 h-auto rounded hover:bg-white relative">
         <p className="absolute top-2 right-2 text-[#D1D1D1]">#1</p>
         <div className="flex gap-2">
@@ -75,7 +78,6 @@ export default function PurchaseHistoryCards() {
           />
         </div>
       </div>
-      {renderPurchasedHistoryCards()}
     </div>
   );
 }
