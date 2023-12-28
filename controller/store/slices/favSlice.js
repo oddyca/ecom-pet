@@ -4,11 +4,11 @@ import { getCartFav } from '../../controller';
 
 const createFavSlice = (set) => {
   const initialFav = getCartFav()[1];
-  const initialFavSet = new Set(Object.entries(initialFav));
+  const initialFavSet = new Set(initialFav);
   return {
     favorites: initialFavSet,
 
-    replaceFavs: (favsFromLS) => set(() => ({ favorites: new Set(Object.entries(favsFromLS)) })),
+    replaceFavs: (favsFromLS) => set(() => ({ favorites: new Set(favsFromLS) })),
 
     addToFavs: (id) => set((state) => {
       const freshFavSet = new Set(state.favorites);

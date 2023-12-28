@@ -68,7 +68,7 @@ export default function Page() {
   const [selected, setSelected] = React.useState('login');
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setIsLogged, replaceCart } = useStore();
+  const { setIsLogged, replaceCart, replaceFavs } = useStore();
 
   const handleSignInSubmit = async (data, event) => {
     event.preventDefault();
@@ -86,8 +86,11 @@ export default function Page() {
         setIsLoading(false);
         localStorage.setItem('isLogged', `signup-${username}`);
         const loggedCart = signedUpData.cart;
+        const loggedFavs = signedUpData.favorites;
         replaceCart(loggedCart);
+        replaceFavs(loggedFavs);
         localStorage.removeItem('cartMap');
+        localStorage.removeItem('favSet');
         setIsLogged();
         router.push('/profile');
       } else {
@@ -109,11 +112,16 @@ export default function Page() {
             addresses: {},
           }));
         } else {
-          const loggedCart = JSON.parse(userLSData).cart;
+          const loggedUser = JSON.parse(userLSData);
+          const loggedCart = loggedUser.cart;
+          const loggedFavs = loggedUser.favorites;
+
           replaceCart(loggedCart);
+          replaceFavs(loggedFavs);
         }
         setIsLogged();
         localStorage.removeItem('cartMap');
+        localStorage.removeItem('favSet');
         router.push('/profile');
       } else {
         setServerError(await response.text());

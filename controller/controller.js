@@ -136,7 +136,7 @@ export const orderModalHandleNext = (formAddress, formCity, radioAddressID, isLo
 
 export const getCartFav = () => {
   let cartMap = {};
-  let favSet = {};
+  let favSet = [];
   const isLogged = localStorage.getItem('isLogged');
   const isCartMap = localStorage.getItem('cartMap');
   const isFavSet = localStorage.getItem('favSet');
@@ -166,7 +166,22 @@ export const replaceInLocalStorage = (cart) => {
 
     localStorage.setItem(isLogged, JSON.stringify(updatedLoggedUser));
   } else if (isLoggedOut || (!isLogged && !isLoggedOut)) {
-    localStorage.setItem('cartMap', JSON.stringify({ ...mapToObj }));
+    localStorage.setItem('cartMap', JSON.stringify(mapToObj));
+  }
+};
+
+export const replaceFavsInLocalStorage = (favs) => {
+  const isLogged = localStorage.getItem('isLogged');
+  const isLoggedOut = localStorage.getItem('favSet');
+  const favsArr = [...favs];
+
+  if (isLogged && !isLoggedOut) {
+    const loggedUser = JSON.parse(localStorage.getItem(isLogged));
+    const updatedLoggedUser = { ...loggedUser, favorites: favsArr };
+
+    localStorage.setItem(isLogged, JSON.stringify(updatedLoggedUser));
+  } else if (isLoggedOut || (!isLogged && !isLoggedOut)) {
+    localStorage.setItem('favSet', JSON.stringify(favsArr));
   }
 };
 
