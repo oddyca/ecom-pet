@@ -8,8 +8,10 @@ import {
   Tabs, Tab, Input, Link, Button,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { userLogin, userSignUp } from '../../controller/controller';
+import { hash } from 'bcryptjs';
+import { handleSignUpSubmit, handleSignInSubmit } from '../../controller/controller';
 import useStore from '../../controller/store/store';
+import { SALT } from '../../lib/lib';
 
 import LoadingPage from '../../components/LoadingPage/LoadingPage';
 
@@ -70,99 +72,6 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const { setIsLogged, replaceCart, replaceFavs } = useStore();
 
-  const handleSignInSubmit = async (data, event) => {
-    event.preventDefault();
-
-    setServerError('');
-    setIsLoading(true);
-
-    const username = data.signinUsername;
-    const password = data.signinPassword;
-
-    const wasSignedUp = localStorage.getItem(`signup-${username}`);
-    if (wasSignedUp) {
-      const signedUpData = JSON.parse(wasSignedUp);
-      if (password === signedUpData.password) {
-        setIsLoading(false);
-        localStorage.setItem('isLogged', `signup-${username}`);
-        const loggedCart = signedUpData.cart;
-        const loggedFavs = signedUpData.favorites;
-        replaceCart(loggedCart);
-        replaceFavs(loggedFavs);
-        localStorage.removeItem('cartMap');
-        localStorage.removeItem('favSet');
-        setIsLogged();
-        router.push('/profile');
-      } else {
-        setIsLoading(false);
-        setServerError('Wrong password');
-      }
-    } else {
-      const response = await userLogin(username, password);
-      setIsLoading(false);
-
-      if (response.ok) {
-        localStorage.setItem('isLogged', username);
-        const userLSData = localStorage.getItem(username);
-        if (!userLSData) {
-          localStorage.setItem(username, JSON.stringify({
-            name: `${username}`,
-            favorites: [],
-            cart: {},
-            addresses: {},
-          }));
-        } else {
-          const loggedUser = JSON.parse(userLSData);
-          const loggedCart = loggedUser.cart;
-          const loggedFavs = loggedUser.favorites;
-
-          replaceCart(loggedCart);
-          replaceFavs(loggedFavs);
-        }
-        setIsLogged();
-        localStorage.removeItem('cartMap');
-        localStorage.removeItem('favSet');
-        router.push('/profile');
-      } else {
-        setServerError(await response.text());
-      }
-    }
-    reset();
-  };
-
-  const handleSignUpSubmit = async (data, event) => {
-    event.preventDefault();
-
-    const email = data.signupEmail;
-    const username = data.signupUsername;
-    const password = data.signupPassword;
-
-    if (localStorage.getItem(`signup-${username}`)) {
-      setServerError('This username is already taken');
-      return;
-    }
-
-    setIsLoading(true);
-    const response = await userSignUp(email, username, password);
-    setIsLoading(false);
-
-    if (response.ok) {
-      setSelected('login');
-      localStorage.setItem(`signup-${username}`, JSON.stringify({
-        name: `signup-${username}`,
-        email,
-        password,
-        favorites: [],
-        cart: {},
-        addresses: {},
-      }));
-    } else {
-      setServerError(await response.text());
-    }
-
-    resetSignup();
-  };
-
   if (pageLoading) {
     return <LoadingPage />;
   }
@@ -186,7 +95,19 @@ export default function Page() {
               <form
                 key="formSignin"
                 className="flex flex-col gap-4"
-                onSubmit={handleSubmit(handleSignInSubmit)}
+                onSubmit={handleSubmit((data, event) => handleSignInSubmit(
+                  data,
+                  event,
+                  setServerError,
+                  setIsLoading,
+                  hash,
+                  SALT,
+                  replaceCart,
+                  replaceFavs,
+                  setIsLogged,
+                  router,
+                  reset,
+                ))}
               >
                 <Input
                   isRequired
@@ -250,7 +171,16 @@ export default function Page() {
               <form
                 key="formSignup"
                 className="flex flex-col gap-4 h-[300px]"
-                onSubmit={handleSubmitSignup(handleSignUpSubmit)}
+                onSubmit={handleSubmitSignup((data, event) => handleSignUpSubmit(
+                  data,
+                  event,
+                  setServerError,
+                  setIsLoading,
+                  setSelected,
+                  hash,
+                  SALT,
+                  resetSignup,
+                ))}
               >
                 <Input
                   isRequired
