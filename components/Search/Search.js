@@ -1,8 +1,13 @@
+'use client';
+
 import React from 'react';
 
 export default function Search() {
   return (
-    <form className="mt-3 w-full outline-none">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="mt-3 w-full outline-none"
+    >
       <div className="relative flex items-center text-stroke-light-blue focus-within:stroke-icon-blue focus-within:text-icon-blue">
         <svg
           className="w-4 h-4 fill-none stroke-current absolute ml-3 "
