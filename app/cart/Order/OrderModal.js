@@ -67,8 +67,8 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   useEffect(() => {
     const isLoggedLS = localStorage.getItem('isLogged');
-    isLogged.current = isLoggedLS;
     if (isLoggedLS) {
+      isLogged.current = isLoggedLS;
       const parsedLoggedData = JSON.parse(localStorage.getItem(isLoggedLS));
       setLSAddresses(parsedLoggedData.addresses);
     }
@@ -123,7 +123,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addToPurchaseHistory(itemsImgs.current);
+    if (isLogged.current) addToPurchaseHistory(itemsImgs.current);
     resetCart();
   };
 
@@ -158,8 +158,12 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                     aria-label="Tabs form"
                     variant="underlined"
                     selectedKey={selected}
-                    onSelectionChange={setSelected}
-                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) && radioChecked ? [''] : ['confirmation']}
+                    onSelectionChange={(t) => {
+                      setSelected(t);
+                      const updatedAddress = orderModalHandleNext(formAddress, formCity, radioAddressID, isLogged.current);
+                      setLSAddresses(updatedAddress);
+                    }}
+                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) && !radioChecked ? [''] : ['confirmation']}
                   >
                     <Tab
                       key="address"

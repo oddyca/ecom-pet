@@ -248,6 +248,7 @@ export const orderModalHandleNext = (formAddress, formCity, radioAddressID, isLo
 
     return updatedAddress;
   }
+  return { address: { city: formCity, address: formAddress } };
 };
 
 export const getCartFav = () => {
