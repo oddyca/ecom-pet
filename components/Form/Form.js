@@ -46,7 +46,9 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
               <div className="flex items-center gap-2 relative w-fit">
                 {
                   SIZES.map((size) => (
-                    <div>
+                    <div
+                      key={size}
+                    >
                       <input
                         id={`radio-${size}`}
                         type="radio"
@@ -57,7 +59,6 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
                         className="hidden peer"
                       />
                       <label
-                        key={size}
                         htmlFor={`radio-${size}`}
                         className="border border-2 border-gray px-3 py-1 peer-checked:border-black cursor-pointer"
                       >

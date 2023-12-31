@@ -62,34 +62,36 @@ export default function ProfilePopover() {
             />
             My profile
           </Link>
-          <Link
-            href="/settings"
-            className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
-          >
-            <Image
-              src="/settings.svg"
-              alt="settings icon"
-              width={14}
-              height={14}
-              className="stroke-black"
-            />
-            Settings
-          </Link>
           {(isLoggedLS || isLogged) && (
-            <Link
-              href="/"
-              className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
-              onClick={() => logOut()}
-            >
-              <Image
-                src="/signout.svg"
-                alt="signout icon"
-                width={14}
-                height={14}
-                className="stroke-black"
-              />
-              Sign out
-            </Link>
+            <>
+              <Link
+                href="/settings"
+                className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
+              >
+                <Image
+                  src="/settings.svg"
+                  alt="settings icon"
+                  width={14}
+                  height={14}
+                  className="stroke-black"
+                />
+                Settings
+              </Link>
+              <Link
+                href="/"
+                className="flex gap-4 px-6 py-2 hover:bg-[#F0F0F0]"
+                onClick={() => logOut()}
+              >
+                <Image
+                  src="/signout.svg"
+                  alt="signout icon"
+                  width={14}
+                  height={14}
+                  className="stroke-black"
+                />
+                Sign out
+              </Link>
+            </>
           )}
           <Link
             href="/info"

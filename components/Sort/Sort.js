@@ -19,7 +19,7 @@ export default function Sort() {
   return (
     <div className="sort-light flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
-        label="Sort by price"
+        label="Sort items"
         className="max-w-xs"
         variant="faded"
         color="primary"

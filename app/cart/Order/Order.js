@@ -114,7 +114,7 @@ export default function Order({ items }) {
           <OrderModal
             items={items}
             totalOrderSum={totalOrderSum}
-            currentDiscount={currentDiscount * 100}
+            currentDiscount={currentDiscount ? currentDiscount * 100 : null}
           />
         </>
       )}

@@ -10,6 +10,8 @@ export default function PicturesCarousel({ fetchedImage }) {
 
   const slides = slidesAngles.map((angle) => (
     <div
+      data-key={`key-${angle}`}
+      key={angle}
       className="h-full w-full flex-embla"
     >
       <div
@@ -71,7 +73,7 @@ export default function PicturesCarousel({ fetchedImage }) {
               selected={index === selectedIndex}
               index={index}
               img={img}
-              key={slidesAngles[index]}
+              key={img.props['data-key']}
             />
           ))}
         </div>

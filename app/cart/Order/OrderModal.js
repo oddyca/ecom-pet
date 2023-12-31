@@ -163,7 +163,7 @@ export default function OrderModal({ items, totalOrderSum = 0, currentDiscount =
                       const updatedAddress = orderModalHandleNext(formAddress, formCity, radioAddressID, isLogged.current);
                       setLSAddresses(updatedAddress);
                     }}
-                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) && !radioChecked ? [''] : ['confirmation']}
+                    disabledKeys={((formCity && formAddress) && !(errors.city || errors.address)) ? [''] : ['confirmation']}
                   >
                     <Tab
                       key="address"

@@ -32,11 +32,11 @@ export default function Profile() {
     if (!loggedUsername) {
       router.push('/signin');
     }
-    const wasSignedUp = loggedUsername.includes('signup-') ? loggedUsername.slice(7) : loggedUsername;
+    const userName = JSON.parse(localStorage.getItem(loggedUsername)).name;
     const cartItemsIds = [...cart.keys()];
     const calcCartSize = cartItemsIds.reduce((sum, current) => sum + cart.get(current).quantity, 0);
     setCartSize(calcCartSize);
-    setLoggedUser(wasSignedUp);
+    setLoggedUser(userName);
   }, []);
 
   return (
@@ -111,7 +111,6 @@ export default function Profile() {
                       alt="signout icon"
                       width={14}
                       height={14}
-                      className="stroke-black"
                     />
                   </div>
                   <Link
