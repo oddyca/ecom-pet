@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import NextImage from 'next/image';
 
 export default function AddToCart() {
   return (
@@ -10,7 +9,6 @@ export default function AddToCart() {
         className="flex justify-center items-center w-full py-3.5 px-3 bg-black text-white rounded-lg hover:bg-[#555555]"
       >
         <Image
-          as={NextImage}
           src="/cart-white.svg"
           width={16}
           height={16}
