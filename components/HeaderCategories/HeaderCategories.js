@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function HeaderCategories({ categoriesToRender }) {
   const renderCategoriers = () => (
-    <ul className="w-max h-max grid grid-cols-4">
+    <ul className="w-fit h-fit grid grid-cols-4">
       {categoriesToRender.map((category) => (
         <li
           key={category}

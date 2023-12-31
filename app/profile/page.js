@@ -42,7 +42,7 @@ export default function Profile() {
   return (
     <>
       <Breadcrumbs
-        itemCategory="Profile"
+        misc="Profile"
       />
       <main className="flex min-h-[666px] w-full relative flex-col items-center justify-center p-3">
         <div className="flex gap-10 w-full max-w-[1440px] py-6 min-h-[666px] h-full">

@@ -51,7 +51,7 @@ export default function Cart() {
   return (
     <>
       <Breadcrumbs
-        itemCategory="Cart"
+        misc="Cart"
       />
       <main className="flex justify-center min-h-max w-full relative mt-6">
         <div className="w-full max-w-[1440px] min-h-[666px] grid grid-cols-3 gap-5">

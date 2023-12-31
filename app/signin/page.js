@@ -79,7 +79,7 @@ export default function Page() {
   return (
     <main className="flex min-h-[666px] w-full relative flex-col items-center justify-center p-3">
       <div className="w-full max-w-[1440px] flex justify-center items-center gap-4">
-        <div className="flex flex-col items-center bg-white aspect-video min-h-[500px] rounded-lg p-3 border border-2 border-grey-stroke">
+        <div className="flex flex-col items-center bg-white aspect-video w-fit w-full max-w-[768px] min-h-[500px] rounded-lg p-3 border border-2 border-grey-stroke">
           <Tabs
             fullWidth
             size="md"

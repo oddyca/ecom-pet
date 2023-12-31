@@ -6,7 +6,7 @@ export default function Favorites() {
   return (
     <>
       <Breadcrumbs
-        itemCategory="Favorites"
+        misc="Favorites"
       />
       <main className="flex min-h w-full relative flex-col items-center justify-center p-5 mt-3">
         <div className="w-full max-w-[1440px] min-h-[666px] flex flex-col gap-4">

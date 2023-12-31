@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function Breadcrumbs({ itemCategory, itemName, itemId }) {
+export default function Breadcrumbs({
+  itemCategory, itemName, itemId, misc,
+}) {
   return (
     <div className="flex justify-start gap-[4rem] w-full h-fit mt-6 py-2 px-[5rem] bg-stroke-light-blue text-link-blue text-sm">
       <Link
@@ -29,6 +31,17 @@ export default function Breadcrumbs({ itemCategory, itemName, itemId }) {
             className="text-red"
           >
             {itemName}
+          </Link>
+        </>
+      )}
+      {misc && (
+        <>
+          <span>/</span>
+          <Link
+            href={`/${misc.toLowerCase()}`}
+            className="hover:text-icon-blue"
+          >
+            {misc}
           </Link>
         </>
       )}
