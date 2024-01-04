@@ -6,14 +6,14 @@ import ItemsInCart from './ItemsInCart';
 import ItemsInFav from './ItemsInFav';
 import Notifications from './Notifications';
 import ProfilePopover from './ProfilePopover';
-import { getAllCategories } from '../../controller/controller';
+import { getAllCategories } from '../../controller/serverController';
 
 export default async function Header() {
   const renderAllCategories = async () => {
     const fetchedCategories = await getAllCategories();
     const allCategories = fetchedCategories.reverse();
 
-    return (<>{ allCategories }</>);
+    return allCategories;
   };
 
   const categoriesToRender = await renderAllCategories();

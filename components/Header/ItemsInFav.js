@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import useStore from '../../controller/store/store';
-import { replaceFavsInLocalStorage } from '../../controller/controller';
+import { replaceFavsInLocalStorage } from '../../controller/clientController';
 
 export default function ItemsInFav() {
   const { favorites } = useStore();

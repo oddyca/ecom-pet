@@ -8,7 +8,8 @@ import CartCard from './CartCard/CartCard';
 import Order from './Order/Order';
 
 import useStore from '../../controller/store/store';
-import { getItemInfo, replaceInLocalStorage } from '../../controller/controller';
+import { getItemInfo } from '../../controller/serverController';
+import { replaceInLocalStorage } from '../../controller/clientController';
 
 export default function Cart() {
   const [data, setData] = useState([]);

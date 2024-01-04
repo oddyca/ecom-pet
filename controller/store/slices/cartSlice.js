@@ -1,6 +1,4 @@
-'use client';
-
-import { getCartFav } from '../../controller';
+import { getCartFav } from '../../clientController';
 
 const createCartSlice = (set) => {
   const initialCart = getCartFav()[0];

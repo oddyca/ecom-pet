@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import AddToCart from '../AddToCart/AddToCart';
 import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import useStore from '../../controller/store/store';
-import { replaceInLocalStorage } from '../../controller/controller';
+import { replaceInLocalStorage } from '../../controller/clientController';
 import { SIZES } from '../../lib/lib';
 
 export default function Form({ fetchedInfo, setIsEnetered, onClose }) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { getItemInfo, getAllProducts } from '../../../controller/controller';
+import { getItemInfo, getAllProducts } from '../../../controller/serverController';
 import AccordionComponent from './components/AccordionComponent/AccordionComponent';
 import ShareProduct from './components/ShareProduct/ShareProduct';
 import PicturesCarousel from './components/PicturesCarousel/PicturesCarousel';

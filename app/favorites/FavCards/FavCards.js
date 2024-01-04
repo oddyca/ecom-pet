@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import useStore from '../../../controller/store/store';
-import { getItemInfo } from '../../../controller/controller';
+import { getItemInfo } from '../../../controller/serverController';
 
 import ItemCard from '../../../components/ItemCard/ItemCard';
 

@@ -9,7 +9,7 @@ import {
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { hash } from 'bcryptjs';
-import { handleSignUpSubmit, handleSignInSubmit } from '../../controller/controller';
+import { handleSignUpSubmit, handleSignInSubmit } from '../../controller/clientController';
 import useStore from '../../controller/store/store';
 import { SALT } from '../../lib/lib';
 

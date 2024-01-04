@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 import createCartSlice from './slices/cartSlice';
 import createFavSlice from './slices/favSlice';

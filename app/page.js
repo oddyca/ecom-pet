@@ -4,7 +4,7 @@ import Search from '../components/Search/Search';
 import Items from '../components/Items/Items';
 import LoadMore from '../components/LoadMore/LoadMore';
 import Sort from '../components/Sort/Sort';
-import { getAllProducts } from '../controller/controller';
+import { getAllProducts } from '../controller/serverController';
 import Banners from '../components/Banners/Banners';
 
 export default async function Home({ searchParams }) {

@@ -3,7 +3,7 @@ import Banners from '../../../components/Banners/Banners';
 import Sort from '../../../components/Sort/Sort';
 import Search from '../../../components/Search/Search';
 import Items from '../../../components/Items/Items';
-import { getIntoCategory } from '../../../controller/controller';
+import { getIntoCategory } from '../../../controller/clientController';
 
 export default async function page({ params }) {
   const fetchedProducts = await getIntoCategory(params.category);
