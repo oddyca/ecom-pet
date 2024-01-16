@@ -1,5 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
+import {
+  Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button,
+} from '@nextui-org/react';
 
 import { getItemInfo, getAllProducts } from '../../../controller/serverController';
 import AccordionComponent from './components/AccordionComponent/AccordionComponent';

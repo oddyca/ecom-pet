@@ -1,59 +1,52 @@
-import { getCartFav } from '../../clientController';
+const createCartSlice = (set, get) => ({
+  cart: new Map(),
 
-const createCartSlice = (set) => {
-  const initialCart = getCartFav()[0];
-  const initialCartMap = new Map(Object.entries(initialCart));
+  addToCart: (id, size = '-') => set((state) => {
+    const key = `${id}${size}`;
+    const cartMap = new Map(state.cart);
 
-  return {
-    cart: initialCartMap,
+    const isFoundInCart = cartMap.has(key);
+    const foundItem = cartMap.get(key);
+    if (isFoundInCart) {
+      foundItem.quantity += 1;
+    } else {
+      cartMap.set(key, { quantity: 1 });
+    }
 
-    addToCart: (id, size = '-') => set((state) => {
-      const key = `${id}${size}`;
-      const cartMap = new Map(state.cart);
+    return { cart: cartMap };
+  }),
 
-      const isFoundInCart = cartMap.has(key);
-      const foundItem = cartMap.get(key);
-      if (isFoundInCart) {
-        foundItem.quantity += 1;
+  decreaseAmount: (id, size = '-') => set((state) => {
+    const key = `${id}${size}`;
+    const cartMap = new Map(state.cart);
+
+    const isFoundInCart = cartMap.has(key);
+    const foundItem = cartMap.get(key);
+
+    if (isFoundInCart) {
+      if (foundItem.quantity > 1) {
+        foundItem.quantity -= 1;
       } else {
-        cartMap.set(key, { quantity: 1 });
+        cartMap.delete(key);
       }
+    }
+    return { cart: cartMap };
+  }),
 
-      return { cart: cartMap };
-    }),
+  removeFromCart: (id, size = '-') => set((state) => {
+    const key = `${id}${size}`;
+    const cartMap = new Map(state.cart);
+    const isFoundInCart = cartMap.has(key);
 
-    decreaseAmount: (id, size = '-') => set((state) => {
-      const key = `${id}${size}`;
-      const cartMap = new Map(state.cart);
+    if (isFoundInCart) cartMap.delete(key);
+    return { cart: cartMap };
+  }),
 
-      const isFoundInCart = cartMap.has(key);
-      const foundItem = cartMap.get(key);
-
-      if (isFoundInCart) {
-        if (foundItem.quantity > 1) {
-          foundItem.quantity -= 1;
-        } else {
-          cartMap.delete(key);
-        }
-      }
-      return { cart: cartMap };
-    }),
-
-    removeFromCart: (id, size = '-') => set((state) => {
-      const key = `${id}${size}`;
-      const cartMap = new Map(state.cart);
-      const isFoundInCart = cartMap.has(key);
-
-      if (isFoundInCart) cartMap.delete(key);
-      return { cart: cartMap };
-    }),
-
-    resetCart: () => set(() => ({ cart: new Map() })),
-    replaceCart: (newCart) => set(() => {
-      const newCartMap = new Map(Object.entries(newCart));
-      return ({ cart: newCartMap });
-    }),
-  };
-};
-
+  resetCart: () => set(() => ({ cart: new Map() })),
+  replaceCart: (cartFromLS) => set(() => {
+    const storedCart = get().cart;
+    const newCart = storedCart.size === 0 ? new Map(Object.entries(cartFromLS)) : storedCart;
+    return ({ cart: newCart });
+  }),
+});
 export default createCartSlice;

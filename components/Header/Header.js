@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,18 +8,8 @@ import ItemsInCart from './ItemsInCart';
 import ItemsInFav from './ItemsInFav';
 import Notifications from './Notifications';
 import ProfilePopover from './ProfilePopover';
-import { getAllCategories } from '../../controller/serverController';
 
-export default async function Header() {
-  const renderAllCategories = async () => {
-    const fetchedCategories = await getAllCategories();
-    const allCategories = fetchedCategories.reverse();
-
-    return allCategories;
-  };
-
-  const categoriesToRender = await renderAllCategories();
-
+export default function Header() {
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
@@ -76,7 +68,7 @@ export default async function Header() {
         </div>
       </div>
       <div className="flex justify-center items-center gap-[200px] h-max w-full bg-[#FFFFFF] border-stroke-blue border-t-2">
-        <HeaderCategories categoriesToRender={categoriesToRender} />
+        <HeaderCategories />
       </div>
     </header>
   );

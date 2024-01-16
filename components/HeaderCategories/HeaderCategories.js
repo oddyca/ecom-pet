@@ -1,7 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
+import { getAllCategories } from '../../controller/serverController';
 
-export default function HeaderCategories({ categoriesToRender }) {
+export default async function HeaderCategories() {
+  const allCategories = async () => {
+    const fetchedCategories = await getAllCategories();
+    const categoriesArr = fetchedCategories.reverse();
+
+    return categoriesArr;
+  };
+
+  const categoriesToRender = await allCategories();
+
   const renderCategoriers = () => (
     <ul className="w-fit h-fit grid grid-cols-4">
       {categoriesToRender.map((category) => (
@@ -22,7 +32,7 @@ export default function HeaderCategories({ categoriesToRender }) {
 
   return (
     <div>
-      {renderCategoriers()}
+      {categoriesToRender && renderCategoriers()}
     </div>
   );
 }

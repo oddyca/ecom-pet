@@ -2,10 +2,15 @@
 
 import React, { useEffect } from 'react';
 import useStore from '../../controller/store/store';
-import { replaceFavsInLocalStorage } from '../../controller/clientController';
+import { getCartFav, replaceFavsInLocalStorage } from '../../controller/clientController';
 
 export default function ItemsInFav() {
-  const { favorites } = useStore();
+  const { favorites, replaceFavs } = useStore();
+
+  useEffect(() => {
+    const favFromLS = getCartFav()[1];
+    replaceFavs(favFromLS);
+  }, []);
 
   useEffect(() => {
     replaceFavsInLocalStorage(favorites);

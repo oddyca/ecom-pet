@@ -1,5 +1,3 @@
-'use client';
-
 import { userLogin, userSignUp } from './serverController';
 
 export const handleSignInSubmit = async (
@@ -149,16 +147,12 @@ export const orderModalHandleNext = (formAddress, formCity, radioAddressID, isLo
 };
 
 export const getCartFav = () => {
-  if (typeof window === 'undefined') {
-    return [{ 1: 'default' }, ['default']];
-  }
-
   let cartMap = {};
   let favSet = [];
 
   const isLogged = localStorage.getItem('isLogged');
   const isCartMap = localStorage.getItem('cartMap');
-  const isFavSet = localStorage.getItem('favSet');
+  const isFavSet = JSON.parse(localStorage.getItem('favSet'));
 
   if (isLogged) {
     cartMap = JSON.parse(localStorage.getItem(isLogged)).cart;
@@ -167,8 +161,8 @@ export const getCartFav = () => {
     cartMap = JSON.parse(isCartMap);
   }
 
-  if (isFavSet) {
-    favSet = JSON.parse(isFavSet);
+  if (isFavSet && isFavSet.length > 0) {
+    favSet = isFavSet;
   }
 
   return [cartMap, favSet];

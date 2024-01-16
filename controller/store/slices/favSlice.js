@@ -1,32 +1,27 @@
-'use client';
+const createFavSlice = (set, get) => ({
+  favorites: new Set(),
 
-import { getCartFav } from '../../clientController';
+  replaceFavs: (favsFromLS) => set(() => {
+    const storedFavs = get().favorites;
+    const newFav = storedFavs.size === 0 ? new Set(favsFromLS) : storedFavs;
+    return { favorites: newFav };
+  }),
 
-const createFavSlice = (set) => {
-  const initialFav = getCartFav()[1];
-  const initialFavSet = new Set(initialFav);
-  return {
-    favorites: initialFavSet,
+  addToFavs: (id) => set((state) => {
+    const freshFavSet = new Set(state.favorites);
+    const isFoundInfavorites = freshFavSet.has(id);
 
-    replaceFavs: (favsFromLS) => set(() => ({ favorites: new Set(favsFromLS) })),
+    if (!isFoundInfavorites) {
+      freshFavSet.add(id);
+    } else {
+      freshFavSet.delete(id);
+    }
 
-    addToFavs: (id) => set((state) => {
-      const freshFavSet = new Set(state.favorites);
-      const isFoundInfavorites = freshFavSet.has(id);
+    return ({ favorites: freshFavSet });
+  }),
 
-      if (!isFoundInfavorites) {
-        freshFavSet.add(id);
-      } else {
-        freshFavSet.delete(id);
-      }
-
-      return ({ favorites: freshFavSet });
-    }),
-
-    resetFavs: () => {
-      set(() => ({ favorites: new Set() }));
-    },
-  };
-};
-
+  resetFavs: () => {
+    set(() => ({ favorites: new Set() }));
+  },
+});
 export default createFavSlice;
