@@ -79,7 +79,7 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
       <div className="flex gap-3 items-center max-w-[390px]">
         <AddToCart />
         <div className="flex-1 rounded-lg border-2 border-black group">
-          <AddToFavorite />
+          <AddToFavorite id={fetchedInfo.id} />
         </div>
       </div>
     </form>

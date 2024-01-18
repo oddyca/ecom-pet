@@ -1,14 +1,18 @@
 import React from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 import { getItemInfo, getAllProducts } from '../../../controller/serverController';
 import AccordionComponent from './components/AccordionComponent/AccordionComponent';
 import ShareProduct from './components/ShareProduct/ShareProduct';
 import PicturesCarousel from './components/PicturesCarousel/PicturesCarousel';
-import Form from '../../../components/Form/Form';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import Descritption from './components/Description/Descritption';
 import Recommendations from '../../../components/Recommendations/Recommendations';
+
+const DynamicForm = dynamic(() => import('../../../components/Form/Form'), {
+  ssr: false,
+});
 
 export default async function page({ params }) {
   const fetchedInfo = await getItemInfo(params.item);
@@ -45,7 +49,7 @@ export default async function page({ params }) {
                   )
                 }
               </div>
-              <Form fetchedInfo={fetchedInfo} />
+              <DynamicForm fetchedInfo={fetchedInfo} />
               <AccordionComponent />
               <ShareProduct />
             </div>
