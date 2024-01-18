@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Reviews from '../Reviews/Reviews';
 
 export default function Descritption({ reviews, description }) {
   const [openDesc, setOpenDesc] = useState(true);
@@ -38,7 +39,7 @@ export default function Descritption({ reviews, description }) {
               </>
             )
             : (
-              <div>Reviews</div>
+              <Reviews />
             )
         }
       </div>

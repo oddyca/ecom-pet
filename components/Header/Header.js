@@ -3,6 +3,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  Navbar, NavbarBrand, NavbarContent, NavbarItem, Button,
+} from '@nextui-org/react';
+
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
 import ItemsInCart from './ItemsInCart';
 import ItemsInFav from './ItemsInFav';

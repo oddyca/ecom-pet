@@ -84,3 +84,22 @@ export const userSignUp = async (email, username, password) => {
     console.error(e);
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const response = await fetch('https://fakestoreapi.com/users?limit=5');
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getReviews = async () => {
+  try {
+    const response = await fetch('https://baconipsum.com/api/?type=meat-and-filler&sentences=5');
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
