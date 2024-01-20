@@ -32,7 +32,22 @@ export default async function page({ params }) {
             <div className="flex flex-col gap-7 w-[60%]">
               <div className="flex flex-col gap-1">
                 <h1 className="text-xl font-bold">{fetchedInfo.title}</h1>
-                <p>{fetchedInfo.rating.rate}</p>
+                <div className="flex items-center gap-2 w-full h-fit">
+                  <div className="w-[80px] h-[16px]">
+                    <div
+                      style={{
+                        backgroundImage: "url('/rating-empty.svg')", backgroundSize: '16px', backgroundRepeat: 'repeat-x', height: '16px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          backgroundImage: "url('/rating-full.svg')", backgroundSize: '16px', width: `${(fetchedInfo.rating.rate / 5) * 100}%`, backgroundRepeat: 'repeat-x', height: '16px',
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <p>{fetchedInfo.rating.rate}</p>
+                </div>
               </div>
               <div className="flex items-baseline gap-2">
                 <h1 className={fetchedInfo.id === 1 || fetchedInfo.id === 2 ? 'line-through text-sm' : 'text-2xl font-bold'}>{`$${fetchedInfo.price}`}</h1>

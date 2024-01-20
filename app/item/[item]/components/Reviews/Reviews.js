@@ -40,12 +40,29 @@ export default function Reviews() {
                   alt="review profile icon"
                 />
               </div>
-              <h3 className="text-icon-blue font-bold capitalize">
-                {(user.name.firstname)}
-                {' '}
-                {user.name.lastname}
-              </h3>
-              <p className="text-sm text-neutral-300 capitalize">{user.address.city}</p>
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <h3 className="text-icon-blue font-bold capitalize">
+                    {(user.name.firstname)}
+                    {' '}
+                    {user.name.lastname}
+                  </h3>
+                  <p className="text-sm text-neutral-300 capitalize">{user.address.city}</p>
+                </div>
+                <div className="w-[80px] h-[16px]">
+                  <div
+                    style={{
+                      backgroundImage: "url('/rating-empty.svg')", backgroundSize: '16px', width: '100%', backgroundRepeat: 'repeat-x', height: '16px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        backgroundImage: "url('/rating-full.svg')", backgroundSize: '16px', width: `${(id / 5) * 100}%`, backgroundRepeat: 'repeat-x', height: '16px',
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="px-8">
               <p className="px-4">{reviews[id]}</p>
