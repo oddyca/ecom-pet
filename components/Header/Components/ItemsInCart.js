@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import useStore from '../../controller/store/store';
-import { getCartFav, replaceInLocalStorage } from '../../controller/clientController';
+import useStore from '../../../controller/store/store';
+import { getCartFav, replaceInLocalStorage } from '../../../controller/clientController';
 
 export default function ItemsInCart() {
   const { cart, replaceCart } = useStore();
@@ -26,7 +26,7 @@ export default function ItemsInCart() {
       {
         cartSize !== 0
           && (
-            <div className="absolute rounded-full grid place-items-center top-[-.75rem] right-[-1rem] bg-black text-white text-sm h-5 w-5">
+            <div className="absolute rounded-full grid place-items-center lg:top-[-.75rem] lg:right-[-1rem] bg-black text-white text-sm h-5 w-5 -top-3 -right-4">
               {
               cartSize <= 9 ? cartSize : '9+'
             }

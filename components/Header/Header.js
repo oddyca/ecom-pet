@@ -3,15 +3,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Navbar, NavbarBrand, NavbarContent, NavbarItem, Button,
-} from '@nextui-org/react';
 
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
-import ItemsInCart from './ItemsInCart';
-import ItemsInFav from './ItemsInFav';
-import Notifications from './Notifications';
-import ProfilePopover from './ProfilePopover';
+import ItemsInCart from './Components/ItemsInCart';
+import ItemsInFav from './Components/ItemsInFav';
+import Notifications from './Components/Notifications';
+import ProfilePopover from './Components/ProfilePopover';
 
 export default function Header() {
   return (
@@ -20,7 +17,7 @@ export default function Header() {
         className="grid grid-cols-3 h-full w-full max-w-[1440px] px-3"
       >
         <div />
-        <div className="grid place-items-center">
+        <div className="grid place-items-center sm:self-left">
           <Link href="/">
             <Image
               src="/logo.svg"
@@ -32,7 +29,7 @@ export default function Header() {
         </div>
         <div className="flex justify-end">
           <ul className="flex items-center justify-end gap-6 w-auto">
-            <li className="relative">
+            <li className="relative p-1 lg:p-0">
               <Link
                 href="/cart"
                 className="w-auto h-auto flex gap-2"
@@ -43,11 +40,11 @@ export default function Header() {
                   width={16}
                   height={16}
                 />
-                <span className="text-icon-blue">Cart</span>
+                <span className="text-icon-blue lg:block hidden">Cart</span>
               </Link>
               <ItemsInCart />
             </li>
-            <li className="relative">
+            <li className="relative p-1 lg:p-0">
               <Link
                 href="/favorites"
                 className="w-auto h-auto flex gap-2"
@@ -58,7 +55,7 @@ export default function Header() {
                   width={16}
                   height={16}
                 />
-                <span className="text-icon-blue">Favorites</span>
+                <span className="text-icon-blue lg:block hidden">Favorites</span>
               </Link>
               <ItemsInFav />
             </li>

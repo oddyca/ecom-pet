@@ -30,7 +30,7 @@ export default function Descritption({ reviews, description }) {
           </span>
         </button>
       </div>
-      <div className="flex justify-center items-center border-y-2 py-5 w-full">
+      <div className="flex justify-center items-center border-y-2 lg:p-0 px-4 py-5 w-full">
         {
           openDesc
             ? (

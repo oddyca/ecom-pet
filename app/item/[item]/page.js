@@ -26,7 +26,7 @@ export default async function page({ params }) {
         itemId={fetchedInfo.id}
       />
       <main className="flex flex-col gap-7 h-full w-full relative items-center mt-6">
-        <div className="w-full max-w-[1440px] min-h-[600px] h-full flex justify-center gap-4">
+        <div className="w-full max-w-[1440px] min-h-[600px] h-full flex flex-col px-4 lg:p-0 lg:flex-row lg:justify-center gap-4">
           <PicturesCarousel fetchedImage={fetchedInfo.image} />
           <div className="flex flex-1 flex-col gap-4 justify-between w-full h-full">
             <div className="flex flex-col gap-7 w-[60%]">

@@ -57,7 +57,7 @@ export default function Reviews() {
                   >
                     <div
                       style={{
-                        backgroundImage: "url('/rating-full.svg')", backgroundSize: '16px', width: `${(id / 5) * 100}%`, backgroundRepeat: 'repeat-x', height: '16px',
+                        backgroundImage: "url('/rating-full.svg')", backgroundSize: '16px', width: `${(id / 4) * 100}%`, backgroundRepeat: 'repeat-x', height: '16px',
                       }}
                     />
                   </div>
@@ -74,7 +74,7 @@ export default function Reviews() {
   );
 
   return (
-    <div className="w-1/2 flex flex-col gap-3">
+    <div className="w-full lg:w-1/2 flex flex-col gap-3">
       {users.length === 0 && <p className="self-center">Loading...</p> }
       {reviews.length > 0 && renderReviews()}
     </div>

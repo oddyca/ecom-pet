@@ -17,7 +17,7 @@ export default async function HeaderCategories() {
       {categoriesToRender.map((category) => (
         <li
           key={category}
-          className="hover:bg-[#F5F5F5] py-2 px-[5rem] cursor-pointer text-center"
+          className="hover:bg-[#F5F5F5] py-2 lg:px-[5rem] sm:px-3 cursor-pointer text-center"
         >
           <Link
             href={`/category/${category}`}

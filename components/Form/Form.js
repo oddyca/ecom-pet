@@ -35,10 +35,10 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
 
   return (
     <form
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-4 lg:gap-2"
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2 lg:gap-1">
         { (fetchedInfo.category === "men's clothing" || fetchedInfo.category === "women's clothing")
           && (
             <>
