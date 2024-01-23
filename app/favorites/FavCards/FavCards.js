@@ -26,7 +26,7 @@ export default function FavCards() {
   }, [favorites]);
   return (
     <>
-      <div className="w-full grid gap-10 grid-cols-4 self-center py-5">
+      <div className="w-full flex flex-col items-center md:grid md:gap-10 md:grid-cols-4 self-center py-5">
         {data.map((item) => (
           <ItemCard
             key={item.title}

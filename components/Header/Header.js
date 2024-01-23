@@ -14,9 +14,9 @@ export default function Header() {
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
-        className="grid grid-cols-3 h-full w-full max-w-[1440px] px-3"
+        className="grid grid-cols-2 gap-3 md:gap-0 md:grid-cols-3 h-full w-full max-w-[1440px] px-1 md:px-3"
       >
-        <div />
+        <div className="hidden md:block" />
         <div className="grid place-items-center sm:self-left">
           <Link href="/">
             <Image
@@ -28,11 +28,11 @@ export default function Header() {
           </Link>
         </div>
         <div className="flex justify-end">
-          <ul className="flex items-center justify-end gap-6 w-auto">
-            <li className="relative p-1 lg:p-0">
+          <ul className="flex items-center justify-end gap-4 md:gap-6 w-auto">
+            <li className="relative w-fit h-fit p-0 lg:p-0">
               <Link
                 href="/cart"
-                className="w-auto h-auto flex gap-2"
+                className="w-[16px] h-[16px] flex gap-2"
               >
                 <Image
                   src="/cart.svg"
@@ -47,7 +47,7 @@ export default function Header() {
             <li className="relative p-1 lg:p-0">
               <Link
                 href="/favorites"
-                className="w-auto h-auto flex gap-2"
+                className="w-[16px] h-[16px] flex gap-2"
               >
                 <Image
                   src="/fav-nav.svg"
