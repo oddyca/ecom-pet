@@ -1,11 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Search() {
+  const router = useRouter();
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.delete('limit');
+    searchParams.set('search', searchValue);
+
+    const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
+    router.push(newPathname, { scroll: false });
+  }
+
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleSubmit}
       className="mt-3 w-full outline-none"
     >
       <div className="relative flex items-center text-stroke-light-blue focus-within:stroke-icon-blue focus-within:text-icon-blue">
@@ -20,12 +34,13 @@ export default function Search() {
           />
         </svg>
         <input
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
           className="outline-none w-full py-[10px] px-[36px] border-none bg-white ring-2 ring-stroke-blue focus:ring-icon-blue rounded-[10px]"
           type="text"
           placeholder="Search items"
         />
       </div>
-
     </form>
   );
 }
