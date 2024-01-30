@@ -14,10 +14,9 @@ export default function Header() {
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
-        className="grid grid-cols-2 gap-3 md:gap-0 md:grid-cols-3 h-full w-full max-w-[1440px] px-1 md:px-3"
+        className="grid grid-cols-3 gap-3 md:gap-0 h-full w-full max-w-[1440px] px-1 md:px-3"
       >
-        <div className="hidden md:block" />
-        <div className="grid place-items-center sm:self-left">
+        <div className="col-start-2 grid place-items-center sm:self-left">
           <Link href="/">
             <Image
               src="/logo.svg"
@@ -28,11 +27,11 @@ export default function Header() {
           </Link>
         </div>
         <div className="flex justify-end">
-          <ul className="flex items-center justify-end gap-4 md:gap-6 w-auto">
-            <li className="relative w-fit h-fit p-0 lg:p-0">
+          <ul className="flex items-center justify-end gap-4 md:gap-6">
+            <li className="relative w-fit h-fit p-0">
               <Link
                 href="/cart"
-                className="w-[16px] h-[16px] flex gap-2"
+                className="w-auto h-[20px] flex gap-2"
               >
                 <Image
                   src="/cart.svg"
@@ -44,10 +43,10 @@ export default function Header() {
               </Link>
               <ItemsInCart />
             </li>
-            <li className="relative p-1 lg:p-0">
+            <li className="relative p-0">
               <Link
                 href="/favorites"
-                className="w-[16px] h-[16px] flex gap-2"
+                className="w-auto h-[20px] flex gap-2"
               >
                 <Image
                   src="/fav-nav.svg"

@@ -29,7 +29,7 @@ export default function LoadMore() {
       {!isFullyLoaded
       && (
       <button
-        className="border-2 border-[#2D2D2D] px-3 py-2 w-max self-center mt-5 hover:border-[#555555] active:bg-[#2D2D2D] active:text-white"
+        className="border-2 border-black px-3 py-2 w-max self-center mt-5 hover:border-[#555555] active:bg-[#2D2D2D] active:text-white"
         type="button"
         onClick={handleClick}
       >
