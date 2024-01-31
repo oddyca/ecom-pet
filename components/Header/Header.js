@@ -14,9 +14,9 @@ export default function Header() {
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
-        className="grid grid-cols-3 gap-3 md:gap-0 h-full w-full max-w-[1440px] px-1 md:px-3"
+        className="grid grid-cols-3 gap-3 md:gap-0 h-full w-full max-w-[1440px] px-2 md:px-3"
       >
-        <div className="col-start-2 grid place-items-center sm:self-left">
+        <div className="col-start-1 sm:col-start-2 grid place-items-center sm:self-left">
           <Link href="/">
             <Image
               src="/logo.svg"
@@ -26,18 +26,18 @@ export default function Header() {
             />
           </Link>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end col-start-3 justify-self-end w-fit">
           <ul className="flex items-center justify-end gap-4 md:gap-6">
             <li className="relative w-fit h-fit p-0">
               <Link
                 href="/cart"
-                className="w-auto h-[20px] flex gap-2"
+                className="w-[20px] h-[20px] flex gap-2"
               >
                 <Image
                   src="/cart.svg"
                   alt="cart icon"
-                  width={16}
-                  height={16}
+                  width={20}
+                  height={20}
                 />
                 <span className="text-icon-blue lg:block hidden">Cart</span>
               </Link>
@@ -46,13 +46,13 @@ export default function Header() {
             <li className="relative p-0">
               <Link
                 href="/favorites"
-                className="w-auto h-[20px] flex gap-2"
+                className="w-[20px] h-[20px] flex gap-2"
               >
                 <Image
                   src="/fav-nav.svg"
                   alt="favorites icon"
-                  width={16}
-                  height={16}
+                  width={20}
+                  height={20}
                 />
                 <span className="text-icon-blue lg:block hidden">Favorites</span>
               </Link>

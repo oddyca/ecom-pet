@@ -45,7 +45,7 @@ export default function Profile() {
         misc="Profile"
       />
       <main className="flex min-h-[666px] w-full relative flex-col items-center justify-center p-3">
-        <div className="flex gap-10 w-full max-w-[1440px] py-6 min-h-[666px] h-full">
+        <div className="flex flex-col sm:flex-row gap-5 md:gap-10 w-full max-w-[1440px] py-6 min-h-[666px] h-full">
           <div className="flex flex-col gap-8 shrink-0">
             <p>{`Logged as ${loggedUser}`}</p>
             <div className="flex flex-col gap-3">
@@ -124,7 +124,7 @@ export default function Profile() {
               </div>
             </div>
           </div>
-          <div className="ml-10 flex flex-col gap-4 w-full h-fit">
+          <div className="ml-2 md:ml-10 flex flex-col gap-4 w-full h-fit">
             <h3 className="text-xl font-bold">Purchase history</h3>
             <PurchaseHistoryCards />
           </div>

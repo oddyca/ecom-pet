@@ -7,7 +7,7 @@ export default function CartCard({
 }) {
   return (
     <div className="flex justify-between border border-2 bg-white border-stroke-light-blue rounded-lg p-3">
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <div
           style={{
             backgroundImage: `url(${img})`, backgroundSize: '75%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',

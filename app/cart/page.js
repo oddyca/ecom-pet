@@ -48,7 +48,7 @@ export default function Cart() {
         misc="Cart"
       />
       <main className="flex justify-center min-h-max w-full relative mt-6">
-        <div className="w-full max-w-[1440px] min-h-[666px] grid grid-cols-3 gap-5">
+        <div className="w-full max-w-[1440px] min-h-[666px] flex flex-col px-3 md:px-0 md:grid md:grid-cols-3 gap-5">
           <div className="flex flex-col col-span-2 gap-5 w-full">
             <h1 className="text-2xl font-bold">
               {' '}
