@@ -26,46 +26,44 @@ export default function Header() {
             />
           </Link>
         </div>
-        <div className="flex justify-end col-start-3 justify-self-end w-fit">
-          <ul className="flex items-center justify-end gap-4 md:gap-6">
-            <li className="relative w-fit h-fit p-0">
-              <Link
-                href="/cart"
-                className="w-[20px] h-[20px] flex gap-2"
-              >
-                <Image
-                  src="/cart.svg"
-                  alt="cart icon"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-icon-blue lg:block hidden">Cart</span>
-              </Link>
-              <ItemsInCart />
-            </li>
-            <li className="relative p-0">
-              <Link
-                href="/favorites"
-                className="w-[20px] h-[20px] flex gap-2"
-              >
-                <Image
-                  src="/fav-nav.svg"
-                  alt="favorites icon"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-icon-blue lg:block hidden">Favorites</span>
-              </Link>
-              <ItemsInFav />
-            </li>
-            <li className="relative">
-              <Notifications />
-            </li>
-            <li>
-              <ProfilePopover />
-            </li>
-          </ul>
-        </div>
+        <ul className="col-start-3 flex justify-self-end w-fit items-center justify-end gap-4 md:gap-6">
+          <li className="relative w-fit h-fit p-0">
+            <Link
+              href="/cart"
+              className="w-fit h-[20px] flex gap-2"
+            >
+              <Image
+                src="/cart.svg"
+                alt="cart icon"
+                width={20}
+                height={20}
+              />
+              <span className="text-icon-blue lg:block hidden">Cart</span>
+            </Link>
+            <ItemsInCart />
+          </li>
+          <li className="relative p-0">
+            <Link
+              href="/favorites"
+              className="w-fit h-[20px] flex gap-2"
+            >
+              <Image
+                src="/fav-nav.svg"
+                alt="favorites icon"
+                width={20}
+                height={20}
+              />
+              <span className="text-icon-blue lg:block hidden">Favorites</span>
+            </Link>
+            <ItemsInFav />
+          </li>
+          <li className="relative">
+            <Notifications />
+          </li>
+          <li>
+            <ProfilePopover />
+          </li>
+        </ul>
       </div>
       <div className="flex justify-center items-center gap-[200px] h-max w-full bg-[#FFFFFF] border-stroke-blue border-t-2">
         <HeaderCategories />
