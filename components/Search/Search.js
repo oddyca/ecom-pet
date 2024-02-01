@@ -15,7 +15,7 @@ export default function Search() {
 
     const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
     router.push(newPathname, { scroll: false });
-  }
+  };
 
   return (
     <form

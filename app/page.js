@@ -18,7 +18,10 @@ export default async function Home({ searchParams }) {
         <div className="w-full max-w-[1440px] flex flex-col gap-4">
           <Search />
           <Sort />
-          <Items fetchedProducts={fetchedProducts} search={searchParams.search}/>
+          <Items
+            fetchedProducts={fetchedProducts}
+            search={searchParams.search}
+          />
           <LoadMore limit={searchParams.limit} />
         </div>
       </main>
