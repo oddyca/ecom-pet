@@ -2,19 +2,18 @@
 
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import CartCard from './CartCard/CartCard';
 import Order from './Order/Order';
 
 import useStore from '../../controller/store/store';
-import { getItemInfo, replaceInLocalStorage } from '../../controller/controller';
+import { getItemInfo } from '../../controller/serverController';
 
 export default function Cart() {
   const [data, setData] = useState([]);
   const { cart } = useStore();
   const [cartSize, setCartSize] = useState(0);
-  const cartRef = useRef(cart);
 
   const fetchData = async (cartItemsIds) => {
     const itemInfo = cartItemsIds.map(async (id) => {
@@ -36,16 +35,11 @@ export default function Cart() {
     setData(fetchedData);
   };
 
-  useEffect(() => () => {
-    replaceInLocalStorage(cartRef.current);
-  }, []);
-
   useEffect(() => {
     const cartItemsIds = [...cart.keys()];
     const calcCartSize = cartItemsIds?.reduce((sum, current) => sum + cart.get(current).quantity, 0);
     setCartSize(calcCartSize);
     fetchData(cartItemsIds);
-    cartRef.current = cart;
   }, [cart]);
 
   return (
@@ -54,7 +48,7 @@ export default function Cart() {
         misc="Cart"
       />
       <main className="flex justify-center min-h-max w-full relative mt-6">
-        <div className="w-full max-w-[1440px] min-h-[666px] grid grid-cols-3 gap-5">
+        <div className="w-full max-w-[1440px] min-h-[666px] flex flex-col px-3 md:px-0 md:grid md:grid-cols-3 gap-5">
           <div className="flex flex-col col-span-2 gap-5 w-full">
             <h1 className="text-2xl font-bold">
               {' '}

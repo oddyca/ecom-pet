@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
   Popover, PopoverTrigger, PopoverContent,
 } from '@nextui-org/react';
-import useStore from '../../controller/store/store';
+import useStore from '../../../controller/store/store';
 
 export default function ProfilePopover() {
   const [isLoggedLS, setISLoggedLS] = useState('');

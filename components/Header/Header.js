@@ -1,30 +1,22 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import HeaderCategories from '../HeaderCategories/HeaderCategories';
-import ItemsInCart from './ItemsInCart';
-import ItemsInFav from './ItemsInFav';
-import Notifications from './Notifications';
-import ProfilePopover from './ProfilePopover';
-import { getAllCategories } from '../../controller/controller';
+import ItemsInCart from './Components/ItemsInCart';
+import ItemsInFav from './Components/ItemsInFav';
+import Notifications from './Components/Notifications';
+import ProfilePopover from './Components/ProfilePopover';
 
-export default async function Header() {
-  const renderAllCategories = async () => {
-    const fetchedCategories = await getAllCategories();
-    const allCategories = fetchedCategories.reverse();
-
-    return (<>{ allCategories }</>);
-  };
-
-  const categoriesToRender = await renderAllCategories();
-
+export default function Header() {
   return (
     <header className="flex flex-col items-center h-[175px] w-full pt-6">
       <div
-        className="grid grid-cols-3 h-full w-full max-w-[1440px] px-3"
+        className="grid grid-cols-3 gap-3 md:gap-0 h-full w-full max-w-[1440px] px-2 md:px-3"
       >
-        <div />
-        <div className="grid place-items-center">
+        <div className="col-start-1 sm:col-start-2 grid place-items-center sm:self-left">
           <Link href="/">
             <Image
               src="/logo.svg"
@@ -34,49 +26,47 @@ export default async function Header() {
             />
           </Link>
         </div>
-        <div className="flex justify-end">
-          <ul className="flex items-center justify-end gap-6 w-auto">
-            <li className="relative">
-              <Link
-                href="/cart"
-                className="w-auto h-auto flex gap-2"
-              >
-                <Image
-                  src="/cart.svg"
-                  alt="cart icon"
-                  width={16}
-                  height={16}
-                />
-                <span className="text-icon-blue">Cart</span>
-              </Link>
-              <ItemsInCart />
-            </li>
-            <li className="relative">
-              <Link
-                href="/favorites"
-                className="w-auto h-auto flex gap-2"
-              >
-                <Image
-                  src="/fav-nav.svg"
-                  alt="favorites icon"
-                  width={16}
-                  height={16}
-                />
-                <span className="text-icon-blue">Favorites</span>
-              </Link>
-              <ItemsInFav />
-            </li>
-            <li className="relative">
-              <Notifications />
-            </li>
-            <li>
-              <ProfilePopover />
-            </li>
-          </ul>
-        </div>
+        <ul className="col-start-3 flex justify-self-end w-fit items-center justify-end gap-4 md:gap-6">
+          <li className="relative w-fit h-fit p-0">
+            <Link
+              href="/cart"
+              className="w-fit h-[20px] flex gap-2"
+            >
+              <Image
+                src="/cart.svg"
+                alt="cart icon"
+                width={20}
+                height={20}
+              />
+              <span className="text-icon-blue lg:block hidden">Cart</span>
+            </Link>
+            <ItemsInCart />
+          </li>
+          <li className="relative p-0">
+            <Link
+              href="/favorites"
+              className="w-fit h-[20px] flex gap-2"
+            >
+              <Image
+                src="/fav-nav.svg"
+                alt="favorites icon"
+                width={20}
+                height={20}
+              />
+              <span className="text-icon-blue lg:block hidden">Favorites</span>
+            </Link>
+            <ItemsInFav />
+          </li>
+          <li className="relative">
+            <Notifications />
+          </li>
+          <li>
+            <ProfilePopover />
+          </li>
+        </ul>
       </div>
       <div className="flex justify-center items-center gap-[200px] h-max w-full bg-[#FFFFFF] border-stroke-blue border-t-2">
-        <HeaderCategories categoriesToRender={categoriesToRender} />
+        <HeaderCategories />
       </div>
     </header>
   );

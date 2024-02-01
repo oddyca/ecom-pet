@@ -5,7 +5,7 @@ export default function Breadcrumbs({
   itemCategory, itemName, itemId, misc,
 }) {
   return (
-    <div className="flex justify-start gap-[4rem] w-full h-fit mt-6 py-2 px-[5rem] bg-stroke-light-blue text-link-blue text-sm">
+    <div className="flex justify-start items-center lg:gap-[4rem] gap-6 w-full h-fit mt-6 py-2 lg:px-[5rem] px-8 bg-stroke-light-blue text-link-blue text-md lg:text-sm">
       <Link
         href="/"
         className="hover:text-icon-blue"

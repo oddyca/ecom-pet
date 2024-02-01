@@ -21,9 +21,9 @@ import {
 } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import useStore from '../../../controller/store/store';
-import { orderModalHandleNext, addToPurchaseHistory } from '../../../controller/controller';
+import { orderModalHandleNext, addToPurchaseHistory } from '../../../controller/clientController';
 
-export function CustomRadio(props) {
+function CustomRadio(props) {
   const { children, ...otherProps } = props;
 
   return (

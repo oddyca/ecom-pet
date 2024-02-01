@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import AddToCart from '../AddToCart/AddToCart';
 import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import useStore from '../../controller/store/store';
-import { replaceInLocalStorage } from '../../controller/controller';
+import { replaceInLocalStorage } from '../../controller/clientController';
 import { SIZES } from '../../lib/lib';
 
 export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
@@ -35,10 +35,10 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
 
   return (
     <form
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-4 lg:gap-2"
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2 lg:gap-1">
         { (fetchedInfo.category === "men's clothing" || fetchedInfo.category === "women's clothing")
           && (
             <>
@@ -79,7 +79,7 @@ export default function Form({ fetchedInfo, setIsEnetered, onClose }) {
       <div className="flex gap-3 items-center max-w-[390px]">
         <AddToCart />
         <div className="flex-1 rounded-lg border-2 border-black group">
-          <AddToFavorite />
+          <AddToFavorite id={fetchedInfo.id} />
         </div>
       </div>
     </form>

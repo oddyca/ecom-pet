@@ -5,11 +5,15 @@ import Link from 'next/link';
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure,
 } from '@nextui-org/react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import AddToFavorite from '../AddToFavorite/AddToFavorite';
 import Form from '../Form/Form';
 import useStore from '../../controller/store/store';
 import AddToCart from '../AddToCart/AddToCart';
+
+const DynamicAddToFavorite = dynamic(() => import('../AddToFavorite/AddToFavorite'), {
+  ssr: false,
+});
 
 /* eslint-disable no-nested-ternary */
 export default function ItemCard(props) {
@@ -31,7 +35,7 @@ export default function ItemCard(props) {
     >
       <div className="relative p-top-1 z-10 flex flex-col gap-1 w-[250px] rounded-lg">
         <div className="group absolute top-3 right-3 z-40 cursor-pointer hover:scale-110 transition transition-duration-150">
-          <AddToFavorite id={id} />
+          <DynamicAddToFavorite id={id} />
         </div>
         <Link href={`/item/${id}`}>
           <div
